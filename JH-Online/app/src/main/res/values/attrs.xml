@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="home_radio_button">
+        <attr name="button_title" format="string" />
+        <attr name="image_normal" format="reference" />
+        <attr name="image_press" format="reference" />
+        <attr name="color_normal" format="reference" />
+        <attr name="color_press" format="reference" />
+        <attr name="figure" format="string" />
+        <attr name="showCicle" format="boolean" />
+        <attr name="checked" format="boolean" />
+    </declare-styleable>
+</resources>

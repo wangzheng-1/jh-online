@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="55dp"
+    android:layout_weight="1">
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="31dp"
+        android:layout_height="27dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="3dp"
+        android:background="#ffffff"
+        android:focusable="false"
+        android:padding="3dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/sy15" />
+
+    <TextView
+        android:id="@+id/tv_cicle"
+        android:layout_width="19dp"
+        android:layout_height="19dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="1dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/bg_red_point_cicle"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="#ffffff"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/image"
+        android:layout_centerHorizontal="true"
+        android:text="首页"
+        android:textColor="#008DFF"
+        android:textSize="13sp" />
+</RelativeLayout>

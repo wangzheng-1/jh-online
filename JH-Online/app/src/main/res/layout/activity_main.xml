@@ -1,18 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="江湖在线!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-</android.support.constraint.ConstraintLayout>
+    <com.xcompany.jhonline.widget.NoScrollViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/textcolor05" />
+
+    <LinearLayout
+        android:id="@+id/main_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="#ffffff"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.xcompany.jhonline.widget.HomeRadioButtonView
+            android:id="@+id/radio01"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:button_title="首页"
+            app:checked="true"
+            app:color_normal="@color/home_btn_normal"
+            app:color_press="@color/home_btn_press"
+            app:image_normal="@drawable/sy15"
+            app:image_press="@drawable/sy15" />
+
+        <com.xcompany.jhonline.widget.HomeRadioButtonView
+            android:id="@+id/radio02"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:button_title="报料台"
+            app:color_normal="@color/home_btn_normal"
+            app:color_press="@color/home_btn_press"
+            app:image_normal="@drawable/sy1"
+            app:image_press="@drawable/sy1" />
+
+        <com.xcompany.jhonline.widget.HomeRadioButtonView
+            android:id="@+id/radio03"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:button_title="发布"
+            app:color_normal="@color/home_btn_normal"
+            app:color_press="@color/home_btn_press"
+            app:image_normal="@drawable/sy2"
+            app:image_press="@drawable/sy2" />
+
+        <com.xcompany.jhonline.widget.HomeRadioButtonView
+            android:id="@+id/radio04"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:button_title="我的"
+            app:color_normal="@color/home_btn_normal"
+            app:color_press="@color/home_btn_press"
+            app:image_normal="@drawable/sy17"
+            app:image_press="@drawable/sy17" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -3,4 +3,25 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <color name="white">#FFFFFF</color><!--白色 -->
+    <color name="transparent">#00000000</color> <!-- 透明 -->
+    <color name="colore6ebef">#e6ebef</color>
+    <color name="color768595">#768595</color>
+    <color name="color39414a">#39414a</color>
+    <color name="color55616a">#55616a</color>
+    <color name="colorFA8367">#FA8367</color>
+
+    <color name="textcolor01">#ff5e5e</color>
+    <color name="textcolor02">#333333</color>
+    <color name="textcolor03">#8e8e8e</color>
+    <color name="textcolor04">#bbbbbb</color>
+    <color name="textcolor05">#dedfe0</color>
+    <color name="textcolor06">#f3f3f3</color>
+    <color name="textcolor07">#adc0cd</color>
+    <color name="textcolorRed">#F24949</color>
+    <color name="textcolorLittleGray">#6E7782</color>
+    <color name="home_btn_normal">#8891A7</color>
+    <color name="home_btn_press">#FE6345</color>
+    <color name="divide">#E4E6ED</color>
 </resources>
