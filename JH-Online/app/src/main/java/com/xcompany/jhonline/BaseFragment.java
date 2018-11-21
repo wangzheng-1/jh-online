@@ -34,15 +34,10 @@ public abstract class BaseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         isFirstLoad = true;
         mView = inflater.inflate(getLayoutId(), null);
+        mUnBinder = ButterKnife.bind(this, mView);
         isPrepared = true;
         lazyLoad();
         return mView;
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        mUnBinder = ButterKnife.bind(this, view);
     }
 
     /**
