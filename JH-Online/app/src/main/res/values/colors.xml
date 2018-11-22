@@ -21,7 +21,7 @@
     <color name="textcolor07">#adc0cd</color>
     <color name="textcolorRed">#F24949</color>
     <color name="textcolorLittleGray">#6E7782</color>
-    <color name="home_btn_normal">#8891A7</color>
-    <color name="home_btn_press">#FE6345</color>
+    <color name="home_btn_normal">#A6ACB4</color>
+    <color name="home_btn_press">#0073FF</color>
     <color name="divide">#E4E6ED</color>
 </resources>

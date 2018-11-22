@@ -1,19 +1,22 @@
-package com.xcompany.jhonline.module.home;
+package com.xcompany.jhonline.module.home.fragment;
 
-import android.os.Handler;
-import android.os.SystemClock;
 import android.support.v7.widget.LinearLayoutManager;
 
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
-import com.xcompany.jhonline.BaseFragment;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.Response;
 import com.xcompany.jhonline.R;
+import com.xcompany.jhonline.base.BaseFragment;
+import com.xcompany.jhonline.model.home.MusicHotKey;
+import com.xcompany.jhonline.module.home.adapter.HomeAdapter;
+import com.xcompany.jhonline.network.ApiResponse;
+import com.xcompany.jhonline.network.JsonCallback;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.Unbinder;
 
 /**
  * Created by xieliang on 2018/11/21 11:47
@@ -23,6 +26,7 @@ public class HomeFragment extends BaseFragment {
     XRecyclerView mRecyclerView;
     private HomeAdapter mAdapter;
     List<String> mdatas = new ArrayList<>();
+    String url = "https://c.y.qq.com/splcloud/fcgi-bin/gethotkey.fcg";
 
     @Override
     protected int getLayoutId() {
@@ -51,22 +55,23 @@ public class HomeFragment extends BaseFragment {
             public void onLoadMore() {
             }
         });
-        getData();
     }
 
     public void getData() {
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                List<String> data = new ArrayList<>();
-                for (int i = 0; i < 20; i++) {
-                    data.add("青色" + i);
-                }
-                mAdapter.setDatas(data);
-                mRecyclerView.refreshComplete();
-            }
-        }, 2000);
-
+        OkGo.<ApiResponse<MusicHotKey>>get(url)
+                .tag(this)
+                .execute(new JsonCallback<ApiResponse<MusicHotKey>>() {
+                    @Override
+                    public void onSuccess(Response<ApiResponse<MusicHotKey>> response) {
+                        MusicHotKey data = response.body().getData();
+                        List<String> list = new ArrayList<>();
+                        for (MusicHotKey.HotkeyBean bean : data.getHotkey()) {
+                            list.add(bean.getK());
+                        }
+                        mAdapter.setDatas(list);
+                        mRecyclerView.refreshComplete();
+                    }
+                });
     }
+
 }

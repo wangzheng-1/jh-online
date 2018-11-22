@@ -1,4 +1,4 @@
-package com.xcompany.jhonline;
+package com.xcompany.jhonline.module.system.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,10 +8,12 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.xcompany.jhonline.module.home.HomeFragment;
-import com.xcompany.jhonline.module.me.MeFragment;
-import com.xcompany.jhonline.module.publish.PublishFragment;
-import com.xcompany.jhonline.module.report.ReportFragment;
+import com.xcompany.jhonline.module.system.adapter.MainPagerAdapter;
+import com.xcompany.jhonline.R;
+import com.xcompany.jhonline.module.home.fragment.HomeFragment;
+import com.xcompany.jhonline.module.me.fragment.MeFragment;
+import com.xcompany.jhonline.module.publish.fragment.PublishFragment;
+import com.xcompany.jhonline.module.report.fragment.ReportFragment;
 import com.xcompany.jhonline.utils.T;
 import com.xcompany.jhonline.widget.HomeRadioButtonView;
 import com.xcompany.jhonline.widget.NoScrollViewPager;
@@ -21,6 +23,9 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * Created by xieliang on 2018/11/20 22:20
+ */
 public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.main_bottom)

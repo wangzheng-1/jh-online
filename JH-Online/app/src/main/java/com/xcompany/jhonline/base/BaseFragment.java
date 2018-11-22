@@ -1,4 +1,4 @@
-package com.xcompany.jhonline;
+package com.xcompany.jhonline.base;
 
 import android.app.Activity;
 import android.content.Context;

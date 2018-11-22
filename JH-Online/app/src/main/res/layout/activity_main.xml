@@ -35,7 +35,7 @@
             app:checked="true"
             app:color_normal="@color/home_btn_normal"
             app:color_press="@color/home_btn_press"
-            app:image_normal="@drawable/sy15"
+            app:image_normal="@drawable/b1"
             app:image_press="@drawable/sy15" />
 
         <com.xcompany.jhonline.widget.HomeRadioButtonView
@@ -46,7 +46,7 @@
             app:button_title="报料台"
             app:color_normal="@color/home_btn_normal"
             app:color_press="@color/home_btn_press"
-            app:image_normal="@drawable/sy1"
+            app:image_normal="@drawable/b2"
             app:image_press="@drawable/sy1" />
 
         <com.xcompany.jhonline.widget.HomeRadioButtonView
@@ -57,7 +57,7 @@
             app:button_title="发布"
             app:color_normal="@color/home_btn_normal"
             app:color_press="@color/home_btn_press"
-            app:image_normal="@drawable/sy2"
+            app:image_normal="@drawable/b3"
             app:image_press="@drawable/sy2" />
 
         <com.xcompany.jhonline.widget.HomeRadioButtonView
@@ -68,7 +68,7 @@
             app:button_title="我的"
             app:color_normal="@color/home_btn_normal"
             app:color_press="@color/home_btn_press"
-            app:image_normal="@drawable/sy17"
+            app:image_normal="@drawable/b4"
             app:image_press="@drawable/sy17" />
     </LinearLayout>
 

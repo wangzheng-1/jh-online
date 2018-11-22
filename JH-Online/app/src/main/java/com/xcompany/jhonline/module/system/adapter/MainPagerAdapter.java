@@ -1,4 +1,4 @@
-package com.xcompany.jhonline;
+package com.xcompany.jhonline.module.system.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
