@@ -1,0 +1,115 @@
+package com.xcompany.jhonline.network;
+
+import android.text.TextUtils;
+
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.google.gson.Gson;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.HttpParams;
+import com.lzy.okgo.model.Response;
+import com.lzy.okgo.request.base.BodyRequest;
+import com.xcompany.jhonline.utils.ReleaseConfig;
+
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+/**
+ *  网络请求工具类
+ */
+public class DataRequestUtil {
+
+    /**
+     *  执行GET请求
+     * @param interfaceName  接口名称
+     * @param params  传参
+     * @param netCallBack  回调接口
+     */
+    public static void getRequest(String interfaceName,Map<String,String> params,NetCallBack netCallBack){
+        String url = ReleaseConfig.baseUrl() + interfaceName;
+        executeRequest(OkGo.post(getRequestUrl(url,params)),netCallBack);
+    }
+
+    /**
+     *  执行POST请求
+     * @param interfaceName  接口名称
+     * @param params  传参
+     * @param netCallBack  回调接口
+     */
+    public static void postRequest(String interfaceName,Map<String,String> params,NetCallBack netCallBack){
+        String url = ReleaseConfig.baseUrl() + interfaceName;
+        HttpParams httpParams = new HttpParams();
+        httpParams.put(params);
+        executeRequest(OkGo.post(url).params(httpParams),netCallBack);
+    }
+
+    /**
+     *  执行请求
+     * @param request  请求
+     * @param netCallBack  回调接口
+     */
+    private static void executeRequest(BodyRequest request,NetCallBack netCallBack){
+        request.execute(new JsonCallback<ApiResponse<JSONArray>>() {
+
+                    @Override
+                    public void onSuccess(Response<ApiResponse<JSONArray>> response) {
+                        JSONArray data = response.body().getData();
+                        List<JSONObject> dataList = new ArrayList<>();
+                        if(data!= null && data.size() > 0) {
+                            for(int i = 0;i < data.size(); i++){
+                                dataList.add(data.getJSONObject(i));
+                            }
+                        }
+                        netCallBack.done(dataList,dataList.size(),null);
+                    }
+
+                    @Override
+                    public ApiResponse<JSONArray> convertResponse(okhttp3.Response response) throws Exception {
+                        String jsonString = response.body().string();
+                        response.close();
+                        if (!TextUtils.isEmpty(jsonString)) {
+                            Type type = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+                            final ApiResponse<JSONArray> t = new Gson().fromJson(jsonString, type);
+                            if (t instanceof ApiResponse) {
+                                if (((ApiResponse) t).getMsg() == null) ((ApiResponse) t).setMsg("");
+                                if (((ApiResponse) t).getCode() == 0) {//请求成功
+                                    return t;
+                                } else {
+                                    throw new IllegalStateException(((ApiResponse) t).getMsg());
+                                }
+                            } else {
+                                throw new IllegalStateException("服务器返回数据格式异常!");
+                            }
+                        } else {
+                            throw new IllegalStateException("服务器返回为空!");
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<ApiResponse<JSONArray>> response) {
+                        Exception exception = new Exception(response.getException());
+                        netCallBack.done(null,0, exception);
+                    }
+                });
+    }
+    /**
+     *  拼接get请求的URL
+     * @param url 请求前缀
+     * @param params 请求参数
+     */
+    private static String getRequestUrl(String url,Map<String, String> params){
+        StringBuffer urlBuffer = new StringBuffer();
+        urlBuffer.append(url);
+        if(params.size()!=0){
+            for(String key : params.keySet()){
+                Object value = params.get(key);
+                urlBuffer.append("&"+key + "=" +value);
+            }
+        }
+        return urlBuffer.toString();
+
+    }
+}
