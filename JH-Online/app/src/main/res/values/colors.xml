@@ -11,6 +11,8 @@
     <color name="color39414a">#39414a</color>
     <color name="color333333">#333333</color>
     <color name="color666666">#666666</color>
+    <color name="coloraaaaaa">#aaaaaa</color>
+    <color name="colorf8fbff">#f8fbff</color>
     <color name="color0072FF">#0072FF</color>
     <color name="color55616a">#55616a</color>
     <color name="colorFA8367">#FA8367</color>
@@ -27,8 +29,6 @@
     <color name="text_yellow">#FFB400</color>
     <color name="text_light_gray">#999999</color>
     <color name="text_black">#333333</color>
-
-
 
 
     <color name="textcolor01">#ff5e5e</color>
