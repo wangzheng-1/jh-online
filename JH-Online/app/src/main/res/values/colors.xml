@@ -14,6 +14,22 @@
     <color name="color0072FF">#0072FF</color>
     <color name="color55616a">#55616a</color>
     <color name="colorFA8367">#FA8367</color>
+    <!--背景颜色-->
+    <color name="back_blue">#0073FF</color>
+    <color name="back_write">#FFFFFF</color>
+    <color name="back_light_gray">#f3f3f3</color>
+    <color name="back_light_gray2">#EDF0F3</color>
+
+    <!--字体颜色-->
+    <color name="text_white">#FFFFFF</color>
+    <color name="text_blue">#0073FF</color>
+    <color name="text_red">#FF4500</color>
+    <color name="text_yellow">#FFB400</color>
+    <color name="text_light_gray">#999999</color>
+    <color name="text_black">#333333</color>
+
+
+
 
     <color name="textcolor01">#ff5e5e</color>
     <color name="textcolor02">#333333</color>
