@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:toolbar="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
+    <com.xcompany.jhonline.widget.ProjectToolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        toolbar:toolbar_right="查询"
+        toolbar:toolbar_right_mode="black"
+        toolbar:toolbar_title="江湖在线" />
     <com.jcodecraeer.xrecyclerview.XRecyclerView
         android:id="@+id/recycler_list"
         android:layout_width="match_parent"

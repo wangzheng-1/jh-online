@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#0072FF</color>
 
     <color name="white">#FFFFFF</color><!--白色 -->
     <color name="transparent">#00000000</color> <!-- 透明 -->
     <color name="colore6ebef">#e6ebef</color>
     <color name="color768595">#768595</color>
     <color name="color39414a">#39414a</color>
+    <color name="color333333">#333333</color>
+    <color name="color666666">#666666</color>
+    <color name="color0072FF">#0072FF</color>
     <color name="color55616a">#55616a</color>
     <color name="colorFA8367">#FA8367</color>
 

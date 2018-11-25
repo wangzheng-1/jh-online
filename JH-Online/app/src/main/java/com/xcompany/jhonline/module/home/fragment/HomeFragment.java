@@ -1,6 +1,7 @@
 package com.xcompany.jhonline.module.home.fragment;
 
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.View;
 
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -43,6 +44,8 @@ public class HomeFragment extends BaseFragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mAdapter);
+        View view = View.inflate(mContext, R.layout.view_home_head, null);
+        mRecyclerView.addHeaderView(view);
         mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
         mRecyclerView.setLoadingMoreEnabled(false);
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {

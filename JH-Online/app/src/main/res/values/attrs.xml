@@ -10,4 +10,13 @@
         <attr name="showCicle" format="boolean" />
         <attr name="checked" format="boolean" />
     </declare-styleable>
+    <declare-styleable name="ProjectToolbar">
+        <attr name="toolbar_title" format="string" />
+        <attr name="toolbar_right" format="string" />
+        <attr name="toolbar_right_mode" format="integer">
+            <flag name="none" value="0" />
+            <flag name="black" value="1" />
+            <flag name="blue" value="2" />
+        </attr>
+    </declare-styleable>
 </resources>
