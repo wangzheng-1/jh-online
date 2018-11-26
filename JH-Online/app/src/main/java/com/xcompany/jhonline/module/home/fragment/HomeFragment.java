@@ -1,5 +1,6 @@
 package com.xcompany.jhonline.module.home.fragment;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
@@ -21,6 +22,7 @@ import com.xcompany.jhonline.app.GlideApp;
 import com.xcompany.jhonline.base.BaseFragment;
 import com.xcompany.jhonline.model.home.MusicHotKey;
 import com.xcompany.jhonline.module.home.adapter.HomeAdapter;
+import com.xcompany.jhonline.module.home.subcontract.activity.SubcontractList;
 import com.xcompany.jhonline.network.ApiResponse;
 import com.xcompany.jhonline.network.JsonCallback;
 
@@ -103,6 +105,10 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     }
 
     public void initHeadView() {
+        headViwe.findViewById(R.id.entrance1).setOnClickListener(v -> {
+            Intent intent = new Intent(mContext, SubcontractList.class);
+            mContext.startActivity(intent);
+        });
         viewPager = headViwe.findViewById(R.id.viewPager);
         dotGroup = headViwe.findViewById(R.id.dot_group);
         initViewPagerData();
