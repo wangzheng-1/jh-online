@@ -23,6 +23,7 @@
         </activity>
         <activity android:name=".module.system.activity.MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+        <activity android:name=".module.home.subcontract.activity.SubcontractList" />
 
     </application>
 

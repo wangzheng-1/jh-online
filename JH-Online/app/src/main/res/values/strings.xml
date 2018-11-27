@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">江湖在线</string>
+    <string name="entrance1">分包单位</string>
+    <string name="entrance2">设备器材</string>
+    <string name="entrance3">建材产品</string>
+    <string name="entrance4">证照资质</string>
+    <string name="entrance5">专业技能库</string>
+    <string name="entrance6">劳务工人</string>
+    <string name="entrance7">技管人才</string>
+    <string name="entrance8">定制微名片</string>
+    <string name="entrance9">工地配套</string>
+    <string name="entrance10">业内黑名单</string>
+    <string name="zjzg">最近招工</string>
 </resources>
