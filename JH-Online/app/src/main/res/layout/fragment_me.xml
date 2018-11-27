@@ -57,20 +57,19 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="end">
+            android:layout_gravity="center_vertical"
+            android:gravity="end|center_vertical">
 
             <TextView
                 android:id="@+id/signBtn"
                 android:layout_width="90dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:background="@color/back_write"
+                android:background="@drawable/background_rectangle_left_write"
                 android:drawableStart="@mipmap/mine_sign_icon"
-                android:gravity="center"
-
-                android:text="签到+30"
+                android:gravity="center_vertical"
+                android:paddingStart="10dp"
+                android:text="    签到+30"
                 android:textColor="@color/text_blue"
                 android:textSize="12sp" />
 
@@ -80,8 +79,8 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="125dp"
-        android:background="@color/back_write">
+        android:layout_height="115dp"
+        android:background="@color/back_white">
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -125,7 +124,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:textSize="12sp"
-                android:text="我的积分"
+                android:text="我的收藏"
                 android:textColor="@color/text_light_gray"
                 />
         </LinearLayout>
@@ -148,7 +147,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:textSize="12sp"
-                android:text="我的积分"
+                android:text="我的关注"
                 android:textColor="@color/text_light_gray"
                 />
         </LinearLayout>
@@ -165,14 +164,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="15dp"
-            android:background="@color/back_write">
+            android:background="@color/back_white">
 
             <LinearLayout
                 android:id="@+id/meWantEnterBtn"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:background="@color/back_write"
                 android:gravity="center_vertical">
                 <ImageView
                     android:layout_width="wrap_content"
@@ -191,10 +189,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:gravity="end"
-                    >
+                    android:gravity="end">
                     <ImageView
-                        android:id="@+id/collectBtn"
                         android:gravity="center_vertical"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -202,9 +198,9 @@
                         android:layout_marginEnd="13dp"
                         android:src="@mipmap/arrow_right" />
                 </RelativeLayout>
-                
+
             </LinearLayout>
-            <view
+            <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_marginStart="50dp"
@@ -215,7 +211,7 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:background="@color/back_write"
+                android:background="@color/back_white"
                 android:gravity="center_vertical">
                 <ImageView
                     android:layout_width="wrap_content"
@@ -246,7 +242,7 @@
                 </RelativeLayout>
 
             </LinearLayout>
-            <view
+            <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_marginStart="50dp"
@@ -257,7 +253,7 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:background="@color/back_write"
+                android:background="@color/back_white"
                 android:gravity="center_vertical">
                 <ImageView
                     android:layout_width="wrap_content"
@@ -288,7 +284,7 @@
                 </RelativeLayout>
 
             </LinearLayout>
-            <view
+            <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_marginStart="50dp"
@@ -299,7 +295,7 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:background="@color/back_write"
+                android:background="@color/back_white"
                 android:gravity="center_vertical">
                 <ImageView
                     android:layout_width="wrap_content"
@@ -330,7 +326,7 @@
                 </RelativeLayout>
 
             </LinearLayout>
-            <view
+            <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_marginStart="50dp"
@@ -341,7 +337,7 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:background="@color/back_write"
+                android:background="@color/back_white"
                 android:gravity="center_vertical">
                 <ImageView
                     android:layout_width="wrap_content"
@@ -374,8 +370,6 @@
             </LinearLayout>
 
         </LinearLayout>
-
-
 
     </LinearLayout>
 
