@@ -19,7 +19,7 @@
     <color name="colorFA8367">#FA8367</color>
     <!--背景颜色-->
     <color name="back_blue">#0073FF</color>
-    <color name="back_write">#FFFFFF</color>
+    <color name="back_white">#FFFFFF</color>
     <color name="back_light_gray">#f3f3f3</color>
     <color name="back_light_gray2">#EDF0F3</color>
 
