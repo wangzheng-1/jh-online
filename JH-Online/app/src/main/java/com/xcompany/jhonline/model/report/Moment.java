@@ -12,6 +12,7 @@ import java.util.ArrayList;
  */
 public class Moment implements Parcelable {
     public String content;
+    public String videoUrl;
     public ArrayList<String> photos;
 
     @Override
@@ -23,6 +24,8 @@ public class Moment implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.content);
         dest.writeStringList(this.photos);
+        dest.writeString(this.videoUrl);
+
     }
 
     public Moment() {
@@ -33,9 +36,20 @@ public class Moment implements Parcelable {
         this.photos = photos;
     }
 
+    public Moment(String content,String videoUrl) {
+        this.content = content;
+        this.videoUrl = videoUrl;
+    }
+    public Moment(String content,String videoUrl, ArrayList<String> photos) {
+        this.content = content;
+        this.videoUrl = videoUrl;
+        this.photos = photos;
+    }
     protected Moment(Parcel in) {
         this.content = in.readString();
         this.photos = in.createStringArrayList();
+        this.videoUrl = in.readString();
+
     }
 
     public static final Creator<Moment> CREATOR = new Creator<Moment>() {

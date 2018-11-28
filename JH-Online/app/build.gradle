@@ -54,5 +54,8 @@ dependencies {
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
     testImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
     implementation 'pub.devrel:easypermissions:1.0.1'
+    implementation 'cn.jzvd:jiaozivideoplayer:6.0.0'
+
+
 
 }
