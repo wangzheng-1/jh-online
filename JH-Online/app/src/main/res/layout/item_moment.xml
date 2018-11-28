@@ -47,5 +47,18 @@
         app:bga_npl_itemWidth="0dp"
         app:bga_npl_otherWhiteSpacing="64dp"
         app:bga_npl_placeholderDrawable="@mipmap/bga_pp_ic_holder_light"
-        app:bga_npl_showAsLargeWhenOnlyOne="true"/>
+        app:bga_npl_showAsLargeWhenOnlyOne="true"
+       />
+
+    <cn.jzvd.JZVideoPlayerStandard
+        android:id="@+id/player_list_video"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_below="@id/tv_item_moment_content"
+        android:visibility="gone"
+        />
+
 </RelativeLayout>

@@ -19,11 +19,11 @@ import java.util.logging.Level;
 import okhttp3.OkHttpClient;
 
 
-public class App extends Application {
+public class JhApplication extends Application {
 
-    private static App instance;
+    private static JhApplication instance;
 
-    public static synchronized App getInstance() {
+    public static synchronized JhApplication getInstance() {
         return instance;
     }
 

@@ -3,15 +3,12 @@ package com.xcompany.jhonline.module.report.fragment;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,13 +23,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import cn.bingoogolapple.baseadapter.BGARecyclerViewAdapter;
 import cn.bingoogolapple.baseadapter.BGAViewHolderHelper;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPreviewActivity;
 import cn.bingoogolapple.photopicker.imageloader.BGARVOnScrollListener;
 import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout;
+import cn.jzvd.JZVideoPlayerStandard;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -83,7 +79,7 @@ public class ReportFragment extends BaseFragment implements EasyPermissions.Perm
     private void addNetImageTestData() {
         List<Moment> moments = new ArrayList<>();
 
-        moments.add(new Moment("1张网络图片", new ArrayList<>(Arrays.asList("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered1.png"))));
+        moments.add(new Moment("1张网络图片", "http://gslb.miaopai.com/stream/ed5HCfnhovu3tyIQAiv60Q__.mp4"));
         moments.add(new Moment("2张网络图片", new ArrayList<>(Arrays.asList("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered2.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered3.png"))));
         moments.add(new Moment("9张网络图片", new ArrayList<>(Arrays.asList("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered11.png",
                 "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered12.png",
@@ -191,9 +187,27 @@ public class ReportFragment extends BaseFragment implements EasyPermissions.Perm
                 helper.setText(R.id.tv_item_moment_content, moment.content);
             }
 
+            JZVideoPlayerStandard jzVideoPlayerStandard = helper.getView(R.id.player_list_video);
+            if(TextUtils.isEmpty(moment.videoUrl)){
+                jzVideoPlayerStandard.setVisibility(View.GONE);
+            }
+            else{
+                jzVideoPlayerStandard.setVisibility(View.VISIBLE);
+                jzVideoPlayerStandard.setUp("http://jzvd.nathen.cn/c6e3dc12a1154626b3476d9bf3bd7266/6b56c5f0dc31428083757a45764763b0-5287d2089db37e62345123a1be272f8b.mp4"
+                        , JZVideoPlayerStandard.SCREEN_LAYOUT_NORMAL, "嫂子闭眼睛");
+            }
+
             BGANinePhotoLayout ninePhotoLayout = helper.getView(R.id.npl_item_moment_photos);
-            ninePhotoLayout.setDelegate(ReportFragment.this);
-            ninePhotoLayout.setData(moment.photos);
+            if(moment.photos != null && moment.photos.size()>0 ){
+                ninePhotoLayout.setDelegate(ReportFragment.this);
+                ninePhotoLayout.setData(moment.photos);
+                ninePhotoLayout.setVisibility(View.VISIBLE);
+            }
+            else {
+                ninePhotoLayout.setVisibility(View.GONE);
+            }
+
+
         }
     }
 }

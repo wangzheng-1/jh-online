@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/screen"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/nav_height"
+    android:layout_margin="0px"
+    android:background="@color/back_blue"
+    android:orientation="vertical"
+    android:padding="0px" >
+
+    <ImageButton
+        android:id="@+id/homeButton"
+        android:layout_width="@dimen/nav_height"
+        android:layout_height="@dimen/nav_height"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="7dip"
+        android:layout_marginLeft="4dip"
+        android:layout_marginTop="7dip"
+        android:background="@drawable/selector_button_light"
+        android:src="@drawable/back_icon" />
+
+    <LinearLayout
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:singleLine="true"
+            android:textColor="#fff"
+            android:textSize="18sp" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/titleChildText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:singleLine="true"
+            android:textColor="#fff"
+            android:textSize="18sp"
+            android:visibility="gone" />
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/rightButton"
+        android:layout_width="@dimen/nav_height"
+        android:layout_height="@dimen/nav_height"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="7dip"
+        android:layout_marginRight="4dip"
+        android:layout_marginTop="7dip"
+        android:background="@drawable/selector_button_light"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/rightText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="7dip"
+        android:layout_marginRight="4dip"
+        android:layout_marginTop="7dip"
+        android:background="@drawable/selector_button_light"
+        android:textColor="#fff"
+        android:textSize="16sp"
+        android:visibility="gone" />
+
+</RelativeLayout>

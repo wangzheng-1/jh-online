@@ -37,8 +37,17 @@ public abstract class BaseFragment extends Fragment {
         mUnBinder = ButterKnife.bind(this, mView);
         isPrepared = true;
         lazyLoad();
+        loadData();
         return mView;
+
     }
+
+    /**
+     * 数据加载
+     */
+    protected void loadData() {
+
+    };
 
     /**
      * 如果是与ViewPager一起使用，调用的是setUserVisibleHint
