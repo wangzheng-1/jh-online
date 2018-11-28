@@ -8,8 +8,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.xcompany.jhonline.module.system.adapter.MainPagerAdapter;
 import com.xcompany.jhonline.R;
+import com.xcompany.jhonline.module.system.adapter.MainPagerAdapter;
 import com.xcompany.jhonline.module.home.fragment.HomeFragment;
 import com.xcompany.jhonline.module.me.fragment.MeFragment;
 import com.xcompany.jhonline.module.publish.fragment.PublishFragment;
@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         fragments.add(new MeFragment());
         pageAdapter = new MainPagerAdapter(getSupportFragmentManager(), fragments);
         mViewPager.setAdapter(pageAdapter);
+//        mViewPager.setOffscreenPageLimit(4);
     }
 
     private void changeBtn(int index) {
