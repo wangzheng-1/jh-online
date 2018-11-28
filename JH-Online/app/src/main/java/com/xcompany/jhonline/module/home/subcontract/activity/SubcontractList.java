@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.module.home.subcontract.adapter.ProductPageAdapter;
-import com.xcompany.jhonline.module.publish.fragment.PublishFragment;
+import com.xcompany.jhonline.module.home.subcontract.fragment.QualityTeamFragment;
 import com.xcompany.jhonline.module.report.fragment.ReportFragment;
 
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class SubcontractList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subcontractlist);
         ButterKnife.bind(this);
-        fragments.add(new PublishFragment());
+        fragments.add(new QualityTeamFragment());
         fragments.add(new ReportFragment());
         viewpager.setOffscreenPageLimit(2);
         mAdapter = new ProductPageAdapter(getSupportFragmentManager(), fragments, this);
