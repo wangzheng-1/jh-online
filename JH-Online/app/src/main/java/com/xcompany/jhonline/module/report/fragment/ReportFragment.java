@@ -12,9 +12,9 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.xcompany.jhonline.R;
-import com.xcompany.jhonline.base.BaseFragment;
+import com.xcompany.jhonline.base.ListBaseFragment;
+import com.xcompany.jhonline.model.base.Model;
 import com.xcompany.jhonline.model.report.Moment;
 
 import java.io.File;
@@ -35,7 +35,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 /**
  * Created by xieliang on 2018/11/21 11:47
  */
-public class ReportFragment extends BaseFragment implements EasyPermissions.PermissionCallbacks, BGANinePhotoLayout.Delegate {
+public class ReportFragment extends ListBaseFragment implements EasyPermissions.PermissionCallbacks, BGANinePhotoLayout.Delegate {
 
 
     private static final int PRC_PHOTO_PREVIEW = 1;
@@ -47,8 +47,7 @@ public class ReportFragment extends BaseFragment implements EasyPermissions.Perm
     TextView reportTitleText;
     @BindView(R.id.meReportTitleText)
     TextView meReportTitleText;
-    @BindView(R.id.recyclerList)
-    XRecyclerView recyclerList;
+
 
 
     private BGANinePhotoLayout mCurrentClickNpl;
@@ -63,22 +62,12 @@ public class ReportFragment extends BaseFragment implements EasyPermissions.Perm
     @Override
     protected void initEventAndData() {
 
-        recyclerList = mView.findViewById(R.id.recyclerList);
-
-        mMomentAdapter = new MomentAdapter(recyclerList);
-        recyclerList.addOnScrollListener(new BGARVOnScrollListener(this.getActivity()));
-        recyclerList.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        recyclerList.setAdapter(mMomentAdapter);
-        addNetImageTestData();
 
     }
 
-    /**
-     * 添加网络图片测试数据
-     */
-    private void addNetImageTestData() {
-        List<Moment> moments = new ArrayList<>();
-
+    @Override
+    public void getDataItems(int start, int limit, Callback callback) {
+        List<Model> moments = new ArrayList<>();
         moments.add(new Moment("1张网络图片", "http://gslb.miaopai.com/stream/ed5HCfnhovu3tyIQAiv60Q__.mp4"));
         moments.add(new Moment("2张网络图片", new ArrayList<>(Arrays.asList("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered2.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered3.png"))));
         moments.add(new Moment("9张网络图片", new ArrayList<>(Arrays.asList("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered11.png",
@@ -104,16 +93,27 @@ public class ReportFragment extends BaseFragment implements EasyPermissions.Perm
         moments.add(new Moment("7张网络图片", new ArrayList<>(Arrays.asList("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered11.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered12.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered13.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered14.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered15.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered16.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered17.png"))));
         moments.add(new Moment("8张网络图片", new ArrayList<>(Arrays.asList("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered11.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered12.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered13.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered14.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered15.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered16.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered17.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered18.png"))));
 
-        mMomentAdapter.setData(moments);
-    }
+        callback.setDataItems(moments);
 
+    }
+    // 初始化适配器
+    protected void initAdapter() {
+
+        xRecyclerView = mView.findViewById(R.id.recyclerList);
+        mMomentAdapter = new MomentAdapter(xRecyclerView);
+        xRecyclerView.addOnScrollListener(new BGARVOnScrollListener(this.getActivity()));
+        xRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        xRecyclerView.setAdapter(mMomentAdapter);
+        xRecyclerView.setLoadingListener(this);
+        mMomentAdapter.setData(SourceDateList);
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK && requestCode == RC_ADD_MOMENT) {
             mMomentAdapter.addFirstItem((Moment) data.getParcelableExtra(EXTRA_MOMENT));
-            recyclerList.smoothScrollToPosition(0);
+            xRecyclerView.smoothScrollToPosition(0);
         }
     }
 
@@ -172,14 +172,16 @@ public class ReportFragment extends BaseFragment implements EasyPermissions.Perm
 
 
 
-    private class MomentAdapter extends BGARecyclerViewAdapter<Moment> {
+    private class MomentAdapter extends BGARecyclerViewAdapter<Model> {
 
         public MomentAdapter(RecyclerView recyclerView) {
             super(recyclerView, R.layout.item_moment);
         }
 
         @Override
-        protected void fillData(BGAViewHolderHelper helper, int position, Moment moment) {
+        protected void fillData(BGAViewHolderHelper helper, int position, Model model) {
+
+            Moment moment = (Moment) model;
             if (TextUtils.isEmpty(moment.content)) {
                 helper.setVisibility(R.id.tv_item_moment_content, View.GONE);
             } else {

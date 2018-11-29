@@ -3,9 +3,9 @@ package com.xcompany.jhonline.base;
 import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.widget.RecyclerView;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
+import com.xcompany.jhonline.model.base.Model;
 import com.xcompany.jhonline.utils.T;
 
 import java.util.ArrayList;
@@ -17,7 +17,6 @@ public abstract class XListViewActivity extends AbstractActivity implements XRec
 	XRecyclerView xRecyclerView;
 
 	protected List<Object> SourceDateList = new ArrayList<>();
-	protected RecyclerView.Adapter adapter;
 
 	// 分页数量
 	protected int limit = 20;
@@ -26,7 +25,7 @@ public abstract class XListViewActivity extends AbstractActivity implements XRec
 	protected int offset = 0;
 
 	public interface Callback{
-		void setDataItems(List<Object> items);
+		void setDataItems(List<Model> items);
 	}
 
 	public abstract void getDataItems(int start, int limit,Callback callback);
@@ -34,19 +33,7 @@ public abstract class XListViewActivity extends AbstractActivity implements XRec
 	@Override
 	protected void loadData() {
 
-		getDataItems(offset, limit, new Callback() {
-			@Override
-			public void setDataItems(List<Object> items) {
-				if (items.size() == 0) {
-					T.showToast(XListViewActivity.this,"暂无数据，请刷新尝试...");
-				}
-				offset = items.size();
-				Message msg = new Message();
-				msg.what = 1;
-				msg.obj = items;
-				mHandler.sendMessage(msg);
-			}
-		});
+		onRefresh();
 	}
 
 	@SuppressLint("HandlerLeak")
@@ -63,7 +50,7 @@ public abstract class XListViewActivity extends AbstractActivity implements XRec
 			// 判断是否是上拉更多，上拉更多时保持当前操作的显示位置
 			if (msg.what == 2) {
 				SourceDateList.addAll(items);
-				adapter.notifyDataSetChanged();
+				xRecyclerView.getAdapter().notifyDataSetChanged();
 				// 完毕后去掉header、footer
 				xRecyclerView.refreshComplete();
 				return;
@@ -98,7 +85,7 @@ public abstract class XListViewActivity extends AbstractActivity implements XRec
 
 		getDataItems(0, limit, new Callback() {
 			@Override
-			public void setDataItems(List<Object> items) {
+			public void setDataItems(List<Model> items) {
 				if (items.size() == 0) {
 					T.showToast(XListViewActivity.this,"暂无数据，请刷新尝试...");
 				}
@@ -119,7 +106,7 @@ public abstract class XListViewActivity extends AbstractActivity implements XRec
 		getDataItems(offset, limit, new Callback() {
 
 			@Override
-			public void setDataItems(List<Object> items) {
+			public void setDataItems(List<Model> items) {
 				if (items.size() == 0) {
 					T.showToast(XListViewActivity.this,"暂无数据，请刷新尝试...");
 				}

@@ -3,6 +3,8 @@ package com.xcompany.jhonline.model.report;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.xcompany.jhonline.model.base.Model;
+
 import java.util.ArrayList;
 
 /**
@@ -10,7 +12,7 @@ import java.util.ArrayList;
  * 创建时间:16/7/10 上午1:12
  * 描述:
  */
-public class Moment implements Parcelable {
+public class Moment extends Model implements Parcelable {
     public String content;
     public String videoUrl;
     public ArrayList<String> photos;
