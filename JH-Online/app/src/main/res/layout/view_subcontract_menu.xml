@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:clickable="true"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.xcompany.jhonline.widget.MenuButton
+                android:id="@+id/txgc"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                app:menu_button_color_normal="@color/color333333"
+                app:menu_button_color_press="@color/color0072FF"
+                app:menu_button_image_normal="@drawable/arrow1"
+                app:menu_button_image_press="@drawable/arrow2"
+                app:menu_button_resource="@layout/view_menu_button2"
+                app:menu_button_title="特项工程类" />
+
+            <com.xcompany.jhonline.widget.MenuGridView
+                android:id="@+id/txgc_child"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="10dp"
+                android:visibility="gone" />
+
+            <com.xcompany.jhonline.widget.MenuButton
+                android:id="@+id/zyjs"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                app:menu_button_color_normal="@color/color333333"
+                app:menu_button_color_press="@color/color0072FF"
+                app:menu_button_image_normal="@drawable/arrow1"
+                app:menu_button_image_press="@drawable/arrow2"
+                app:menu_button_resource="@layout/view_menu_button2"
+                app:menu_button_title="专业技术类" />
+
+            <com.xcompany.jhonline.widget.MenuGridView
+                android:id="@+id/zyjs_child"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="10dp"
+                android:visibility="gone" />
+
+            <com.xcompany.jhonline.widget.MenuButton
+                android:id="@+id/fxlw"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                app:menu_button_color_normal="@color/color333333"
+                app:menu_button_color_press="@color/color0072FF"
+                app:menu_button_image_normal="@drawable/arrow1"
+                app:menu_button_image_press="@drawable/arrow2"
+                app:menu_button_resource="@layout/view_menu_button2"
+                app:menu_button_title="分项劳务类" />
+
+
+            <com.xcompany.jhonline.widget.MenuGridView
+                android:id="@+id/fxlw_child"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="10dp"
+                android:visibility="gone" />
+
+            <com.xcompany.jhonline.widget.MenuButton
+                android:id="@+id/sbaz"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                app:menu_button_color_normal="@color/color333333"
+                app:menu_button_color_press="@color/color0072FF"
+                app:menu_button_image_normal="@drawable/arrow1"
+                app:menu_button_image_press="@drawable/arrow2"
+                app:menu_button_resource="@layout/view_menu_button2"
+                app:menu_button_title="设备安装类" />
+
+
+            <com.xcompany.jhonline.widget.MenuGridView
+                android:id="@+id/sbaz_child"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="10dp"
+                android:visibility="gone" />
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

@@ -17,13 +17,13 @@
         android:layout_height="45dp"
         android:background="@color/white"
         app:tabIndicatorColor="@color/color0072FF"
+        app:tabIndicatorHeight="0dp"
         app:tabMode="fixed"
         app:tabPadding="0dp"
         app:tabPaddingBottom="0dp"
         app:tabPaddingEnd="0dp"
         app:tabPaddingStart="0dp"
         app:tabPaddingTop="0dp"
-        app:tabIndicatorHeight="0dp"
         app:tabSelectedTextColor="@color/color0072FF"
         app:tabTextColor="@color/color999999">
 

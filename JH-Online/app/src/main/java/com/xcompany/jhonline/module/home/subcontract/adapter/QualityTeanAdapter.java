@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.StackView;
 import android.widget.TextView;
 
@@ -13,6 +14,7 @@ import com.xcompany.jhonline.widget.StarBar;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,7 +58,14 @@ public class QualityTeanAdapter extends RecyclerView.Adapter {
         final String bean = mDatas.get(position);
         final ViewHolder holder = (ViewHolder) viewHolder;
         holder.tvText.setText(bean);
-        holder.starBar.setStarMark(position % 3);
+        holder.starBar.setStarMark(new Random().nextInt(6));
+        Random random = new Random();
+        int i = random.nextInt(2);
+        if (i == 0) {
+            holder.image.setImageResource(R.drawable.yes);
+        } else {
+            holder.image.setImageResource(R.drawable.no);
+        }
     }
 
     @Override
@@ -69,6 +78,8 @@ public class QualityTeanAdapter extends RecyclerView.Adapter {
         TextView tvText;
         @BindView(R.id.starBar)
         StarBar starBar;
+        @BindView(R.id.image)
+        ImageView image;
 
         ViewHolder(View view) {
             super(view);
