@@ -24,7 +24,7 @@ public class HomeRadioButtonView extends RelativeLayout {
     private int image_normal;
     private int image_press;
     private int color_normal;
-    private int colro_press;
+    private int color_press;
     private String title;
     private Boolean checked;
     private String figure;
@@ -48,7 +48,7 @@ public class HomeRadioButtonView extends RelativeLayout {
         image_normal = array.getResourceId(R.styleable.home_radio_button_image_normal, -1);
         image_press = array.getResourceId(R.styleable.home_radio_button_image_press, -1);
         color_normal = array.getColor(R.styleable.home_radio_button_color_normal, Color.TRANSPARENT);
-        colro_press = array.getColor(R.styleable.home_radio_button_color_press, Color.TRANSPARENT);
+        color_press = array.getColor(R.styleable.home_radio_button_color_press, Color.TRANSPARENT);
         title = array.getString(R.styleable.home_radio_button_button_title);
         figure = array.getString(R.styleable.home_radio_button_figure);
         showCicle = array.getBoolean(R.styleable.home_radio_button_showCicle, false);
@@ -86,7 +86,7 @@ public class HomeRadioButtonView extends RelativeLayout {
 
     public void setPress() {
         if (image_press != -1) imageView.setImageResource(image_press);
-        tv_title.setTextColor(colro_press);
+        tv_title.setTextColor(color_press);
     }
 
     public Boolean isChecked() {

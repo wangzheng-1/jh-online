@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorf8fbff"
@@ -152,10 +153,23 @@
                     android:text="信誉等级："
                     android:textColor="@color/coloraaaaaa"
                     android:textSize="14sp" />
+
+                <com.xcompany.jhonline.widget.StarBar
+                    android:id="@+id/starBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    app:starCount="5"
+                    app:starDistance="5dp"
+                    app:starEmpty="@drawable/star1"
+                    app:starFill="@drawable/star2"
+                    app:starSize="10dp" />
             </LinearLayout>
         </LinearLayout>
 
         <ImageView
+            android:id="@+id/image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="3dp"
@@ -163,5 +177,7 @@
             android:src="@drawable/yes" />
     </LinearLayout>
 
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>
