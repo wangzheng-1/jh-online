@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MatchWrap"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        style="@style/MatchWrap"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+
+        <LinearLayout
+            android:id="@+id/reportHeadLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <cn.bingoogolapple.photopicker.widget.BGAImageView
+                android:id="@+id/reportHeadImage"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@mipmap/report_default_head"
+                app:bga_iv_circle="true" />
+
+            <TextView
+                android:id="@+id/userNameText"
+                style="@style/WrapWrap"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:text="伟大的建筑"
+                android:textColor="@color/text_black"
+                android:textSize="18sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="end|center_vertical">
+
+                <TextView
+                    android:id="@+id/mineFellowText"
+                    android:layout_width="75dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/background_rectangle_all_corner_blue"
+                    android:drawableStart="@mipmap/unfollow_btn"
+                    android:gravity="center"
+                    android:paddingStart="10dp"
+                    android:text="关注"
+                    android:textColor="@color/text_white"
+                    android:textSize="12sp" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/reportContentText"
+            style="@style/MatchWrap"
+            android:layout_below="@id/reportHeadLine"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:maxLines="4"
+            android:textColor="#474747"
+            android:textSize="14sp"
+            tools:text="321312" />
+
+        <LinearLayout
+            android:id="@+id/imageAndVideoLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/reportContentText"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical">
+
+            <cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout
+                android:id="@+id/reportNineImage"
+                style="@style/MatchWrap"
+                app:bga_npl_itemCornerRadius="0dp"
+                app:bga_npl_itemSpanCount="3"
+                app:bga_npl_itemWhiteSpacing="4dp"
+                app:bga_npl_itemWidth="0dp"
+                app:bga_npl_otherWhiteSpacing="64dp"
+                app:bga_npl_placeholderDrawable="@mipmap/bga_pp_ic_holder_light"
+                app:bga_npl_showAsLargeWhenOnlyOne="true" />
+
+            <cn.jzvd.JZVideoPlayerStandard
+                android:id="@+id/reportNineVideo"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:visibility="visible" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/commentThumbLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imageAndVideoLayout"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="10dp"
+            android:gravity="end|center_vertical">
+
+            <TextView
+                android:id="@+id/thumbText"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:background="@drawable/background_frame_all_corner_blue"
+                android:drawableStart="@mipmap/click_thumbed"
+                android:gravity="center"
+                android:minWidth="60dp"
+                android:paddingStart="10dp"
+                android:text="32"
+                android:textColor="@color/text_blue"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/commentText"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15dp"
+                android:layout_toRightOf="@id/thumbText"
+                android:background="@drawable/background_frame_all_corner_blue"
+                android:drawableStart="@mipmap/click_commented"
+                android:gravity="center"
+                android:minWidth="60dp"
+                android:paddingStart="10dp"
+                android:text="7"
+                android:textColor="@color/text_blue"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+        <ListView
+            android:id="@+id/commentListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/commentThumbLayout"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="10dp"
+            android:background="@color/back_light_gray2">
+
+        </ListView>
+
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/back_light_gray2"/>
+</LinearLayout>

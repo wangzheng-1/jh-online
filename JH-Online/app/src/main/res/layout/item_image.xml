@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/image_ll">
+    <RelativeLayout
+        android:layout_width="90dp"
+        android:layout_height="90dp">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:scaleType="centerCrop"
+            android:id="@+id/image_iv"
+            android:src="@mipmap/ic_launcher"/>
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_margin="5dp"
+            android:src="@mipmap/select_no"
+            android:layout_alignParentRight="true"
+            android:id="@+id/image_mCheckBox"/>
+    </RelativeLayout>
+
+</LinearLayout>

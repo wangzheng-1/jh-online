@@ -27,6 +27,7 @@ import cn.bingoogolapple.baseadapter.BGARecyclerViewAdapter;
 import cn.bingoogolapple.baseadapter.BGAViewHolderHelper;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPreviewActivity;
 import cn.bingoogolapple.photopicker.imageloader.BGARVOnScrollListener;
+import cn.bingoogolapple.photopicker.widget.BGAImageView;
 import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout;
 import cn.jzvd.JZVideoPlayerStandard;
 import pub.devrel.easypermissions.AfterPermissionGranted;
@@ -41,6 +42,8 @@ public class ReportFragment extends ListBaseFragment implements EasyPermissions.
     private static final int PRC_PHOTO_PREVIEW = 1;
 
     private static final int RC_ADD_MOMENT = 1;
+    private static final int MEDIA_SELECT = 2;
+
     @BindView(R.id.meShareText)
     TextView meShareText;
     @BindView(R.id.reportTitleText)
@@ -61,8 +64,14 @@ public class ReportFragment extends ListBaseFragment implements EasyPermissions.
 
     @Override
     protected void initEventAndData() {
-
-
+        meReportTitleText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, PhotoSelectActivity.class);
+                intent.putExtra(PhotoSelectActivity.IMAGE_NUM,9);
+                startActivityForResult(intent,MEDIA_SELECT);
+            }
+        });
     }
 
     @Override
@@ -115,6 +124,10 @@ public class ReportFragment extends ListBaseFragment implements EasyPermissions.
             mMomentAdapter.addFirstItem((Moment) data.getParcelableExtra(EXTRA_MOMENT));
             xRecyclerView.smoothScrollToPosition(0);
         }
+
+        if(resultCode== Activity.RESULT_OK && requestCode == MEDIA_SELECT){
+            List<String> list = (List<String>) data.getSerializableExtra(PhotoSelectActivity.DATA);
+        }
     }
 
 
@@ -155,6 +168,7 @@ public class ReportFragment extends ListBaseFragment implements EasyPermissions.
 
     @Override
     public void onPermissionsGranted(int requestCode, List<String> perms) {
+
     }
 
     @Override
@@ -175,38 +189,47 @@ public class ReportFragment extends ListBaseFragment implements EasyPermissions.
     private class MomentAdapter extends BGARecyclerViewAdapter<Model> {
 
         public MomentAdapter(RecyclerView recyclerView) {
-            super(recyclerView, R.layout.item_moment);
+            super(recyclerView, R.layout.fragment_report_item);
         }
 
         @Override
         protected void fillData(BGAViewHolderHelper helper, int position, Model model) {
 
             Moment moment = (Moment) model;
+            BGAImageView reportHeadImage = helper.getView(R.id.reportHeadImage);
+            TextView userNameText = helper.getView(R.id.userNameText);
+            TextView mineFellowText = helper.getView(R.id.mineFellowText);
+            TextView reportContentText = helper.getView(R.id.reportContentText);
+            BGANinePhotoLayout reportNineImage = helper.getView(R.id.reportNineImage);
+
+            TextView thumbText = helper.getView(R.id.thumbText);
+            TextView commentText = helper.getView(R.id.commentText);
+            TextView commentListView = helper.getView(R.id.commentListView);
+
             if (TextUtils.isEmpty(moment.content)) {
-                helper.setVisibility(R.id.tv_item_moment_content, View.GONE);
+                reportContentText.setVisibility(View.GONE);
             } else {
-                helper.setVisibility(R.id.tv_item_moment_content, View.VISIBLE);
-                helper.setText(R.id.tv_item_moment_content, moment.content);
+                reportContentText.setVisibility(View.VISIBLE);
+                reportContentText.setText(moment.content);
             }
 
-            JZVideoPlayerStandard jzVideoPlayerStandard = helper.getView(R.id.player_list_video);
+            JZVideoPlayerStandard reportNineVideo = helper.getView(R.id.reportNineVideo);
             if(TextUtils.isEmpty(moment.videoUrl)){
-                jzVideoPlayerStandard.setVisibility(View.GONE);
+                reportNineVideo.setVisibility(View.GONE);
             }
             else{
-                jzVideoPlayerStandard.setVisibility(View.VISIBLE);
-                jzVideoPlayerStandard.setUp("http://jzvd.nathen.cn/c6e3dc12a1154626b3476d9bf3bd7266/6b56c5f0dc31428083757a45764763b0-5287d2089db37e62345123a1be272f8b.mp4"
+                reportNineVideo.setVisibility(View.VISIBLE);
+                reportNineVideo.setUp("http://jzvd.nathen.cn/c6e3dc12a1154626b3476d9bf3bd7266/6b56c5f0dc31428083757a45764763b0-5287d2089db37e62345123a1be272f8b.mp4"
                         , JZVideoPlayerStandard.SCREEN_LAYOUT_NORMAL, "嫂子闭眼睛");
             }
 
-            BGANinePhotoLayout ninePhotoLayout = helper.getView(R.id.npl_item_moment_photos);
             if(moment.photos != null && moment.photos.size()>0 ){
-                ninePhotoLayout.setDelegate(ReportFragment.this);
-                ninePhotoLayout.setData(moment.photos);
-                ninePhotoLayout.setVisibility(View.VISIBLE);
+                reportNineImage.setDelegate(ReportFragment.this);
+                reportNineImage.setData(moment.photos);
+                reportNineImage.setVisibility(View.VISIBLE);
             }
             else {
-                ninePhotoLayout.setVisibility(View.GONE);
+                reportNineImage.setVisibility(View.GONE);
             }
 
 

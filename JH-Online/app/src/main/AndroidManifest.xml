@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+
     <application
         android:name=".app.JhApplication"
         android:allowBackup="true"
@@ -24,6 +25,14 @@
         <activity android:name=".module.system.activity.MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
         <activity android:name=".module.home.subcontract.activity.SubcontractList" />
+
+        <activity android:name=".module.report.fragment.PhotoSelectActivity"
+            android:screenOrientation="portrait"
+            android:exported="true"/>
+        <activity android:name=".module.report.fragment.VideoPreviewActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".module.report.fragment.ImagePreviewActivity"
+            android:screenOrientation="portrait"/>
 
     </application>
 
