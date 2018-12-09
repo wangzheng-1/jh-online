@@ -6,7 +6,7 @@ package com.xcompany.jhonline.utils;
  */
 public class ReleaseConfig {
 
-    private static String RELEASE_TYPE = "DEBUG";
+    private static String RELEASE_TYPE = "DEV";
 
     public enum ReleaseType {
         DEV,        //开发环境
@@ -68,19 +68,19 @@ public class ReleaseConfig {
         URLInfo(ReleaseType releaseType) {
             switch (releaseType) {
                 case DEV:
-                    this.baseUrl = "http://192.168.1.1:8080/jhzx/";
+                    this.baseUrl = "https://www.jhzxnet.com/Api/";
                     break;
                 case SIT:
-                    this.baseUrl = "http://192.168.1.1:8080/jhzx/";
+                    this.baseUrl = "https://www.jhzxnet.com/Api/";
                     break;
                 case UAT:
-                    this.baseUrl = "http://192.168.1.1:8080/jhzx/";
+                    this.baseUrl = "https://www.jhzxnet.com/Api/";
                     break;
                 case PRD:
-                    this.baseUrl = "http://192.168.1.1:8080/jhzx/";
+                    this.baseUrl = "https://www.jhzxnet.com/Api/";
                     break;
                 default:
-                    this.baseUrl = "http://192.168.1.1:8080/jhzx/";
+                    this.baseUrl = "https://www.jhzxnet.com/Api/";
                     break;
             }
         }

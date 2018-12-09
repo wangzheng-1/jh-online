@@ -33,6 +33,7 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".module.report.fragment.ImagePreviewActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".module.login.LoginActivity" />
 
     </application>
 
