@@ -1,13 +1,20 @@
 package com.xcompany.jhonline.module.system.activity;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.icu.text.UnicodeSet;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 
+import com.squareup.haha.perflib.Main;
 import com.xcompany.jhonline.R;
+import com.xcompany.jhonline.module.login.LoginActivity;
+import com.xcompany.jhonline.network.UserService;
 
 
 /**
@@ -31,7 +38,7 @@ public class SplashActivity extends AppCompatActivity {
         testPermissions();
     }
 
-    public void testPermissions() {
+    public void  testPermissions() {
 //        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
 //                != PackageManager.PERMISSION_GRANTED) {
 //            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
@@ -84,7 +91,12 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Intent intent = new Intent();
-                intent.setClass(SplashActivity.this, MainActivity.class);
+                if(UserService.getInstance().isLogin()){
+                    intent.setClass(SplashActivity.this, MainActivity.class);
+                }
+                else {
+                    intent.setClass(SplashActivity.this, LoginActivity.class);
+                }
                 startActivity(intent);
                 SplashActivity.this.finish();
             }

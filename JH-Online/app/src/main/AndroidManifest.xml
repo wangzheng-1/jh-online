@@ -51,6 +51,7 @@
         <activity android:name=".module.home.technical.activity.TechnicalList" />
         <activity android:name=".module.home.siteMatching.activity.SiteMatchingList" />
         <activity android:name=".module.home.siteMatching.activity.SiteMatchingDetailActivity" />
+        <activity android:name=".module.login.LoginActivity" />
 
     </application>
 

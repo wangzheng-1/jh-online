@@ -23,6 +23,10 @@
     <color name="back_white">#FFFFFF</color>
     <color name="back_light_gray">#f3f3f3</color>
     <color name="back_light_gray2">#EDF0F3</color>
+    <color name="back_light_gray3">#f8fbff</color>
+    <color name="back_light_gray4">#BBC7D6</color>
+
+
 
     <!--字体颜色-->
     <color name="text_white">#FFFFFF</color>
