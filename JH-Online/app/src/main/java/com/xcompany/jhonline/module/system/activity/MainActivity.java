@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 
 import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.module.system.adapter.MainPagerAdapter;
-import com.xcompany.jhonline.module.home.fragment.HomeFragment;
+import com.xcompany.jhonline.module.home.base.HomeFragment;
 import com.xcompany.jhonline.module.me.fragment.MeFragment;
 import com.xcompany.jhonline.module.publish.fragment.PublishFragment;
 import com.xcompany.jhonline.module.report.fragment.ReportFragment;

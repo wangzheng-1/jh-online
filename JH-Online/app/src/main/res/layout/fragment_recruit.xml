@@ -24,7 +24,7 @@
             app:menu_button_image_normal="@drawable/down"
             app:menu_button_image_press="@drawable/up"
             app:menu_button_resource="@layout/view_menu_button"
-            app:menu_button_title="分包类别" />
+            app:menu_button_title="招聘岗位" />
 
         <com.xcompany.jhonline.widget.MenuButton
             android:id="@+id/menu2"
@@ -39,31 +39,6 @@
             app:menu_button_resource="@layout/view_menu_button"
             app:menu_button_title="所在地区" />
 
-        <com.xcompany.jhonline.widget.MenuButton
-            android:id="@+id/menu3"
-            android:layout_width="0dp"
-            android:layout_height="45dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            app:menu_button_color_normal="@color/color333333"
-            app:menu_button_color_press="@color/color0072FF"
-            app:menu_button_image_normal="@drawable/down"
-            app:menu_button_image_press="@drawable/up"
-            app:menu_button_resource="@layout/view_menu_button"
-            app:menu_button_title="信誉等级" />
-
-        <com.xcompany.jhonline.widget.MenuButton
-            android:id="@+id/menu4"
-            android:layout_width="0dp"
-            android:layout_height="45dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            app:menu_button_color_normal="@color/color333333"
-            app:menu_button_color_press="@color/color0072FF"
-            app:menu_button_image_normal="@drawable/down"
-            app:menu_button_image_press="@drawable/up"
-            app:menu_button_resource="@layout/view_menu_button"
-            app:menu_button_title="是否垫资" />
 
     </LinearLayout>
 
