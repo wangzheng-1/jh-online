@@ -52,6 +52,10 @@
         <activity android:name=".module.home.siteMatching.activity.SiteMatchingList" />
         <activity android:name=".module.home.siteMatching.activity.SiteMatchingDetailActivity" />
         <activity android:name=".module.login.LoginActivity" />
+        <activity android:name=".module.home.blacklist.activity.BlackListActivity" />
+        <activity android:name=".module.home.blacklist.activity.BlackListDetailActivity" />
+        <activity android:name=".module.home.card.activity.AddCardActivity" />
+        <activity android:name=".module.home.card.activity.CardDetailActivity" />
 
     </application>
 

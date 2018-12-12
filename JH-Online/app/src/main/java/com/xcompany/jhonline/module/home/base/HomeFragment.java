@@ -20,7 +20,9 @@ import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.app.GlideApp;
 import com.xcompany.jhonline.base.BaseFragment;
 import com.xcompany.jhonline.model.home.MusicHotKey;
+import com.xcompany.jhonline.module.home.blacklist.activity.BlackListActivity;
 import com.xcompany.jhonline.module.home.buildMaterial.activity.BuildMaterialList;
+import com.xcompany.jhonline.module.home.card.activity.AddCardActivity;
 import com.xcompany.jhonline.module.home.certificate.acitivity.CertificateList;
 import com.xcompany.jhonline.module.home.equipment.activity.EquipmentList;
 import com.xcompany.jhonline.module.home.labourWorker.activity.LabourWorkerList;
@@ -138,8 +140,16 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
             Intent intent = new Intent(mContext, TechnicalList.class);
             mContext.startActivity(intent);
         });
+        headViwe.findViewById(R.id.entrance8).setOnClickListener(v -> {
+            Intent intent = new Intent(mContext, AddCardActivity.class);
+            mContext.startActivity(intent);
+        });
         headViwe.findViewById(R.id.entrance9).setOnClickListener(v -> {
             Intent intent = new Intent(mContext, SiteMatchingList.class);
+            mContext.startActivity(intent);
+        });
+        headViwe.findViewById(R.id.entrance10).setOnClickListener(v -> {
+            Intent intent = new Intent(mContext, BlackListActivity.class);
             mContext.startActivity(intent);
         });
         viewPager = headViwe.findViewById(R.id.viewPager);
