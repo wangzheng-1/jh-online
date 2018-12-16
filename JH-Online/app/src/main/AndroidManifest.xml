@@ -33,9 +33,32 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".module.report.fragment.activity.ImagePreviewActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".module.home.subcontract.activity.QualityTeamDetailActivity" />
+        <activity android:name=".module.home.subcontract.activity.TenderDetailActivity" />
+        <activity android:name=".module.home.equipment.activity.EquipmentList" />
+        <activity android:name=".module.home.equipment.activity.RentingDetailActivity" />
+        <activity android:name=".module.home.equipment.activity.RentSeekingDetailActivity" />
+        <activity android:name=".module.home.buildMaterial.activity.BuildMaterialList" />
+        <activity android:name=".module.home.subcontract.activity.SubcontractList" />
+        <activity android:name=".module.home.buildMaterial.activity.QualitySupplierDetailActivity" />
+        <activity android:name=".module.home.buildMaterial.activity.PurchaseDetailActivity" />
+        <activity android:name=".module.home.certificate.acitivity.CertificateList" />
+        <activity android:name=".module.home.certificate.acitivity.RegistrationDetailActivity" />
+        <activity android:name=".module.home.certificate.acitivity.QualificationHandleDetailActivity" />
+        <activity android:name=".module.home.professionalSkills.activity.ProfessionalSkillsList" />
+        <activity android:name=".module.home.professionalSkills.activity.ProfessionalSkillsDetailActivity" />
+        <activity android:name=".module.home.labourWorker.activity.LabourWorkerList" />
+        <activity android:name=".module.home.labourWorker.activity.HiringDetailActivity" />
+        <activity android:name=".module.home.technical.activity.TechnicalList" />
+        <activity android:name=".module.home.siteMatching.activity.SiteMatchingList" />
+        <activity android:name=".module.home.siteMatching.activity.SiteMatchingDetailActivity" />
         <activity android:name=".module.login.LoginActivity" />
         <activity android:name=".module.report.activity.ReportAddActivity" />
 
+        <activity android:name=".module.home.blacklist.activity.BlackListActivity" />
+        <activity android:name=".module.home.blacklist.activity.BlackListDetailActivity" />
+        <activity android:name=".module.home.card.activity.AddCardActivity" />
+        <activity android:name=".module.home.card.activity.CardDetailActivity" />
 
     </application>
 

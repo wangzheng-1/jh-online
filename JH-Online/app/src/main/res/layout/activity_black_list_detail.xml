@@ -1,0 +1,83 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.xcompany.jhonline.widget.ProjectToolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:toolbar_right="收藏"
+        app:toolbar_right_mode="black"
+        app:toolbar_title="信息详情" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/colorf8fbff"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:text="事由说明"
+                android:textColor="@color/color0072FF"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:text="本施工队入驻惠州12年，专业承接档口、酒店、别墅等各种
+房型的改建、加建本施工队入驻惠州12年，专业承接档口、
+酒店、别墅等各种房型的改建、加建本施工队入驻惠州12年，
+专业承接档口、酒店、别墅等各种房型的改建、加建本施工
+队入驻惠州12年，专业承接档口、酒店、别墅等各种房型的
+改建、加建本施工队入驻惠州12年，专业承接档口、酒店、
+别墅等各种房型的改建、加建本施工队入驻惠州12年，专业
+承接档口、酒店、别墅等各种房型的改建、加建。"
+                android:textColor="@color/color333333"
+                android:textSize="13sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="15dp">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="105dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_weight="1"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/a" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="105dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_weight="1"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/b" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="105dp"
+                    android:layout_weight="1"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/c" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

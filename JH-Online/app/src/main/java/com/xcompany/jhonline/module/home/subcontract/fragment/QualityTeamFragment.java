@@ -1,8 +1,10 @@
 package com.xcompany.jhonline.module.home.subcontract.fragment;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -16,7 +18,8 @@ import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.base.BaseFragment;
 import com.xcompany.jhonline.model.home.Dictionary;
 import com.xcompany.jhonline.model.home.MusicHotKey;
-import com.xcompany.jhonline.module.home.subcontract.adapter.QualityTeanAdapter;
+import com.xcompany.jhonline.module.home.subcontract.activity.QualityTeamDetailActivity;
+import com.xcompany.jhonline.module.home.subcontract.adapter.QualityTeamAdapter;
 import com.xcompany.jhonline.network.ApiResponse;
 import com.xcompany.jhonline.network.JsonCallback;
 import com.xcompany.jhonline.utils.DensityUtils;
@@ -45,7 +48,7 @@ public class QualityTeamFragment extends BaseFragment {
     MenuButton menu3;
     @BindView(R.id.menu4)
     MenuButton menu4;
-    private QualityTeanAdapter mAdapter;
+    private QualityTeamAdapter mAdapter;
     private List<String> mdatas = new ArrayList<>();
     String url = "https://c.y.qq.com/splcloud/fcgi-bin/gethotkey.fcg";
     private PopupWindow window;
@@ -62,7 +65,7 @@ public class QualityTeamFragment extends BaseFragment {
         for (int i = 0; i < 20; i++) {
             mdatas.add("蓝色" + i);
         }
-        mAdapter = new QualityTeanAdapter(mContext, mdatas);
+        mAdapter = new QualityTeamAdapter(mContext, mdatas);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
@@ -79,6 +82,13 @@ public class QualityTeamFragment extends BaseFragment {
 
             @Override
             public void onLoadMore() {
+            }
+        });
+        mAdapter.setOnItemClickListener(new QualityTeamAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position, String bean, RecyclerView.ViewHolder holder) {
+                Intent intent = new Intent(mContext, QualityTeamDetailActivity.class);
+                startActivity(intent);
             }
         });
         initMuenuData();
