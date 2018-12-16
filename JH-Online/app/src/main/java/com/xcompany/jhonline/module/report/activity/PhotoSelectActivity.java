@@ -1,4 +1,4 @@
-package com.xcompany.jhonline.module.report.fragment;
+package com.xcompany.jhonline.module.report.activity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -25,6 +25,7 @@ import com.xcompany.jhonline.base.BaseActivity;
 import com.xcompany.jhonline.model.report.BaseBean;
 import com.xcompany.jhonline.model.report.ImageMsg;
 import com.xcompany.jhonline.model.report.VideoMsg;
+import com.xcompany.jhonline.module.report.fragment.activity.ImagePreviewActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

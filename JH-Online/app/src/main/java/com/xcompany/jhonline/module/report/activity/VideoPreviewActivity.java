@@ -1,6 +1,5 @@
-package com.xcompany.jhonline.module.report.fragment;
+package com.xcompany.jhonline.module.report.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,7 +12,6 @@ import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
 import com.xcompany.jhonline.R;
-import com.xcompany.jhonline.base.AbstractActivity;
 import com.xcompany.jhonline.base.BaseActivity;
 import com.xcompany.jhonline.model.report.VideoMsg;
 

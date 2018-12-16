@@ -26,14 +26,16 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
         <activity android:name=".module.home.subcontract.activity.SubcontractList" />
 
-        <activity android:name=".module.report.fragment.PhotoSelectActivity"
+        <activity android:name=".module.report.activity.PhotoSelectActivity"
             android:screenOrientation="portrait"
             android:exported="true"/>
-        <activity android:name=".module.report.fragment.VideoPreviewActivity"
+        <activity android:name=".module.report.activity.VideoPreviewActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".module.report.fragment.ImagePreviewActivity"
+        <activity android:name=".module.report.fragment.activity.ImagePreviewActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".module.login.LoginActivity" />
+        <activity android:name=".module.report.activity.ReportAddActivity" />
+
 
     </application>
 

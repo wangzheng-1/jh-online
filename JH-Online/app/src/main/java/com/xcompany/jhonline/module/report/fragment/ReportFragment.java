@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -16,6 +17,9 @@ import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.base.ListBaseFragment;
 import com.xcompany.jhonline.model.base.Model;
 import com.xcompany.jhonline.model.report.Moment;
+import com.xcompany.jhonline.module.report.activity.PhotoSelectActivity;
+import com.xcompany.jhonline.module.report.activity.ReportAddActivity;
+import com.xcompany.jhonline.module.report.test.MyBGANinePhotoLayout;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -36,13 +40,19 @@ import pub.devrel.easypermissions.EasyPermissions;
 /**
  * Created by xieliang on 2018/11/21 11:47
  */
-public class ReportFragment extends ListBaseFragment implements EasyPermissions.PermissionCallbacks, BGANinePhotoLayout.Delegate {
+public class ReportFragment extends ListBaseFragment implements EasyPermissions.PermissionCallbacks, MyBGANinePhotoLayout.Delegate {
 
 
     private static final int PRC_PHOTO_PREVIEW = 1;
 
     private static final int RC_ADD_MOMENT = 1;
     private static final int MEDIA_SELECT = 2;
+
+    public static final String SELECT_TYPE = "type";
+
+    public static final int REPORT_TAKE_REQUEST = 1;
+    public static final int REPORT_SELECT_ALBUM_REQUEST = 2;
+
 
     @BindView(R.id.meShareText)
     TextView meShareText;
@@ -53,9 +63,10 @@ public class ReportFragment extends ListBaseFragment implements EasyPermissions.
 
 
 
-    private BGANinePhotoLayout mCurrentClickNpl;
+    private MyBGANinePhotoLayout mCurrentClickNpl;
     private MomentAdapter mMomentAdapter;
     private static final String EXTRA_MOMENT = "EXTRA_MOMENT";
+
 
     @Override
     protected int getLayoutId() {
@@ -67,9 +78,7 @@ public class ReportFragment extends ListBaseFragment implements EasyPermissions.
         meReportTitleText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mContext, PhotoSelectActivity.class);
-                intent.putExtra(PhotoSelectActivity.IMAGE_NUM,9);
-                startActivityForResult(intent,MEDIA_SELECT);
+                showBottomSheetDialog();
             }
         });
     }
@@ -179,7 +188,7 @@ public class ReportFragment extends ListBaseFragment implements EasyPermissions.
     }
 
     @Override
-    public void onClickNinePhotoItem(BGANinePhotoLayout ninePhotoLayout, View view, int position, String model, List<String> models) {
+    public void onClickNinePhotoItem(MyBGANinePhotoLayout ninePhotoLayout, View view, int position, String model, List<String> models) {
         mCurrentClickNpl = ninePhotoLayout;
         photoPreviewWrapper();
     }
@@ -200,7 +209,7 @@ public class ReportFragment extends ListBaseFragment implements EasyPermissions.
             TextView userNameText = helper.getView(R.id.userNameText);
             TextView mineFellowText = helper.getView(R.id.mineFellowText);
             TextView reportContentText = helper.getView(R.id.reportContentText);
-            BGANinePhotoLayout reportNineImage = helper.getView(R.id.reportNineImage);
+            MyBGANinePhotoLayout reportNineImage = helper.getView(R.id.reportNineImage);
 
             TextView thumbText = helper.getView(R.id.thumbText);
             TextView commentText = helper.getView(R.id.commentText);
@@ -235,4 +244,50 @@ public class ReportFragment extends ListBaseFragment implements EasyPermissions.
 
         }
     }
+
+    BottomSheetDialog bottomSheet;
+    private void initBottomSheet(){
+        if(bottomSheet == null){
+            bottomSheet = new BottomSheetDialog(this.getContext());//实例化BottomSheetDialog
+            bottomSheet.setCancelable(true);//设置点击外部是否可以取消
+            View bottomReportMenu = this.getLayoutInflater().inflate(R.layout.fragment_report_bottom_pop_menu,null);
+            bottomReportMenu.findViewById(R.id.takePhotoLayout).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, ReportAddActivity.class);
+                    intent.putExtra(SELECT_TYPE,REPORT_TAKE_REQUEST);
+                    startActivity(intent);
+                }
+            });
+            bottomReportMenu.findViewById(R.id.selectAlbumLayout).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, ReportAddActivity.class);
+                    intent.putExtra(SELECT_TYPE,REPORT_SELECT_ALBUM_REQUEST);
+                    startActivity(intent);
+                }
+            });
+            bottomReportMenu.findViewById(R.id.cancelText).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(bottomSheet != null && bottomSheet.isShowing()){
+                        bottomSheet.dismiss();
+                    }
+                }
+            });
+            bottomSheet.setContentView(bottomReportMenu);
+        }
+       }
+    private void showBottomSheetDialog(){
+        if(bottomSheet == null){
+            initBottomSheet();
+        }
+        if(bottomSheet.isShowing()){
+            bottomSheet.dismiss();
+        }
+        else {
+            bottomSheet.show();
+        }
+    }
+
 }
