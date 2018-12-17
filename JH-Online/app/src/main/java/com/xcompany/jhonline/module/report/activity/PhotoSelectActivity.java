@@ -69,7 +69,7 @@ public class PhotoSelectActivity extends BaseActivity {
      * 需要选择照片的张数
      */
     private int intExtra;
-    final List<String> data = new ArrayList<>();
+
     final List<String> imdata = new ArrayList<>();
 
     private int selectMediaType;  // 0 视频照片皆可， 1只能照片。
@@ -81,14 +81,13 @@ public class PhotoSelectActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent = getIntent();
-
-        intExtra = intent.getIntExtra(IMAGE_NUM, 0);
-        selectMediaType = intent.getIntExtra(SELECT_MEDIA_TYPE, 0);
 
         setContentView(R.layout.activity_photoselect);
         ButterKnife.bind(this);
-        EventBus.getDefault().register(this);
+
+        Intent intent = getIntent();
+        intExtra = intent.getIntExtra(IMAGE_NUM, 0);
+        selectMediaType = intent.getIntExtra(SELECT_MEDIA_TYPE, 0);
 
         getPath();
         for (int i = 0; i < list.size(); i++) {
@@ -101,9 +100,14 @@ public class PhotoSelectActivity extends BaseActivity {
             @Override
             public void OnVideoClick(int position) {
                 if (flag) {
-                    Intent intent1 = new Intent(PhotoSelectActivity.this, VideoPreviewActivity.class);
-                    intent1.putExtra("videopath", list.get(position - 1).getUrl());
-                    startActivity(intent1);
+                    MediaBaseBeanSerial mediaBaseBeanSerial = new MediaBaseBeanSerial();
+                    List<MediaBaseBean> mediaBaseBeanList = new ArrayList<>();
+                    mediaBaseBeanList.add(list.get(position - 1));
+                    mediaBaseBeanSerial.setMediaBaseBeanList(mediaBaseBeanList);
+                    Intent intent1 = new Intent();
+                    intent1.putExtra(EXTRA_SELECTED_PHOTOS, mediaBaseBeanSerial);
+                    setResult(Activity.RESULT_OK, intent1);
+                    finish();
                 } else {
                     Toast.makeText(PhotoSelectActivity.this, "您已选择图片", Toast.LENGTH_SHORT).show();
                 }
@@ -124,21 +128,24 @@ public class PhotoSelectActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 imdata.clear();
+                List<MediaBaseBean> mediaBaseBeanList = new ArrayList<>();
                 for (int i = 0; i < map.size(); i++) {
                     String s = map.get(i);
                     if (s.equals("true")) {
                         MediaBaseBean bean = list.get(i);
                         imdata.add(bean.getUrl());
+                        mediaBaseBeanList.add(bean);
                     }
                 }
                 if (imdata.size() == 0) {
                     Toast.makeText(PhotoSelectActivity.this, "请选择图片", Toast.LENGTH_SHORT).show();
                 } else {
-                    Intent intent1 = new Intent(PhotoSelectActivity.this, ImagePreviewActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("list", (Serializable) imdata);
-                    intent1.putExtras(bundle);
-                    startActivity(intent1);
+                    MediaBaseBeanSerial mediaBaseBeanSerial = new MediaBaseBeanSerial();
+                    mediaBaseBeanSerial.setMediaBaseBeanList(mediaBaseBeanList);
+                    Intent intent1 = new Intent();
+                    intent1.putExtra(EXTRA_SELECTED_PHOTOS, mediaBaseBeanSerial);
+                    setResult(Activity.RESULT_OK, intent1);
+                    finish();
                 }
             }
         });
@@ -401,51 +408,4 @@ public class PhotoSelectActivity extends BaseActivity {
         }
     }
 
-    @Subscribe
-    public void videoEvent(VideoMsg msg) {
-        data.clear();
-        data.add(msg.getUrl());
-
-        MediaBaseBeanSerial mediaBaseBeanSerial = new MediaBaseBeanSerial();
-        List<MediaBaseBean> mediaBaseBeanList = new ArrayList<>();
-        if(msg.getUrl() != null ){
-            MediaBaseBean mediaBaseBean = new MediaBaseBean();
-            mediaBaseBean.setIsvideo(true);
-            mediaBaseBean.setUrl(msg.getUrl());
-            mediaBaseBeanList.add(mediaBaseBean);
-        }
-        mediaBaseBeanSerial.setMediaBaseBeanList(mediaBaseBeanList);
-
-        mediaBaseBeanSerial.setMediaBaseBeanList(mediaBaseBeanList);
-        Intent intent1 = new Intent();
-        intent1.putExtra(EXTRA_SELECTED_PHOTOS, mediaBaseBeanSerial);
-        setResult(Activity.RESULT_OK, intent1);
-        finish();
-    }
-
-    @Subscribe
-    public void ImageEvent(ImageMsg msg) {
-        imdata.clear();
-        MediaBaseBeanSerial mediaBaseBeanSerial = new MediaBaseBeanSerial();
-        List<MediaBaseBean> mediaBaseBeanList = new ArrayList<>();
-        if(msg.getList() != null && msg.getList().size() > 0 ){
-            for(String uri : msg.getList()){
-                MediaBaseBean mediaBaseBean = new MediaBaseBean();
-                mediaBaseBean.setIsvideo(false);
-                mediaBaseBean.setUrl(uri);
-                mediaBaseBeanList.add(mediaBaseBean);
-            }
-        }
-        mediaBaseBeanSerial.setMediaBaseBeanList(mediaBaseBeanList);
-        Intent intent1 = new Intent();
-        intent1.putExtra(EXTRA_SELECTED_PHOTOS, mediaBaseBeanSerial);
-        setResult(Activity.RESULT_OK, intent1);
-        finish();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
 }
