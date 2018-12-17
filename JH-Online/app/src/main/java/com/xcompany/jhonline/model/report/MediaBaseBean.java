@@ -9,7 +9,10 @@ import java.io.Serializable;
  * Created by Administrator on 2017/4/14.
  */
 
-public class MediaBaseBean {
+public class MediaBaseBean implements Serializable{
+
+    private static final long serialVersionUID = 5213230387175987834L;
+
 
     private String url;
     private boolean isvideo;
