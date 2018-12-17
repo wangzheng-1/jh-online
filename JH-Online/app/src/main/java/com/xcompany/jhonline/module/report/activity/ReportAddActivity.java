@@ -2,6 +2,7 @@ package com.xcompany.jhonline.module.report.activity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -18,6 +19,8 @@ import android.widget.Toast;
 
 import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.base.BaseActivity;
+import com.xcompany.jhonline.model.report.MediaBaseBean;
+import com.xcompany.jhonline.model.report.MediaBaseBeanSerial;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -32,12 +35,22 @@ import cn.bingoogolapple.photopicker.widget.BGASortableNinePhotoLayout;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
+import static com.xcompany.jhonline.module.report.activity.PhotoSelectActivity.EXTRA_SELECTED_PHOTOS;
+import static com.xcompany.jhonline.module.report.activity.PhotoSelectActivity.IMAGE_NUM;
+import static com.xcompany.jhonline.module.report.activity.PhotoSelectActivity.SELECT_MEDIA_TYPE;
 import static com.xcompany.jhonline.module.report.fragment.ReportFragment.SELECT_TYPE;
 
 public class ReportAddActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks, BGASortableNinePhotoLayout.Delegate {
     private static final int PRC_PHOTO_PICKER = 1;
 
+    /**
+     * 选择照片视频
+     */
     private static final int RC_CHOOSE_PHOTO = 1;
+
+    /**
+     * 选择照片预览
+     */
     private static final int RC_PHOTO_PREVIEW = 2;
 
 
@@ -55,7 +68,9 @@ public class ReportAddActivity extends BaseActivity implements EasyPermissions.P
     ImageView videoAddLayout;
 
     private int selectMediaType = 0; //选择流媒体类型  0，默认都可选 1、照片 2、视频
-    private int fromSelectType = 1;  //1 拍摄  2，选择相册
+
+
+    private int fromSelectType = 1;  // 1 拍摄  2，选择相册
 
 
     @Override
@@ -63,12 +78,26 @@ public class ReportAddActivity extends BaseActivity implements EasyPermissions.P
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report_add);
         ButterKnife.bind(this);
-        Bundle bundle = getIntent().getExtras();
-
-        fromSelectType = (int) bundle.get(SELECT_TYPE);
+        fromSelectType = getIntent().getIntExtra(SELECT_TYPE,1);
         mPhotosSnpl = findViewById(R.id.snpl_moment_add_photos);
         initNineSelectView();
         initLayoutBySelectType();
+        enterSelectMediaOrTake();
+    }
+
+    /**
+     * 根据用户所选为拍摄还是选择相册进入不通的页面
+     */
+    private void enterSelectMediaOrTake(){
+        if(fromSelectType == 1){
+            return;
+        }
+        else {
+            Intent intent = new Intent(ReportAddActivity.this, PhotoSelectActivity.class);
+            intent.putExtra(SELECT_MEDIA_TYPE,0);
+            intent.putExtra(IMAGE_NUM,mPhotosSnpl.getMaxItemCount() - mPhotosSnpl.getItemCount());
+            startActivityForResult(intent,RC_CHOOSE_PHOTO);
+        }
     }
 
     /**
@@ -76,7 +105,7 @@ public class ReportAddActivity extends BaseActivity implements EasyPermissions.P
      */
     private void initLayoutBySelectType() {
         //根据悬着类型加载不同的控件
-        if (selectMediaType == 0 && fromSelectType == 1) {
+        if (selectMediaType == 0 || selectMediaType == 1) {
             mPhotosSnpl.setVisibility(View.VISIBLE);
             videoAddLayout.setVisibility(View.GONE);
         }
@@ -95,6 +124,8 @@ public class ReportAddActivity extends BaseActivity implements EasyPermissions.P
         mPhotosSnpl.setSortable(true);
         // 设置拖拽排序控件的代理
         mPhotosSnpl.setDelegate(this);
+        //最多可选9张照片
+        mPhotosSnpl.setMaxItemCount(9);
     }
 
     @Override
@@ -164,10 +195,37 @@ public class ReportAddActivity extends BaseActivity implements EasyPermissions.P
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (resultCode == RESULT_OK && requestCode == RC_CHOOSE_PHOTO) {
-//            mPhotosSnpl.addMoreData(BGAPhotoPickerActivity.getSelectedPhotos(data));
-//        } else if (requestCode == RC_PHOTO_PREVIEW) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //选择视频图片页面返回
+        if (resultCode == RESULT_OK && requestCode == RC_CHOOSE_PHOTO) {
+
+            MediaBaseBeanSerial result = (MediaBaseBeanSerial)data.getSerializableExtra(EXTRA_SELECTED_PHOTOS);
+            List<MediaBaseBean> mediaBaseBeanList = result.getMediaBaseBeanList();
+
+            //悬选择的视频
+            if(mediaBaseBeanList != null && mediaBaseBeanList.size() == 1 && mediaBaseBeanList.get(0).isvideo()){
+                mPhotosSnpl.setVisibility(View.GONE);
+                videoAddLayout.setVisibility(View.VISIBLE);
+                hintContentLayout.setText("最多可选择一个视频");
+                videoAddLayout.setImageURI(Uri.parse(mediaBaseBeanList.get(0).getUrl()));
+            }
+            else{
+                mPhotosSnpl.setVisibility(View.VISIBLE);
+                videoAddLayout.setVisibility(View.GONE);
+                hintContentLayout.setText("最多可选择9张图片");
+                ArrayList<String> list = new ArrayList();
+                if(mediaBaseBeanList == null || mediaBaseBeanList.size() == 0){
+                    return;
+                }
+                for(MediaBaseBean mediaBaseBean : mediaBaseBeanList){
+                    list.add(mediaBaseBean.getUrl());
+                }
+                mPhotosSnpl.addMoreData(list);
+
+            }
+
+        }
+//        else if (requestCode == RC_PHOTO_PREVIEW) {
 //            mPhotosSnpl.setData(BGAPhotoPickerPreviewActivity.getSelectedPhotos(data));
 //        }
     }
@@ -195,19 +253,25 @@ public class ReportAddActivity extends BaseActivity implements EasyPermissions.P
                     if(bottomSheet != null && bottomSheet.isShowing()){
                         bottomSheet.dismiss();
                     }
-                    Intent intent = new Intent(ReportAddActivity.this, PhotoSelectActivity.class);
-                    intent.putExtra(SELECT_TYPE,BGAPhotoPickerActivity.class);
-                    startActivity(intent);
+//                    Intent intent = new Intent(ReportAddActivity.this, PhotoSelectActivity.class);
+//                    intent.putExtra(SELECT_MEDIA_TYPE,0);
+//                    intent.putExtra(IMAGE_NUM,mPhotosSnpl.getMaxItemCount() - mPhotosSnpl.getItemCount());
+//                    startActivityForResult(intent,RC_CHOOSE_PHOTO);
 
                 }
             });
-//            bottomReportMenu.findViewById(R.id.selectAlbumLayout).setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Intent intent = new Intent(ReportAddActivity.this, ReportAddActivity.class);
-//                    startActivity(intent);
-//                }
-//            });
+            bottomReportMenu.findViewById(R.id.selectAlbumLayout).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(bottomSheet != null && bottomSheet.isShowing()){
+                        bottomSheet.dismiss();
+                    }
+                    Intent intent = new Intent(ReportAddActivity.this, PhotoSelectActivity.class);
+                    intent.putExtra(SELECT_MEDIA_TYPE,0);
+                    intent.putExtra(IMAGE_NUM,mPhotosSnpl.getMaxItemCount() - mPhotosSnpl.getItemCount());
+                    startActivityForResult(intent,RC_CHOOSE_PHOTO);
+                }
+            });
             bottomReportMenu.findViewById(R.id.cancelText).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -231,17 +295,6 @@ public class ReportAddActivity extends BaseActivity implements EasyPermissions.P
         }
     }
 
-    private Handler popupHandler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 0:
-//                    showBottomSheetDialog();
-                    break;
-            }
-        }
-
-    };
 }
 
 

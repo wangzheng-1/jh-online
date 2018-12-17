@@ -22,8 +22,9 @@ import com.bumptech.glide.Glide;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.base.BaseActivity;
-import com.xcompany.jhonline.model.report.BaseBean;
+import com.xcompany.jhonline.model.report.MediaBaseBean;
 import com.xcompany.jhonline.model.report.ImageMsg;
+import com.xcompany.jhonline.model.report.MediaBaseBeanSerial;
 import com.xcompany.jhonline.model.report.VideoMsg;
 import com.xcompany.jhonline.module.report.fragment.activity.ImagePreviewActivity;
 
@@ -32,69 +33,68 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2017/4/14.
  */
 
 public class PhotoSelectActivity extends BaseActivity {
+
+    public static final String EXTRA_SELECTED_PHOTOS = "EXTRA_SELECTED_PHOTOS";
+
+
+    @BindView(R.id.back)
+    LinearLayout back;
+    @BindView(R.id.toolbarTitle)
+    TextView toolbarTitle;
+    @BindView(R.id.toolbarMenuRight)
+    ImageView toolbarMenuRight;
+    @BindView(R.id.okSelectText)
+    TextView okSelectText;
+    @BindView(R.id.mEasyRecylerView)
+    XRecyclerView mEasyRecylerView;
     private boolean flag = true;
-    private XRecyclerView mEasyRecylerView;
-    private List<BaseBean> list = new ArrayList<>();
-    public static String IMAGE_NUM = "imagenum";
+
+    private List<MediaBaseBean> list = new ArrayList<>();
+    public static String IMAGE_NUM = "imageNum";
     public static String DATA = "data";
+    /**
+     * 需要选择照片的张数
+     */
     private int intExtra;
-    private TextView tv_cancel;
     final List<String> data = new ArrayList<>();
     final List<String> imdata = new ArrayList<>();
-    private LinearLayout back;
+
+    private int selectMediaType;  // 0 视频照片皆可， 1只能照片。
+
+    public static String SELECT_MEDIA_TYPE = "selectMediaType";
+
     private HashMap<Integer, String> map = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final Intent intent = getIntent();
+        Intent intent = getIntent();
+
         intExtra = intent.getIntExtra(IMAGE_NUM, 0);
+        selectMediaType = intent.getIntExtra(SELECT_MEDIA_TYPE, 0);
+
         setContentView(R.layout.activity_photoselect);
+        ButterKnife.bind(this);
         EventBus.getDefault().register(this);
-        tv_cancel = (TextView) findViewById(R.id.tv_cancel);
-        back = (LinearLayout) findViewById(R.id.back);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-        mEasyRecylerView = (XRecyclerView) findViewById(R.id.mEasyRecylerView);
-        tv_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                imdata.clear();
-                for (int i = 0; i < map.size(); i++) {
-                    String s = map.get(i);
-                    if (s.equals("true")) {
-                        BaseBean bean = list.get(i);
-                        imdata.add(bean.getUrl());
-                    }
-                }
-                if (imdata.size() == 0) {
-                    Toast.makeText(PhotoSelectActivity.this, "请选择图片", Toast.LENGTH_SHORT).show();
-                } else {
-                    Intent intent1 = new Intent(PhotoSelectActivity.this, ImagePreviewActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("list", (Serializable) imdata);
-                    intent1.putExtras(bundle);
-                    startActivity(intent1);
-                }
-            }
-        });
+
         getPath();
         for (int i = 0; i < list.size(); i++) {
             map.put(i, "false");
         }
-        final PhotoSelectAdapter adapter = new PhotoSelectAdapter(this);
+        PhotoSelectAdapter adapter = new PhotoSelectAdapter(this);
         mEasyRecylerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 4));
         mEasyRecylerView.setAdapter(adapter);
         adapter.setOnVideoClickLinstener(new OnVideoClickLinstener() {
@@ -109,26 +109,75 @@ public class PhotoSelectActivity extends BaseActivity {
                 }
             }
         });
+        initViewAndListener();
     }
 
+    private void initViewAndListener() {
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+        okSelectText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                imdata.clear();
+                for (int i = 0; i < map.size(); i++) {
+                    String s = map.get(i);
+                    if (s.equals("true")) {
+                        MediaBaseBean bean = list.get(i);
+                        imdata.add(bean.getUrl());
+                    }
+                }
+                if (imdata.size() == 0) {
+                    Toast.makeText(PhotoSelectActivity.this, "请选择图片", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent1 = new Intent(PhotoSelectActivity.this, ImagePreviewActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("list", (Serializable) imdata);
+                    intent1.putExtras(bundle);
+                    startActivity(intent1);
+                }
+            }
+        });
+    }
+
+
     private void getPath() {
-        /*获取视频列表*/
-        String[] projections = {
-                MediaStore.Video.Media.DATA,
-                MediaStore.Video.Media.DISPLAY_NAME,
-                MediaStore.Video.Media.DURATION,
-                MediaStore.Video.Media.DATE_ADDED,
-                MediaStore.Video.Media.SIZE
-        };
-        String orderBys = MediaStore.Video.Media.DISPLAY_NAME;
-        Uri uris = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-        getVideoContentProvider(uris, projections, orderBys);
+
+        if (selectMediaType == 0) {
+            /*获取视频列表*/
+            String[] projections = {
+                    MediaStore.Video.Media.DATA,
+                    MediaStore.Video.Media.DISPLAY_NAME,
+                    MediaStore.Video.Media.DURATION,
+                    MediaStore.Video.Media.DATE_ADDED,
+                    MediaStore.Video.Media.SIZE
+            };
+            String orderBys = MediaStore.Video.Media.DISPLAY_NAME;
+            Uri uris = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+            getVideoContentProvider(uris, projections, orderBys);
+        }
+
         /*获取图片列表*/
         String[] projection = {
-                MediaStore.Images.Media.DATA};
+                MediaStore.Images.Media.DATA,
+                MediaStore.Images.Media.DATE_ADDED,
+        };
         String orderBy = MediaStore.Images.Media.DISPLAY_NAME;
         Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
         getImageContentProvider(uri, projection, orderBy);
+
+        Collections.sort(list,new Comparator<MediaBaseBean>(){
+            @Override
+            public int compare(MediaBaseBean o1, MediaBaseBean o2) {
+                // TODO Auto-generated method stub
+                return -(o1.getCreateTime().compareTo(o2.getCreateTime()));
+            }
+        });
+
     }
 
     /*获取手机所有图片地址*/
@@ -140,12 +189,14 @@ public class PhotoSelectActivity extends BaseActivity {
             return;
         }
         while (cursor.moveToNext()) {
-            for (int i = 0; i < projection.length; i++) {
-                BaseBean bean = new BaseBean();
-                bean.setUrl(cursor.getString(i));
-                bean.setIsvideo(false);
-                list.add(bean);
-            }
+            MediaBaseBean bean = new MediaBaseBean();
+            bean.setUrl(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)));
+            String createTimeStr = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_ADDED)); // 路径
+            bean.setCreateTime(Long.parseLong(createTimeStr));
+
+            bean.setIsvideo(false);
+            list.add(bean);
+
         }
     }
 
@@ -163,12 +214,11 @@ public class PhotoSelectActivity extends BaseActivity {
                 String path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA)); // 路径
                 long duration = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION)); // 时长
                 String createTimeStr = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_ADDED)); // 路径
-                BaseBean bean = new BaseBean();
-                bean = new BaseBean();
+                MediaBaseBean bean = new MediaBaseBean();
                 bean.setIsvideo(true);
                 bean.setUrl(path);
                 bean.setVideosize(duration + "");
-                bean.setCreateTime(2l);
+                bean.setCreateTime(Long.parseLong(createTimeStr));
                 list.add(bean);
             }
 
@@ -225,7 +275,7 @@ public class PhotoSelectActivity extends BaseActivity {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
             int type = getItemViewType(position);
-            BaseBean baseBean = list.get(position);
+            MediaBaseBean baseBean = list.get(position);
             if (type == 0) {
                 PhotoSelectVideoHolder videoHolder = (PhotoSelectVideoHolder) holder;
                 Glide.with(context).load(baseBean.getUrl()).into(videoHolder.video_iv);
@@ -249,7 +299,7 @@ public class PhotoSelectActivity extends BaseActivity {
 
         @Override
         public int getItemViewType(int position) {
-            BaseBean bean = list.get(position);
+            MediaBaseBean bean = list.get(position);
             if (bean.isvideo()) {
                 return 0;
             } else {
@@ -289,7 +339,7 @@ public class PhotoSelectActivity extends BaseActivity {
                 imageLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        int position = getAdapterPosition() -1;
+                        int position = getAdapterPosition() - 1;
                         String s = map.get(position);
                         if (s.equals("true")) {
                             imageCheckBox.setImageResource(R.mipmap.select_no);
@@ -355,10 +405,20 @@ public class PhotoSelectActivity extends BaseActivity {
     public void videoEvent(VideoMsg msg) {
         data.clear();
         data.add(msg.getUrl());
+
+        MediaBaseBeanSerial mediaBaseBeanSerial = new MediaBaseBeanSerial();
+        List<MediaBaseBean> mediaBaseBeanList = new ArrayList<>();
+        if(msg.getUrl() != null ){
+            MediaBaseBean mediaBaseBean = new MediaBaseBean();
+            mediaBaseBean.setIsvideo(true);
+            mediaBaseBean.setUrl(msg.getUrl());
+            mediaBaseBeanList.add(mediaBaseBean);
+        }
+        mediaBaseBeanSerial.setMediaBaseBeanList(mediaBaseBeanList);
+
+        mediaBaseBeanSerial.setMediaBaseBeanList(mediaBaseBeanList);
         Intent intent1 = new Intent();
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(DATA, (Serializable) data);
-        intent1.putExtras(bundle);
+        intent1.putExtra(EXTRA_SELECTED_PHOTOS, mediaBaseBeanSerial);
         setResult(Activity.RESULT_OK, intent1);
         finish();
     }
@@ -366,11 +426,19 @@ public class PhotoSelectActivity extends BaseActivity {
     @Subscribe
     public void ImageEvent(ImageMsg msg) {
         imdata.clear();
-        imdata.addAll(msg.getList());
+        MediaBaseBeanSerial mediaBaseBeanSerial = new MediaBaseBeanSerial();
+        List<MediaBaseBean> mediaBaseBeanList = new ArrayList<>();
+        if(msg.getList() != null && msg.getList().size() > 0 ){
+            for(String uri : msg.getList()){
+                MediaBaseBean mediaBaseBean = new MediaBaseBean();
+                mediaBaseBean.setIsvideo(false);
+                mediaBaseBean.setUrl(uri);
+                mediaBaseBeanList.add(mediaBaseBean);
+            }
+        }
+        mediaBaseBeanSerial.setMediaBaseBeanList(mediaBaseBeanList);
         Intent intent1 = new Intent();
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(DATA, (Serializable) imdata);
-        intent1.putExtras(bundle);
+        intent1.putExtra(EXTRA_SELECTED_PHOTOS, mediaBaseBeanSerial);
         setResult(Activity.RESULT_OK, intent1);
         finish();
     }

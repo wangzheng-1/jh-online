@@ -1,16 +1,19 @@
 package com.xcompany.jhonline.model.report;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 
 /**
  * Created by Administrator on 2017/4/14.
  */
 
-public class BaseBean implements Serializable{
+public class MediaBaseBean {
+
     private String url;
     private boolean isvideo;
     private String videosize;
-
     private Long createTime;
     private boolean isCheckBox=false;
 
@@ -53,4 +56,6 @@ public class BaseBean implements Serializable{
     public void setCreateTime(Long createTime) {
         this.createTime = createTime;
     }
+
+
 }
