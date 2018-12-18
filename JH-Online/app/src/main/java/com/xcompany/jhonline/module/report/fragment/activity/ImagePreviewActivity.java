@@ -1,5 +1,6 @@
 package com.xcompany.jhonline.module.report.fragment.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
@@ -14,12 +15,16 @@ import com.bumptech.glide.Glide;
 import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.base.BaseActivity;
 import com.xcompany.jhonline.model.report.ImageMsg;
+import com.xcompany.jhonline.model.report.MediaBaseBean;
+import com.xcompany.jhonline.model.report.MediaBaseBeanSerial;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import static com.xcompany.jhonline.module.report.activity.PhotoSelectActivity.EXTRA_SELECTED_PHOTOS;
 
 
 /**
@@ -31,25 +36,28 @@ public class ImagePreviewActivity extends BaseActivity {
     private TextView tvcancle;
     private List<String> list;
     private List<ImageView> imagelist = new ArrayList<>();
-    private ViewPager vp;
+    private ViewPager viewPager;
     private TextView num;
     private TextView status;
     private ImageView mCheckBox;
     private int count=0;
     private List<Integer> intlist=new ArrayList<>();
     private HashMap<Integer,String> map=new HashMap<>();
+    public static final String INIT_SELECT_POSITION = "initSelectPosition";
+    private int initSelectPosition;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_imagepreview);
         Intent intent = getIntent();
-        list = (List<String>) intent.getSerializableExtra("list");
+        list = (List<String>) intent.getSerializableExtra(EXTRA_SELECTED_PHOTOS);
+        initSelectPosition = intent.getIntExtra(INIT_SELECT_POSITION,0);
         num = (TextView) findViewById(R.id.tv_num);
         status = (TextView) findViewById(R.id.tv_status);
         mCheckBox = (ImageView) findViewById(R.id.mCheckBox);
         tvcancle = (TextView) findViewById(R.id.tv_cancel);
         back = (LinearLayout) findViewById(R.id.back);
-        vp = (ViewPager) findViewById(R.id.vp);
+        viewPager = (ViewPager) findViewById(R.id.vp);
         num.setText("1/"+list.size());
         for (int i = 0; i < list.size(); i++) {
             intlist.add(i);
@@ -68,8 +76,8 @@ public class ImagePreviewActivity extends BaseActivity {
             imagelist.add(view);
         }
         MyAdapter adapter = new MyAdapter(imagelist);
-        vp.setAdapter(adapter);
-        vp.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        viewPager.setAdapter(adapter);
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -94,6 +102,7 @@ public class ImagePreviewActivity extends BaseActivity {
 
             }
         });
+        viewPager.setCurrentItem(initSelectPosition);
         mCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -127,7 +136,18 @@ public class ImagePreviewActivity extends BaseActivity {
                         }
                     }
                 }
-                EventBus.getDefault().post(new ImageMsg(list));
+                List<MediaBaseBean> mediaBaseBeanList = new ArrayList<>();
+                for(String uri : list){
+                    MediaBaseBean mediaBaseBean = new MediaBaseBean();
+                    mediaBaseBean.setUrl(uri);
+                    mediaBaseBean.setIsvideo(false);
+                    mediaBaseBeanList.add(mediaBaseBean);
+                }
+                MediaBaseBeanSerial mediaBaseBeanSerial = new MediaBaseBeanSerial();
+                mediaBaseBeanSerial.setMediaBaseBeanList(mediaBaseBeanList);
+                Intent intent1 = new Intent();
+                intent1.putExtra(EXTRA_SELECTED_PHOTOS, mediaBaseBeanSerial);
+                setResult(Activity.RESULT_OK, intent1);
                 finish();
             }
         });

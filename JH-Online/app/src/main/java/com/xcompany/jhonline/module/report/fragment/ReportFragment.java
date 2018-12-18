@@ -254,6 +254,9 @@ public class ReportFragment extends ListBaseFragment implements EasyPermissions.
             bottomReportMenu.findViewById(R.id.takePhotoLayout).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if(bottomSheet != null && bottomSheet.isShowing()){
+                        bottomSheet.dismiss();
+                    }
                     Intent intent = new Intent(mContext, ReportAddActivity.class);
                     intent.putExtra(SELECT_TYPE,REPORT_TAKE_REQUEST);
                     startActivity(intent);
@@ -262,6 +265,9 @@ public class ReportFragment extends ListBaseFragment implements EasyPermissions.
             bottomReportMenu.findViewById(R.id.selectAlbumLayout).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if(bottomSheet != null && bottomSheet.isShowing()){
+                        bottomSheet.dismiss();
+                    }
                     Intent intent = new Intent(mContext, ReportAddActivity.class);
                     intent.putExtra(SELECT_TYPE,REPORT_SELECT_ALBUM_REQUEST);
                     startActivity(intent);

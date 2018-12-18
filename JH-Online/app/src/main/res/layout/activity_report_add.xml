@@ -54,7 +54,6 @@
         android:background="@color/back_white"
         >
 
-
         <EditText
             android:id="@+id/mineReportContent"
             android:layout_width="match_parent"
@@ -102,15 +101,27 @@
             app:bga_snpl_sortable="true"
             android:visibility="gone"/>
 
-        <ImageView
+        <FrameLayout
             android:id="@+id/videoAddLayout"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:layout_width="90dp"
-            android:layout_height="160dp"
-            android:singleLine="true"
-            android:src="@drawable/splash"
-            />
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/splash">
+            <ImageView
+                android:id="@+id/videoAddImage"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/splash"
+                />
+            <ImageView
+                android:id="@+id/videoPlayImage"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@mipmap/share_moment"
+                android:layout_gravity="center"
+                />
+        </FrameLayout>
 
     </LinearLayout>
 

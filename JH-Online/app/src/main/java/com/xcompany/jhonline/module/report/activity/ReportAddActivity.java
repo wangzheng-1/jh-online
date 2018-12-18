@@ -5,13 +5,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,8 +20,10 @@ import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.base.BaseActivity;
 import com.xcompany.jhonline.model.report.MediaBaseBean;
 import com.xcompany.jhonline.model.report.MediaBaseBeanSerial;
+import com.xcompany.jhonline.module.report.fragment.activity.ImagePreviewActivity;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +40,7 @@ import static com.xcompany.jhonline.module.report.activity.PhotoSelectActivity.E
 import static com.xcompany.jhonline.module.report.activity.PhotoSelectActivity.IMAGE_NUM;
 import static com.xcompany.jhonline.module.report.activity.PhotoSelectActivity.SELECT_MEDIA_TYPE;
 import static com.xcompany.jhonline.module.report.fragment.ReportFragment.SELECT_TYPE;
+import static com.xcompany.jhonline.module.report.fragment.activity.ImagePreviewActivity.INIT_SELECT_POSITION;
 
 public class ReportAddActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks, BGASortableNinePhotoLayout.Delegate {
     private static final int PRC_PHOTO_PICKER = 1;
@@ -65,7 +67,11 @@ public class ReportAddActivity extends BaseActivity implements EasyPermissions.P
     @BindView(R.id.snpl_moment_add_photos)
     BGASortableNinePhotoLayout mPhotosSnpl;
     @BindView(R.id.videoAddLayout)
-    ImageView videoAddLayout;
+    FrameLayout videoAddLayout;
+    @BindView(R.id.videoAddImage)
+    ImageView videoAddImage;
+    @BindView(R.id.videoPlayImage)
+    ImageView videoPlayImage;
 
     private int selectMediaType = 0; //选择流媒体类型  0，默认都可选 1、照片 2、视频
 
@@ -139,17 +145,13 @@ public class ReportAddActivity extends BaseActivity implements EasyPermissions.P
         mPhotosSnpl.removeItem(position);
     }
 
-    //只悬着照片
+    //照片预览
     @Override
     public void onClickNinePhotoItem(BGASortableNinePhotoLayout sortableNinePhotoLayout, View view, int position, String model, ArrayList<String> models) {
-            Intent photoPickerPreviewIntent = new BGAPhotoPickerPreviewActivity.IntentBuilder(this)
-                    .previewPhotos(models) // 当前预览的图片路径集合
-                    .selectedPhotos(models) // 当前已选中的图片路径集合
-                    .maxChooseCount(mPhotosSnpl.getMaxItemCount()) // 图片选择张数的最大值
-                    .currentPosition(position) // 当前预览图片的索引
-                    .isFromTakePhoto(false) // 是否是拍完照后跳转过来
-                    .build();
-        startActivityForResult(photoPickerPreviewIntent, RC_PHOTO_PREVIEW);
+        Intent intent = new Intent(ReportAddActivity.this, ImagePreviewActivity.class);
+        intent.putExtra(INIT_SELECT_POSITION,position);
+        intent.putExtra(EXTRA_SELECTED_PHOTOS,(Serializable) models);
+        startActivityForResult(intent,RC_PHOTO_PREVIEW);
     }
 
     @Override
@@ -207,7 +209,7 @@ public class ReportAddActivity extends BaseActivity implements EasyPermissions.P
                 mPhotosSnpl.setVisibility(View.GONE);
                 videoAddLayout.setVisibility(View.VISIBLE);
                 hintContentLayout.setText("最多可选择一个视频");
-                videoAddLayout.setImageURI(Uri.parse(mediaBaseBeanList.get(0).getUrl()));
+                videoAddImage.setImageURI(Uri.parse(mediaBaseBeanList.get(0).getUrl()));
             }
             else{
                 mPhotosSnpl.setVisibility(View.VISIBLE);
@@ -221,13 +223,19 @@ public class ReportAddActivity extends BaseActivity implements EasyPermissions.P
                     list.add(mediaBaseBean.getUrl());
                 }
                 mPhotosSnpl.addMoreData(list);
-
             }
-
         }
-//        else if (requestCode == RC_PHOTO_PREVIEW) {
-//            mPhotosSnpl.setData(BGAPhotoPickerPreviewActivity.getSelectedPhotos(data));
-//        }
+        else if (resultCode == RESULT_OK && requestCode == RC_PHOTO_PREVIEW) {
+            MediaBaseBeanSerial result = (MediaBaseBeanSerial)data.getSerializableExtra(EXTRA_SELECTED_PHOTOS);
+            List<MediaBaseBean> mediaBaseBeanList = result.getMediaBaseBeanList();
+            ArrayList<String> list = new ArrayList();
+            if(mediaBaseBeanList != null || mediaBaseBeanList.size() > 0){
+                for(MediaBaseBean mediaBaseBean : mediaBaseBeanList){
+                    list.add(mediaBaseBean.getUrl());
+                }
+            }
+            mPhotosSnpl.setData(list);
+        }
     }
 
     @OnClick({R.id.snpl_moment_add_photos, R.id.videoAddLayout})
