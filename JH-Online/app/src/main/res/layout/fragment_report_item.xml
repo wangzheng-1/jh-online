@@ -77,7 +77,7 @@
             android:layout_marginTop="8dp"
             android:orientation="vertical">
 
-            <com.xcompany.jhonline.module.report.test.MyBGANinePhotoLayout
+            <com.xcompany.jhonline.widget.MyBGANinePhotoLayout
                 android:id="@+id/reportNineImage"
                 style="@style/MatchWrap"
                 app:bga_npl_itemCornerRadius="0dp"

@@ -2,6 +2,7 @@ package com.xcompany.jhonline.module.report.activity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -21,6 +22,7 @@ import com.xcompany.jhonline.base.BaseActivity;
 import com.xcompany.jhonline.model.report.MediaBaseBean;
 import com.xcompany.jhonline.model.report.MediaBaseBeanSerial;
 import com.xcompany.jhonline.module.report.fragment.activity.ImagePreviewActivity;
+import com.xcompany.jhonline.utils.FileUtil;
 
 import java.io.File;
 import java.io.Serializable;
@@ -31,11 +33,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity;
-import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerPreviewActivity;
 import cn.bingoogolapple.photopicker.widget.BGASortableNinePhotoLayout;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
+import static com.cjt2325.cameralibrary.JCameraView.BUTTON_STATE_BOTH;
+import static com.cjt2325.cameralibrary.JCameraView.BUTTON_STATE_ONLY_CAPTURE;
+import static com.xcompany.jhonline.module.report.activity.MediaTakeActivity.TAKE_MEDIA_TYPE;
 import static com.xcompany.jhonline.module.report.activity.PhotoSelectActivity.EXTRA_SELECTED_PHOTOS;
 import static com.xcompany.jhonline.module.report.activity.PhotoSelectActivity.IMAGE_NUM;
 import static com.xcompany.jhonline.module.report.activity.PhotoSelectActivity.SELECT_MEDIA_TYPE;
@@ -43,6 +47,8 @@ import static com.xcompany.jhonline.module.report.fragment.ReportFragment.SELECT
 import static com.xcompany.jhonline.module.report.fragment.activity.ImagePreviewActivity.INIT_SELECT_POSITION;
 
 public class ReportAddActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks, BGASortableNinePhotoLayout.Delegate {
+
+
     private static final int PRC_PHOTO_PICKER = 1;
 
     /**
@@ -55,6 +61,15 @@ public class ReportAddActivity extends BaseActivity implements EasyPermissions.P
      */
     private static final int RC_PHOTO_PREVIEW = 2;
 
+    /**
+     * 选择拍摄
+     */
+    private static final int RC_MEDIA_TAKE = 3;
+
+    /**
+     * 选择拍摄
+     */
+    private static final int RC_VIDEO_PREVIEW = 4;
 
 
     private static final String EXTRA_MOMENT = "EXTRA_MOMENT";
@@ -79,6 +94,9 @@ public class ReportAddActivity extends BaseActivity implements EasyPermissions.P
     private int fromSelectType = 1;  // 1 拍摄  2，选择相册
 
 
+    private  MediaBaseBean videoBaseBean = null; //所拍的视频。
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,7 +114,9 @@ public class ReportAddActivity extends BaseActivity implements EasyPermissions.P
      */
     private void enterSelectMediaOrTake(){
         if(fromSelectType == 1){
-            return;
+            Intent intent = new Intent(ReportAddActivity.this, MediaTakeActivity.class);
+            intent.putExtra(TAKE_MEDIA_TYPE,BUTTON_STATE_BOTH);
+            startActivityForResult(intent,RC_MEDIA_TAKE);
         }
         else {
             Intent intent = new Intent(ReportAddActivity.this, PhotoSelectActivity.class);
@@ -200,30 +220,7 @@ public class ReportAddActivity extends BaseActivity implements EasyPermissions.P
         super.onActivityResult(requestCode, resultCode, data);
         //选择视频图片页面返回
         if (resultCode == RESULT_OK && requestCode == RC_CHOOSE_PHOTO) {
-
-            MediaBaseBeanSerial result = (MediaBaseBeanSerial)data.getSerializableExtra(EXTRA_SELECTED_PHOTOS);
-            List<MediaBaseBean> mediaBaseBeanList = result.getMediaBaseBeanList();
-
-            //悬选择的视频
-            if(mediaBaseBeanList != null && mediaBaseBeanList.size() == 1 && mediaBaseBeanList.get(0).isvideo()){
-                mPhotosSnpl.setVisibility(View.GONE);
-                videoAddLayout.setVisibility(View.VISIBLE);
-                hintContentLayout.setText("最多可选择一个视频");
-                videoAddImage.setImageURI(Uri.parse(mediaBaseBeanList.get(0).getUrl()));
-            }
-            else{
-                mPhotosSnpl.setVisibility(View.VISIBLE);
-                videoAddLayout.setVisibility(View.GONE);
-                hintContentLayout.setText("最多可选择9张图片");
-                ArrayList<String> list = new ArrayList();
-                if(mediaBaseBeanList == null || mediaBaseBeanList.size() == 0){
-                    return;
-                }
-                for(MediaBaseBean mediaBaseBean : mediaBaseBeanList){
-                    list.add(mediaBaseBean.getUrl());
-                }
-                mPhotosSnpl.addMoreData(list);
-            }
+            handleMediaSelectAndPreview(data);
         }
         else if (resultCode == RESULT_OK && requestCode == RC_PHOTO_PREVIEW) {
             MediaBaseBeanSerial result = (MediaBaseBeanSerial)data.getSerializableExtra(EXTRA_SELECTED_PHOTOS);
@@ -236,14 +233,57 @@ public class ReportAddActivity extends BaseActivity implements EasyPermissions.P
             }
             mPhotosSnpl.setData(list);
         }
+        else if (resultCode == RESULT_OK && requestCode == RC_MEDIA_TAKE) {
+            handleMediaSelectAndPreview(data);
+
+        }
+        else if (resultCode == RESULT_OK && requestCode == RC_VIDEO_PREVIEW) {
+            handleMediaSelectAndPreview(data);
+        }
+    }
+
+    /**
+     * 视频预览  视频图片选择 拍摄返回时处理
+     */
+    private void handleMediaSelectAndPreview(Intent data){
+        videoBaseBean = null;
+        MediaBaseBeanSerial result = (MediaBaseBeanSerial)data.getSerializableExtra(EXTRA_SELECTED_PHOTOS);
+        List<MediaBaseBean> mediaBaseBeanList = result.getMediaBaseBeanList();
+        //选择的视频
+        if(mediaBaseBeanList != null && mediaBaseBeanList.size() == 1 && mediaBaseBeanList.get(0).isvideo()){
+            videoBaseBean = mediaBaseBeanList.get(0);
+            mPhotosSnpl.setVisibility(View.GONE);
+            videoAddLayout.setVisibility(View.VISIBLE);
+            hintContentLayout.setText("最多可选择一个视频");
+            Bitmap bitmap = FileUtil.getVideoThumbnail(mediaBaseBeanList.get(0).getUrl());
+            if(bitmap != null){
+                videoAddImage.setImageBitmap(bitmap);
+            }
+        }
+        else{
+            mPhotosSnpl.setVisibility(View.VISIBLE);
+            videoAddLayout.setVisibility(View.GONE);
+            hintContentLayout.setText("最多可选择9张图片");
+            ArrayList<String> list = new ArrayList();
+            if(mediaBaseBeanList == null || mediaBaseBeanList.size() == 0){
+                return;
+            }
+            for(MediaBaseBean mediaBaseBean : mediaBaseBeanList){
+                list.add(mediaBaseBean.getUrl());
+            }
+            mPhotosSnpl.addMoreData(list);
+        }
     }
 
     @OnClick({R.id.snpl_moment_add_photos, R.id.videoAddLayout})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.snpl_moment_add_photos:
-                break;
             case R.id.videoAddLayout:
+                if(videoBaseBean != null){
+                    Intent intent = new Intent(ReportAddActivity.this, VideoPreviewActivity.class);
+                    intent.putExtra("videopath",videoBaseBean.getUrl());
+                    startActivityForResult(intent,RC_VIDEO_PREVIEW);
+                }
                 break;
         }
     }
@@ -255,16 +295,22 @@ public class ReportAddActivity extends BaseActivity implements EasyPermissions.P
             bottomSheet = new BottomSheetDialog(sortableNinePhotoLayout.getContext());//实例化BottomSheetDialog
             bottomSheet.setCancelable(true);//设置点击外部是否可以取消
             View bottomReportMenu = sortableNinePhotoLayout.inflate(sortableNinePhotoLayout.getContext(), R.layout.fragment_report_bottom_pop_menu,null);
+            bottomReportMenu.findViewById(R.id.reportTitleText).setVisibility(View.GONE);
             bottomReportMenu.findViewById(R.id.takePhotoLayout).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(bottomSheet != null && bottomSheet.isShowing()){
                         bottomSheet.dismiss();
                     }
-//                    Intent intent = new Intent(ReportAddActivity.this, PhotoSelectActivity.class);
-//                    intent.putExtra(SELECT_MEDIA_TYPE,0);
-//                    intent.putExtra(IMAGE_NUM,mPhotosSnpl.getMaxItemCount() - mPhotosSnpl.getItemCount());
-//                    startActivityForResult(intent,RC_CHOOSE_PHOTO);
+                    Intent intent = new Intent(ReportAddActivity.this, MediaTakeActivity.class);
+                    if(mPhotosSnpl.getItemCount() >0) {
+                        intent.putExtra(TAKE_MEDIA_TYPE, BUTTON_STATE_ONLY_CAPTURE);
+                    }
+                    else{
+                        intent.putExtra(TAKE_MEDIA_TYPE,BUTTON_STATE_BOTH);
+                    }
+                    startActivityForResult(intent,RC_MEDIA_TAKE);
+
 
                 }
             });
@@ -275,7 +321,13 @@ public class ReportAddActivity extends BaseActivity implements EasyPermissions.P
                         bottomSheet.dismiss();
                     }
                     Intent intent = new Intent(ReportAddActivity.this, PhotoSelectActivity.class);
-                    intent.putExtra(SELECT_MEDIA_TYPE,0);
+                    if (mPhotosSnpl.getItemCount() >0){
+                        intent.putExtra(SELECT_MEDIA_TYPE,1);
+                    }
+                    else{
+                        intent.putExtra(SELECT_MEDIA_TYPE,0);
+
+                    }
                     intent.putExtra(IMAGE_NUM,mPhotosSnpl.getMaxItemCount() - mPhotosSnpl.getItemCount());
                     startActivityForResult(intent,RC_CHOOSE_PHOTO);
                 }

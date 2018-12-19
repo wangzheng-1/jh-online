@@ -19,7 +19,7 @@ import com.xcompany.jhonline.model.base.Model;
 import com.xcompany.jhonline.model.report.Moment;
 import com.xcompany.jhonline.module.report.activity.PhotoSelectActivity;
 import com.xcompany.jhonline.module.report.activity.ReportAddActivity;
-import com.xcompany.jhonline.module.report.test.MyBGANinePhotoLayout;
+import com.xcompany.jhonline.widget.MyBGANinePhotoLayout;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -32,7 +32,6 @@ import cn.bingoogolapple.baseadapter.BGAViewHolderHelper;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPreviewActivity;
 import cn.bingoogolapple.photopicker.imageloader.BGARVOnScrollListener;
 import cn.bingoogolapple.photopicker.widget.BGAImageView;
-import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout;
 import cn.jzvd.JZVideoPlayerStandard;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
