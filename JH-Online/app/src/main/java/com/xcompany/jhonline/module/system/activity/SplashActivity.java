@@ -9,6 +9,7 @@ import android.icu.text.UnicodeSet;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import com.squareup.haha.perflib.Main;
@@ -16,12 +17,14 @@ import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.module.login.LoginActivity;
 import com.xcompany.jhonline.network.UserService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  *  启动页
  */
-public class SplashActivity extends AppCompatActivity {
-    //implements  ActivityCompat.OnRequestPermissionsResultCallback {
+public class SplashActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
     private final static int REQUEST_CODE_ASK_PERMISSIONS = 1;
 
@@ -35,10 +38,15 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         this.handler = new Handler();
         startTime = System.currentTimeMillis();
-        testPermissions();
+        initPermission();
     }
 
+    String[] permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA,
+            Manifest.permission.RECORD_AUDIO,Manifest.permission.READ_EXTERNAL_STORAGE};
+    List<String> mPermissionList = new ArrayList<>();
+
     public void  testPermissions() {
+
 //        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
 //                != PackageManager.PERMISSION_GRANTED) {
 //            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
@@ -117,7 +125,8 @@ public class SplashActivity extends AppCompatActivity {
 //                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 //
 //                } else {
-//                    if (ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[0])) {
+//
+//                    if (ActivityCompat.shouldShowRequestPermissionRationale(SplashActivity.this, permissions[0])) {
 //                        String message = "";
 //                        if (permissions[0].equalsIgnoreCase(Manifest.permission.CALL_PHONE)) {
 //                            message = "我们需要获取拨号权限，让您可以使用公司的商务电话功能；否者，您将无法正常启动应用";
@@ -145,5 +154,52 @@ public class SplashActivity extends AppCompatActivity {
 //        }
 //        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 //    }
+
+    //权限判断和申请
+    private void initPermission() {
+        mPermissionList.clear();//清空没有通过的权限
+
+        //逐个判断你要的权限是否已经通过
+        for (int i = 0; i < permissions.length; i++) {
+            if (ContextCompat.checkSelfPermission(this, permissions[i]) != PackageManager.PERMISSION_GRANTED) {
+                mPermissionList.add(permissions[i]);//添加还未授予的权限
+            }
+        }
+        //申请权限
+        if (mPermissionList.size() > 0) {//有权限没有通过，需要申请
+            ActivityCompat.requestPermissions(this, permissions, REQUEST_CODE_ASK_PERMISSIONS);
+        }
+        else {
+            toNextActivity();
+        }
+    }
+
+
+    //请求权限后回调的方法
+    //参数： requestCode  是我们自己定义的权限请求码
+    //参数： permissions  是我们请求的权限名称数组
+    //参数： grantResults 是我们在弹出页面后是否允许权限的标识数组，数组的长度对应的是权限名称数组的长度，数组的数据0表示允许权限，-1表示我们点击了禁止权限
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        boolean hasPermissionDismiss = false;//有权限没有通过
+        if (REQUEST_CODE_ASK_PERMISSIONS == requestCode) {
+            for (int i = 0; i < grantResults.length; i++) {
+                if (grantResults[i] == -1) {
+                    hasPermissionDismiss = true;
+                    break;
+                }
+            }
+            //如果有权限没有被允许
+            if (hasPermissionDismiss) {
+                initPermission();//跳转到系统设置权限页面，或者直接关闭页面，不让他继续访问
+            }else{
+                //全部权限通过，可以进行下一步操作。。。
+                toNextActivity();
+            }
+        }
+
+    }
+
 
 }
