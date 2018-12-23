@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorf8fbff"
@@ -38,16 +39,15 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/text"
+                <com.xcompany.jhonline.widget.MultipleTextView
+                    android:id="@+id/tv_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="东北大厂五金店"
                     android:textColor="@color/color333333"
-                    android:textStyle="bold"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -62,15 +62,16 @@
                         android:scaleType="center"
                         android:src="@drawable/fb1" />
 
-                    <TextView
+                    <com.xcompany.jhonline.widget.MultipleTextView
+                        android:id="@+id/tv_classname"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:text="主营：五金交电"
                         android:textColor="@color/coloraaaaaa"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        app:prefixText="主营：" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -86,15 +87,15 @@
                         android:scaleType="center"
                         android:src="@drawable/sy5" />
 
-                    <TextView
+                    <com.xcompany.jhonline.widget.MultipleTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:text="入驻时间：2018-11-28"
                         android:textColor="@color/coloraaaaaa"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        app:prefixText="入驻时间：" />
                 </LinearLayout>
 
             </LinearLayout>

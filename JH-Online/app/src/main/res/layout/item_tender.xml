@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorf8fbff"
@@ -20,14 +21,15 @@
         android:paddingBottom="15dp">
 
         <TextView
-            android:id="@+id/text"
+            android:id="@+id/tv_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="惠东高潭-招砖批墙师傅"
             android:textColor="@color/color333333"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="惠东高潭-招砖批墙师傅" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,9 +39,9 @@
 
             <ImageView
                 android:id="@+id/image"
-                android:layout_width="65dp"
-                android:layout_height="65dp"
-                android:scaleType="center"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:scaleType="centerCrop"
                 android:src="@drawable/c" />
 
             <LinearLayout
@@ -61,21 +63,22 @@
                         android:scaleType="center"
                         android:src="@drawable/fb1" />
 
-                    <TextView
+                    <com.xcompany.jhonline.widget.MultipleTextView
+                        android:id="@+id/tv_inventory"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:text="主分包项目：水电班组"
                         android:textColor="@color/coloraaaaaa"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        app:prefixText="主分包项目：" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="10dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -85,21 +88,22 @@
                         android:scaleType="center"
                         android:src="@drawable/danwei" />
 
-                    <TextView
+                    <com.xcompany.jhonline.widget.MultipleTextView
+                        android:id="@+id/tv_company"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:text="总包单位：深圳利万达建筑信息咨询公司"
                         android:textColor="@color/coloraaaaaa"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        app:prefixText="总包单位：" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="10dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -109,15 +113,16 @@
                         android:scaleType="center"
                         android:src="@drawable/sy5" />
 
-                    <TextView
+                    <com.xcompany.jhonline.widget.MultipleTextView
+                        android:id="@+id/tv_entryTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:text="预计进场时间：2018-11-28"
                         android:textColor="@color/coloraaaaaa"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        app:prefixText="预计进场时间：" />
                 </LinearLayout>
 
             </LinearLayout>

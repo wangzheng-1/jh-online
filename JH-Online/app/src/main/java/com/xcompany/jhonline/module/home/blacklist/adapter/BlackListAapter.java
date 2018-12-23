@@ -5,9 +5,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import com.xcompany.jhonline.R;
+import com.xcompany.jhonline.app.GlideApp;
+import com.xcompany.jhonline.model.home.Black;
+import com.xcompany.jhonline.widget.MultipleTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,27 +20,27 @@ import butterknife.ButterKnife;
 
 
 public class BlackListAapter extends RecyclerView.Adapter {
-    private List<String> mDatas = new ArrayList<>();
+    private List<Black> mDatas = new ArrayList<>();
     public LayoutInflater mInflater;
     public Context context;
 
 
-    public void addDatas(List<String> datas) {
+    public void addDatas(List<Black> datas) {
         mDatas.addAll(datas);
         notifyDataSetChanged();
     }
 
-    public void setDatas(List<String> mDatas) {
+    public void setDatas(List<Black> mDatas) {
         this.mDatas = mDatas;
         notifyDataSetChanged();
     }
 
-    public List<String> getDatas() {
+    public List<Black> getDatas() {
         return mDatas;
     }
 
 
-    public BlackListAapter(Context context, List<String> mdatas) {
+    public BlackListAapter(Context context, List<Black> mdatas) {
         this.context = context;
         mInflater = LayoutInflater.from(context);
         this.mDatas = mdatas;
@@ -51,10 +54,16 @@ public class BlackListAapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
-        final String bean = mDatas.get(position);
-        final ViewHolder holder = (ViewHolder) viewHolder;
-        holder.tvText.setText(bean);
-        holder.itemView.setOnClickListener(v -> mListener.onItemClick(position, bean, holder));
+        Black bean = mDatas.get(position);
+        ViewHolder holder = (ViewHolder) viewHolder;
+        holder.tvName.setContentText(bean.getName());
+        holder.tvExplain.setContentText(bean.getExplain());
+        holder.tvNumber.setContentText(bean.getNumber());
+        GlideApp.with(context).load(bean.getImage())
+                .centerCrop()
+                .into(holder.image);
+        if (mListener != null)
+            holder.itemView.setOnClickListener(v -> mListener.onItemClick(position, bean, holder));
     }
 
     @Override
@@ -63,8 +72,14 @@ public class BlackListAapter extends RecyclerView.Adapter {
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.text)
-        TextView tvText;
+        @BindView(R.id.image)
+        ImageView image;
+        @BindView(R.id.tv_name)
+        MultipleTextView tvName;
+        @BindView(R.id.tv_explain)
+        MultipleTextView tvExplain;
+        @BindView(R.id.tv_number)
+        MultipleTextView tvNumber;
 
         ViewHolder(View view) {
             super(view);
@@ -80,7 +95,7 @@ public class BlackListAapter extends RecyclerView.Adapter {
     private OnItemClickListener mListener;
 
     public interface OnItemClickListener {
-        void onItemClick(int position, String bean, RecyclerView.ViewHolder holder);
+        void onItemClick(int position, Black bean, RecyclerView.ViewHolder holder);
     }
 
 }

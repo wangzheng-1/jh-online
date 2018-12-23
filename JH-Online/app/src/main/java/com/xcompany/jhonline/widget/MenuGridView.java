@@ -66,6 +66,7 @@ public class MenuGridView extends GridView {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 currentIndex = position;
                 adapter.notifyDataSetChanged();
+                if (mListener != null) mListener.onCheckChange(dictionaries.get(position));
             }
         });
         setAdapter(adapter);
@@ -112,7 +113,7 @@ public class MenuGridView extends GridView {
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
-            holder.tvTitle.setText(dictionaries.get(position).getValue());
+            holder.tvTitle.setText(dictionaries.get(position).getName());
             if (currentIndex == position) {
                 holder.menuItem.setBackground(getResources().getDrawable(R.drawable.bg_menu2));
                 holder.tvTitle.setTextColor(getResources().getColor(R.color.white));
@@ -134,5 +135,15 @@ public class MenuGridView extends GridView {
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
+    }
+
+    public void setCheckChangeListener(OnCheckChangeListener mListener) {
+        this.mListener = mListener;
+    }
+
+    private OnCheckChangeListener mListener;
+
+    public interface OnCheckChangeListener {
+        void onCheckChange(Dictionary dictionary);
     }
 }

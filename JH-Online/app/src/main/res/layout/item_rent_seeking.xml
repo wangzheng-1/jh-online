@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorf8fbff"
@@ -25,14 +26,15 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/text"
+                android:id="@+id/tv_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="深圳求租小松350挖掘机"
                 android:textColor="@color/color333333"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="深圳求租小松350挖掘机" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -48,14 +50,15 @@
                     android:src="@drawable/sy3" />
 
                 <TextView
+                    android:id="@+id/tv_contacts"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="地址：广东省 惠州市"
                     android:textColor="@color/coloraaaaaa"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    tools:text="地址：广东省 惠州市" />
             </LinearLayout>
 
 
@@ -73,14 +76,15 @@
                     android:src="@drawable/sy5" />
 
                 <TextView
+                    android:id="@+id/tv_entryTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="发布时间：2018-11-28"
                     android:textColor="@color/coloraaaaaa"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    tools:text="发布时间：2018-11-28" />
             </LinearLayout>
         </LinearLayout>
 
@@ -90,7 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="3dp"
             android:scaleType="center"
-            android:src="@drawable/yes" />
+            android:src="@drawable/no" />
     </LinearLayout>
 
     <View

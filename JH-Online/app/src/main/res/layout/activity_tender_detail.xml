@@ -46,15 +46,17 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/d7" />
 
-                <TextView
+                <com.xcompany.jhonline.widget.MultipleTextView
+                    android:id="@+id/tv_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="项目名称：团风县马槽庙百沙河片治理工程"
                     android:textColor="@color/color333333"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:prefixText="项目名称：" />
             </LinearLayout>
 
             <View
@@ -76,15 +78,17 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/d5" />
 
-                <TextView
+                <com.xcompany.jhonline.widget.MultipleTextView
+                    android:id="@+id/tv_company"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="总包单位：深圳李万东信息有限公司"
                     android:textColor="@color/color333333"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:prefixText="总包单位：" />
             </LinearLayout>
 
             <View
@@ -106,15 +110,17 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/z4" />
 
-                <TextView
+                <com.xcompany.jhonline.widget.MultipleTextView
+                    android:id="@+id/tv_acreage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="总建筑面积：3271"
                     android:textColor="@color/color333333"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:prefixText="总建筑面积：" />
             </LinearLayout>
 
             <View
@@ -136,15 +142,17 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/d4" />
 
-                <TextView
+                <com.xcompany.jhonline.widget.MultipleTextView
+                    android:id="@+id/tv_contacts"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="项目所在地：惠州市 惠城区"
                     android:textColor="@color/color333333"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:prefixText="项目所在地：" />
             </LinearLayout>
 
             <View
@@ -166,15 +174,17 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/z3" />
 
-                <TextView
+                <com.xcompany.jhonline.widget.MultipleTextView
+                    android:id="@+id/tv_inventory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="主分包项目：水电班组"
                     android:textColor="@color/color333333"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:prefixText="主分包项目：" />
             </LinearLayout>
 
             <View
@@ -197,15 +207,17 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/z2" />
 
-                <TextView
+                <com.xcompany.jhonline.widget.MultipleTextView
+                    android:id="@+id/tv_entryTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="预计进场时间：2018-10-01"
                     android:textColor="@color/color333333"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:prefixText="预计进场时间：" />
             </LinearLayout>
 
             <View
@@ -227,15 +239,17 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/d6" />
 
-                <TextView
+                <com.xcompany.jhonline.widget.MultipleTextView
+                    android:id="@+id/tv_linkman"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="联系人：朝建春"
                     android:textColor="@color/color333333"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:prefixText="联系人：" />
             </LinearLayout>
 
             <View
@@ -265,9 +279,11 @@
                     android:singleLine="true"
                     android:text="电话"
                     android:textColor="@color/color333333"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tv_telephone"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginLeft="30dp"
@@ -300,15 +316,17 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/z1" />
 
-                <TextView
+                <com.xcompany.jhonline.widget.MultipleTextView
+                    android:id="@+id/tv_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="邮箱：3827382@qq.com"
                     android:textColor="@color/color333333"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:prefixText="邮箱：" />
             </LinearLayout>
 
             <TextView
@@ -322,17 +340,10 @@
                 android:textSize="16sp" />
 
             <TextView
+                android:id="@+id/tv_explain"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="15dp"
-                android:text="本施工队入驻惠州12年，专业承接档口、酒店、别墅等各种
-房型的改建、加建本施工队入驻惠州12年，专业承接档口、
-酒店、别墅等各种房型的改建、加建本施工队入驻惠州12年，
-专业承接档口、酒店、别墅等各种房型的改建、加建本施工
-队入驻惠州12年，专业承接档口、酒店、别墅等各种房型的
-改建、加建本施工队入驻惠州12年，专业承接档口、酒店、
-别墅等各种房型的改建、加建本施工队入驻惠州12年，专业
-承接档口、酒店、别墅等各种房型的改建、加建。"
                 android:textColor="@color/color333333"
                 android:textSize="13sp" />
         </LinearLayout>

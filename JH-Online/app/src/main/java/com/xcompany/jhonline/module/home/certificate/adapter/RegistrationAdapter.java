@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.xcompany.jhonline.R;
+import com.xcompany.jhonline.model.home.Registration;
+import com.xcompany.jhonline.utils.NullCheck;
+import com.xcompany.jhonline.widget.MultipleTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,27 +20,27 @@ import butterknife.ButterKnife;
 
 
 public class RegistrationAdapter extends RecyclerView.Adapter {
-    private List<String> mDatas = new ArrayList<>();
+    private List<Registration> mDatas = new ArrayList<>();
     public LayoutInflater mInflater;
     public Context context;
 
 
-    public void addDatas(List<String> datas) {
+    public void addDatas(List<Registration> datas) {
         mDatas.addAll(datas);
         notifyDataSetChanged();
     }
 
-    public void setDatas(List<String> mDatas) {
+    public void setDatas(List<Registration> mDatas) {
         this.mDatas = mDatas;
         notifyDataSetChanged();
     }
 
-    public List<String> getDatas() {
+    public List<Registration> getDatas() {
         return mDatas;
     }
 
 
-    public RegistrationAdapter(Context context, List<String> mdatas) {
+    public RegistrationAdapter(Context context, List<Registration> mdatas) {
         this.context = context;
         mInflater = LayoutInflater.from(context);
         this.mDatas = mdatas;
@@ -51,15 +54,25 @@ public class RegistrationAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
-        final String bean = mDatas.get(position);
-        final ViewHolder holder = (ViewHolder) viewHolder;
-        holder.tvText.setText(bean);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onItemClick(position, bean, holder);
+        Registration bean = mDatas.get(position);
+        ViewHolder holder = (ViewHolder) viewHolder;
+        holder.tvName.setText(NullCheck.check(bean.getName()));
+        holder.tvClassname.setContentText(bean.getClassname());
+        holder.tvContacts.setContentText(bean.getContacts());
+        String price = bean.getPrice();
+        try {
+            float aFloat = Float.parseFloat(price);
+            if (aFloat == 0) {
+                holder.tvPrice.setContentText("面议");
+            } else {
+                holder.tvPrice.setContentText(price);
             }
-        });
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        holder.tvEntryTime.setContentText(bean.getEntryTime());
+        if (mListener != null)
+            holder.itemView.setOnClickListener(v -> mListener.onItemClick(position, bean, holder));
     }
 
     @Override
@@ -68,8 +81,16 @@ public class RegistrationAdapter extends RecyclerView.Adapter {
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.text)
-        TextView tvText;
+        @BindView(R.id.tv_name)
+        TextView tvName;
+        @BindView(R.id.tv_classname)
+        MultipleTextView tvClassname;
+        @BindView(R.id.tv_contacts)
+        MultipleTextView tvContacts;
+        @BindView(R.id.tv_price)
+        MultipleTextView tvPrice;
+        @BindView(R.id.tv_entryTime)
+        MultipleTextView tvEntryTime;
 
         ViewHolder(View view) {
             super(view);
@@ -85,7 +106,7 @@ public class RegistrationAdapter extends RecyclerView.Adapter {
     private OnItemClickListener mListener;
 
     public interface OnItemClickListener {
-        void onItemClick(int position, String bean, RecyclerView.ViewHolder holder);
+        void onItemClick(int position, Registration bean, RecyclerView.ViewHolder holder);
     }
 
 }

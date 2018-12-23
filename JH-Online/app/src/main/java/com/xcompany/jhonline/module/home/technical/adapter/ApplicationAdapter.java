@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.xcompany.jhonline.R;
+import com.xcompany.jhonline.model.home.Application;
+import com.xcompany.jhonline.utils.NullCheck;
+import com.xcompany.jhonline.widget.MultipleTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,27 +20,27 @@ import butterknife.ButterKnife;
 
 
 public class ApplicationAdapter extends RecyclerView.Adapter {
-    private List<String> mDatas = new ArrayList<>();
+    private List<Application> mDatas = new ArrayList<>();
     public LayoutInflater mInflater;
     public Context context;
 
 
-    public void addDatas(List<String> datas) {
+    public void addDatas(List<Application> datas) {
         mDatas.addAll(datas);
         notifyDataSetChanged();
     }
 
-    public void setDatas(List<String> mDatas) {
+    public void setDatas(List<Application> mDatas) {
         this.mDatas = mDatas;
         notifyDataSetChanged();
     }
 
-    public List<String> getDatas() {
+    public List<Application> getDatas() {
         return mDatas;
     }
 
 
-    public ApplicationAdapter(Context context, List<String> mdatas) {
+    public ApplicationAdapter(Context context, List<Application> mdatas) {
         this.context = context;
         mInflater = LayoutInflater.from(context);
         this.mDatas = mdatas;
@@ -51,9 +54,26 @@ public class ApplicationAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
-        final String bean = mDatas.get(position);
-        final ViewHolder holder = (ViewHolder) viewHolder;
-        holder.tvText.setText(bean);
+        Application bean = mDatas.get(position);
+        ViewHolder holder = (ViewHolder) viewHolder;
+        holder.tvName.setContentText(bean.getName());
+        holder.tvEducation.setContentText(bean.getEducation());
+        holder.tvDuration.setContentText(bean.getDuration());
+        holder.tvCid.setContentText(bean.getCid());
+        holder.tvCity.setContentText(bean.getCity());
+        String price = bean.getPrice();
+        try {
+            float aFloat = Float.parseFloat(price);
+            if (aFloat == 0) {
+                holder.tvPrice.setContentText("面议");
+            } else {
+                holder.tvPrice.setContentText(price);
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        holder.tvProject.setText(bean.getProject().toString());
+        holder.tvTelephone.setText(NullCheck.check(bean.getTelephone()));
         holder.itemView.setOnClickListener(v -> mListener.onItemClick(position, bean, holder));
     }
 
@@ -63,8 +83,24 @@ public class ApplicationAdapter extends RecyclerView.Adapter {
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.text)
-        TextView tvText;
+        @BindView(R.id.tv_name)
+        MultipleTextView tvName;
+        @BindView(R.id.tv_education)
+        MultipleTextView tvEducation;
+        @BindView(R.id.tv_duration)
+        MultipleTextView tvDuration;
+        @BindView(R.id.tv_cid)
+        MultipleTextView tvCid;
+        @BindView(R.id.tv_city)
+        MultipleTextView tvCity;
+        @BindView(R.id.tv_price)
+        MultipleTextView tvPrice;
+        @BindView(R.id.tv_project)
+        TextView tvProject;
+        @BindView(R.id.tv_telephone)
+        TextView tvTelephone;
+        @BindView(R.id.tv_save)
+        TextView tvSave;
 
         ViewHolder(View view) {
             super(view);
@@ -80,7 +116,7 @@ public class ApplicationAdapter extends RecyclerView.Adapter {
     private OnItemClickListener mListener;
 
     public interface OnItemClickListener {
-        void onItemClick(int position, String bean, RecyclerView.ViewHolder holder);
+        void onItemClick(int position, Application bean, RecyclerView.ViewHolder holder);
     }
 
 }

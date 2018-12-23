@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorf8fbff"
@@ -20,12 +21,13 @@
         android:paddingBottom="15dp">
 
         <TextView
-            android:id="@+id/text"
+            android:id="@+id/tv_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="广东省出租内燃叉车"
+            tools:text="广东省出租内燃叉车"
+            android:textStyle="bold"
             android:textColor="@color/color333333"
             android:textSize="16sp" />
 
@@ -43,12 +45,13 @@
                 android:src="@drawable/fb1" />
 
             <TextView
+                android:id="@+id/tv_cid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="出租类别：叉车"
+                tools:text="出租类别：叉车"
                 android:textColor="@color/coloraaaaaa"
                 android:textSize="14sp" />
         </LinearLayout>
@@ -67,12 +70,13 @@
                 android:src="@drawable/sy3" />
 
             <TextView
+                android:id="@+id/tv_contacts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="地址：广东省 惠州市"
+                tools:text="地址：广东省 惠州市"
                 android:textColor="@color/coloraaaaaa"
                 android:textSize="14sp" />
         </LinearLayout>

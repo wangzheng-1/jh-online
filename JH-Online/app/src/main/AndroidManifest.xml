@@ -3,7 +3,8 @@
     package="com.xcompany.jhonline">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".app.JhApplication"
@@ -56,6 +57,7 @@
         <activity android:name=".module.home.blacklist.activity.BlackListDetailActivity" />
         <activity android:name=".module.home.card.activity.AddCardActivity" />
         <activity android:name=".module.home.card.activity.CardDetailActivity" />
+        <activity android:name=".module.home.base.CityListActivity" />
 
     </application>
 

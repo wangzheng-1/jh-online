@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorf8fbff"
@@ -19,14 +21,15 @@
         android:paddingBottom="15dp">
 
         <TextView
-            android:id="@+id/text"
+            android:id="@+id/tv_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="采购压力表"
             android:textColor="@color/color333333"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="采购压力表" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,15 +44,16 @@
                 android:scaleType="center"
                 android:src="@drawable/sy3" />
 
-            <TextView
+            <com.xcompany.jhonline.widget.MultipleTextView
+                android:id="@+id/tv_contacts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="送货地址：广东省 惠州市"
                 android:textColor="@color/coloraaaaaa"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                app:prefixText="送货地址：" />
         </LinearLayout>
 
         <LinearLayout
@@ -65,15 +69,16 @@
                 android:scaleType="center"
                 android:src="@drawable/z2" />
 
-            <TextView
+            <com.xcompany.jhonline.widget.MultipleTextView
+                android:id="@+id/tv_entryTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="信息发布时间：2018-11-28"
                 android:textColor="@color/coloraaaaaa"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                app:prefixText="信息发布时间：" />
         </LinearLayout>
     </LinearLayout>
 

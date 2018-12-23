@@ -17,6 +17,8 @@
             <flag name="none" value="0" />
             <flag name="black" value="1" />
             <flag name="blue" value="2" />
+            <flag name="left-black" value="3" />
+            <flag name="left-blue" value="4" />
         </attr>
     </declare-styleable>
     <declare-styleable name="RatingBar">
@@ -39,5 +41,23 @@
         <attr name="menu_button_color_normal" format="reference" />
         <attr name="menu_button_color_press" format="reference" />
         <attr name="menu_button_resource" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="MultipleTextView">
+
+        <!--前缀文字-->
+        <attr name="prefixText" format="string" />
+        <!--前缀文字颜色-->
+        <attr name="prefixTextColor" format="color" />
+
+        <!--前缀内容文字-->
+        <attr name="contentText" format="string" />
+        <!--前缀内容文字颜色-->
+        <attr name="contentTextColor" format="color" />
+
+        <!--后缀文字-->
+        <attr name="suffixText" format="string" />
+        <!--后缀文字颜色-->
+        <attr name="suffixTextColor" format="color" />
+
     </declare-styleable>
 </resources>

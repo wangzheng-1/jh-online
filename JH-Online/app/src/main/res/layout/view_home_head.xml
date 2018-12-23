@@ -1,36 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <com.youth.banner.Banner
+        android:id="@+id/banner"
         android:layout_width="match_parent"
         android:layout_height="145dp"
-        android:background="#555555">
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/viewPager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/viewPager"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:padding="5dp">
-
-            <LinearLayout
-                android:id="@+id/dot_group"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"></LinearLayout>
-        </LinearLayout>
-
-    </RelativeLayout>
+        android:background="#999999"
+        app:indicator_drawable_selected="@drawable/view_dot"
+        app:indicator_margin="5dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"

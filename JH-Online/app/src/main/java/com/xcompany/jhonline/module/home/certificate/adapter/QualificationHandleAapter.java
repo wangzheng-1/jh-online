@@ -5,9 +5,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xcompany.jhonline.R;
+import com.xcompany.jhonline.app.GlideApp;
+import com.xcompany.jhonline.model.home.QualificationHandle;
+import com.xcompany.jhonline.utils.NullCheck;
+import com.xcompany.jhonline.widget.MultipleTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,27 +22,27 @@ import butterknife.ButterKnife;
 
 
 public class QualificationHandleAapter extends RecyclerView.Adapter {
-    private List<String> mDatas = new ArrayList<>();
+    private List<QualificationHandle> mDatas = new ArrayList<>();
     public LayoutInflater mInflater;
     public Context context;
 
 
-    public void addDatas(List<String> datas) {
+    public void addDatas(List<QualificationHandle> datas) {
         mDatas.addAll(datas);
         notifyDataSetChanged();
     }
 
-    public void setDatas(List<String> mDatas) {
+    public void setDatas(List<QualificationHandle> mDatas) {
         this.mDatas = mDatas;
         notifyDataSetChanged();
     }
 
-    public List<String> getDatas() {
+    public List<QualificationHandle> getDatas() {
         return mDatas;
     }
 
 
-    public QualificationHandleAapter(Context context, List<String> mdatas) {
+    public QualificationHandleAapter(Context context, List<QualificationHandle> mdatas) {
         this.context = context;
         mInflater = LayoutInflater.from(context);
         this.mDatas = mdatas;
@@ -51,15 +56,16 @@ public class QualificationHandleAapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
-        final String bean = mDatas.get(position);
-        final ViewHolder holder = (ViewHolder) viewHolder;
-        holder.tvText.setText(bean);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onItemClick(position, bean, holder);
-            }
-        });
+        QualificationHandle bean = mDatas.get(position);
+        ViewHolder holder = (ViewHolder) viewHolder;
+        holder.tvName.setText(NullCheck.check(bean.getName()));
+        holder.tvLinkman.setContentText(bean.getLinkman());
+        holder.tvContacts.setContentText(bean.getContacts());
+        GlideApp.with(context).load(bean.getImage())
+                .centerCrop()
+                .into(holder.image);
+        if (mListener != null)
+            holder.itemView.setOnClickListener(v -> mListener.onItemClick(position, bean, holder));
     }
 
     @Override
@@ -68,8 +74,14 @@ public class QualificationHandleAapter extends RecyclerView.Adapter {
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.text)
-        TextView tvText;
+        @BindView(R.id.image)
+        ImageView image;
+        @BindView(R.id.tv_name)
+        TextView tvName;
+        @BindView(R.id.tv_linkman)
+        MultipleTextView tvLinkman;
+        @BindView(R.id.tv_contacts)
+        MultipleTextView tvContacts;
 
         ViewHolder(View view) {
             super(view);
@@ -85,7 +97,7 @@ public class QualificationHandleAapter extends RecyclerView.Adapter {
     private OnItemClickListener mListener;
 
     public interface OnItemClickListener {
-        void onItemClick(int position, String bean, RecyclerView.ViewHolder holder);
+        void onItemClick(int position, QualificationHandle bean, RecyclerView.ViewHolder holder);
     }
 
 }

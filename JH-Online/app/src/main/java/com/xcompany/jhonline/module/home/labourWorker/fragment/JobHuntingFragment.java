@@ -1,7 +1,6 @@
 package com.xcompany.jhonline.module.home.labourWorker.fragment;
 
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
@@ -10,10 +9,13 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.base.BaseFragment;
-import com.xcompany.jhonline.model.home.MusicHotKey;
+import com.xcompany.jhonline.model.home.JobHunting;
 import com.xcompany.jhonline.module.home.labourWorker.adapter.JobHuntingAdapter;
-import com.xcompany.jhonline.network.ApiResponse;
-import com.xcompany.jhonline.network.JsonCallback;
+import com.xcompany.jhonline.network.JHCallback;
+import com.xcompany.jhonline.network.JHResponse;
+import com.xcompany.jhonline.utils.ReleaseConfig;
+import com.xcompany.jhonline.utils.SharedPreferenceUtil;
+import com.xcompany.jhonline.utils.T;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +29,8 @@ public class JobHuntingFragment extends BaseFragment {
     @BindView(R.id.recycler_list)
     XRecyclerView mRecyclerView;
     private JobHuntingAdapter mAdapter;
-    private List<String> mdatas = new ArrayList<>();
-    String url = "https://c.y.qq.com/splcloud/fcgi-bin/gethotkey.fcg";
+    private List<JobHunting> mdatas = new ArrayList<>();
+    private String cityId;
 
     @Override
     protected int getLayoutId() {
@@ -37,9 +39,7 @@ public class JobHuntingFragment extends BaseFragment {
 
     @Override
     protected void initEventAndData() {
-        for (int i = 0; i < 20; i++) {
-            mdatas.add("专业拆模，清料找活" + i);
-        }
+        cityId = SharedPreferenceUtil.getCityId(mContext);
         mAdapter = new JobHuntingAdapter(mContext, mdatas);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -59,29 +59,29 @@ public class JobHuntingFragment extends BaseFragment {
             public void onLoadMore() {
             }
         });
-        mAdapter.setOnItemClickListener(new JobHuntingAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position, String bean, RecyclerView.ViewHolder holder) {
-//                Intent intent = new Intent(mContext, RentSeekingDetailActivity.class);
-//                startActivity(intent);
-            }
-        });
+        mAdapter.setOnItemClickListener(((position, bean, holder) -> {
+        }));
+        getData();
     }
 
     public void getData() {
-        OkGo.<ApiResponse<MusicHotKey>>get(url)
+        OkGo.<JHResponse<List<JobHunting>>>post(ReleaseConfig.baseUrl() + "worker/workerList")
                 .tag(this)
-                .execute(new JsonCallback<ApiResponse<MusicHotKey>>() {
+                .params("Cityid", cityId)
+                .params("type", 1)
+                .execute(new JHCallback<JHResponse<List<JobHunting>>>() {
                     @Override
-                    public void onSuccess(Response<ApiResponse<MusicHotKey>> response) {
-                        MusicHotKey data = response.body().getData();
-                        List<String> list = new ArrayList<>();
-                        for (MusicHotKey.HotkeyBean bean : data.getHotkey()) {
-                            list.add(bean.getK());
-                        }
-                        mAdapter.setDatas(list);
+                    public void onSuccess(Response<JHResponse<List<JobHunting>>> response) {
+                        mdatas = response.body().getMsg();
+                        mAdapter.setDatas(mdatas);
                         mRecyclerView.refreshComplete();
+                    }
+
+                    @Override
+                    public void onError(Response<JHResponse<List<JobHunting>>> response) {
+                        T.showToast(mContext, response.getException().getMessage());
                     }
                 });
     }
+
 }

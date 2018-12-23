@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -47,14 +48,16 @@
                     android:src="@drawable/d7" />
 
                 <TextView
+                    android:id="@+id/tv_inventory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="主要承建单项：护坡/档口"
                     android:textColor="@color/color333333"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:text="主要承建单项：护坡/档口" />
             </LinearLayout>
 
             <View
@@ -77,14 +80,16 @@
                     android:src="@drawable/d5" />
 
                 <TextView
+                    android:id="@+id/tv_idea"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="经营理念：诚信合作 质量取胜"
                     android:textColor="@color/color333333"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:text="经营理念：诚信合作 质量取胜" />
             </LinearLayout>
 
             <View
@@ -107,14 +112,16 @@
                     android:src="@drawable/d1" />
 
                 <TextView
+                    android:id="@+id/tv_enounce"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="诚信宣言：合作取胜"
                     android:textColor="@color/color333333"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:text="诚信宣言：合作取胜" />
             </LinearLayout>
 
             <View
@@ -137,14 +144,16 @@
                     android:src="@drawable/d4" />
 
                 <TextView
+                    android:id="@+id/tv_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="籍贯：广东省 深圳市"
                     android:textColor="@color/color333333"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:text="籍贯：广东省 深圳市" />
             </LinearLayout>
 
             <View
@@ -167,14 +176,16 @@
                     android:src="@drawable/d4" />
 
                 <TextView
+                    android:id="@+id/tv_service"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="意向服务范围：广东省"
                     android:textColor="@color/color333333"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:text="意向服务范围：广东省" />
             </LinearLayout>
 
             <View
@@ -197,14 +208,16 @@
                     android:src="@drawable/d3" />
 
                 <TextView
+                    android:id="@+id/tv_pay"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="是否垫资：不可垫资"
                     android:textColor="@color/color333333"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:text="是否垫资：不可垫资" />
             </LinearLayout>
 
             <View
@@ -227,14 +240,16 @@
                     android:src="@drawable/d4" />
 
                 <TextView
+                    android:id="@+id/tv_contacts"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="常驻地：广东省 惠州市"
                     android:textColor="@color/color333333"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:text="常驻地：广东省 惠州市" />
             </LinearLayout>
 
             <View
@@ -257,14 +272,16 @@
                     android:src="@drawable/d6" />
 
                 <TextView
+                    android:id="@+id/tv_linkman"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="联系人：朝建春"
                     android:textColor="@color/color333333"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:text="联系人：朝建春" />
             </LinearLayout>
 
             <View
@@ -294,9 +311,11 @@
                     android:singleLine="true"
                     android:text="电话"
                     android:textColor="@color/color333333"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tv_telephone"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginLeft="30dp"
@@ -320,19 +339,20 @@
                 android:textSize="16sp" />
 
             <TextView
+                android:id="@+id/tv_explain"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="15dp"
-                android:text="本施工队入驻惠州12年，专业承接档口、酒店、别墅等各种
+                android:textColor="@color/color333333"
+                android:textSize="13sp"
+                tools:text="本施工队入驻惠州12年，专业承接档口、酒店、别墅等各种
 房型的改建、加建本施工队入驻惠州12年，专业承接档口、
 酒店、别墅等各种房型的改建、加建本施工队入驻惠州12年，
 专业承接档口、酒店、别墅等各种房型的改建、加建本施工
 队入驻惠州12年，专业承接档口、酒店、别墅等各种房型的
 改建、加建本施工队入驻惠州12年，专业承接档口、酒店、
 别墅等各种房型的改建、加建本施工队入驻惠州12年，专业
-承接档口、酒店、别墅等各种房型的改建、加建。"
-                android:textColor="@color/color333333"
-                android:textSize="13sp" />
+承接档口、酒店、别墅等各种房型的改建、加建。" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -351,91 +371,102 @@
                 android:padding="15dp">
 
                 <LinearLayout
+                    android:id="@+id/ll_image1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="15dp"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="invisible">
 
                     <ImageView
+                        android:id="@+id/image1"
                         android:layout_width="match_parent"
                         android:layout_height="105dp"
-                        android:background="@drawable/border_blue"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/a" />
+                        tools:src="@drawable/a" />
 
                     <TextView
+                        android:id="@+id/tv_image1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:gravity="center_horizontal"
-                        android:text="伟大的建筑"
-                        android:textColor="@color/color0072FF"
-                        android:textSize="13sp" />
+                        android:textColor="@color/color999999"
+                        android:textSize="13sp"
+                        tools:text="伟大的建筑" />
                 </LinearLayout>
 
 
                 <LinearLayout
+                    android:id="@+id/ll_image2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="15dp"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="invisible">
 
                     <ImageView
+                        android:id="@+id/image2"
                         android:layout_width="match_parent"
                         android:layout_height="105dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/b" />
+                        tools:src="@drawable/b" />
 
                     <TextView
+                        android:id="@+id/tv_image2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:gravity="center_horizontal"
-                        android:text="伟大的建筑"
                         android:textColor="@color/color999999"
-                        android:textSize="13sp" />
+                        android:textSize="13sp"
+                        tools:text="伟大的建筑" />
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_image3"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="invisible">
 
                     <ImageView
+                        android:id="@+id/image3"
                         android:layout_width="match_parent"
                         android:layout_height="105dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/c" />
+                        tools:src="@drawable/c" />
 
                     <TextView
+                        android:id="@+id/tv_image3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:gravity="center_horizontal"
-                        android:text="伟大的建筑"
                         android:textColor="@color/color999999"
-                        android:textSize="13sp" />
+                        android:textSize="13sp"
+                        tools:text="伟大的建筑" />
                 </LinearLayout>
             </LinearLayout>
 
             <TextView
+                android:id="@+id/tv_image_remark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="15dp"
+                android:paddingTop="5dp"
                 android:paddingRight="15dp"
                 android:paddingBottom="15dp"
-                android:paddingTop="5dp"
-                android:text="本施工队入驻惠州12年，专业承接档口、酒店、别墅等各种
+                android:textColor="@color/color333333"
+                android:textSize="13sp"
+                tools:text="本施工队入驻惠州12年，专业承接档口、酒店、别墅等各种
 房型的改建、加建本施工队入驻惠州12年，专业承接档口、
 酒店、别墅等各种房型的改建、加建本施工队入驻惠州12年，
 专业承接档口、酒店、别墅等各种房型的改建、加建本施工
-队入驻惠州12年，专业承接档口、酒店、别墅等各种房型的。"
-                android:textColor="@color/color333333"
-                android:textSize="13sp" />
+队入驻惠州12年，专业承接档口、酒店、别墅等各种房型的。" />
 
         </LinearLayout>
     </ScrollView>

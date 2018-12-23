@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorf8fbff"
@@ -17,16 +18,16 @@
         android:paddingTop="20dp"
         android:paddingRight="15dp">
 
-        <TextView
-            android:id="@+id/text"
+        <com.xcompany.jhonline.widget.MultipleTextView
+            android:id="@+id/tv_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="黄先生-求职中"
             android:textColor="@color/color0072FF"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:suffixText="-求职中" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -47,54 +48,60 @@
                 android:layout_marginLeft="15dp"
                 android:orientation="vertical">
 
-                <TextView
+                <com.xcompany.jhonline.widget.MultipleTextView
+                    android:id="@+id/tv_education"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="最高学历：本科"
                     android:textColor="@color/coloraaaaaa"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    app:prefixText="最高学历：" />
 
-                <TextView
+                <com.xcompany.jhonline.widget.MultipleTextView
+                    android:id="@+id/tv_duration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="从业时长：2年"
                     android:textColor="@color/coloraaaaaa"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    app:prefixText="从业时长："
+                    app:suffixText="年" />
 
-                <TextView
+                <com.xcompany.jhonline.widget.MultipleTextView
+                    android:id="@+id/tv_cid"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="意向职位：预算员 资料员"
                     android:textColor="@color/coloraaaaaa"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    app:prefixText="意向职位：" />
 
-                <TextView
+                <com.xcompany.jhonline.widget.MultipleTextView
+                    android:id="@+id/tv_city"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="意向地区：广东省 东莞市"
                     android:textColor="@color/coloraaaaaa"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    app:prefixText="意向地区：" />
 
-                <TextView
+                <com.xcompany.jhonline.widget.MultipleTextView
+                    android:id="@+id/tv_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="薪酬：面议"
                     android:textColor="@color/coloraaaaaa"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    app:prefixText="薪酬：" />
             </LinearLayout>
 
         </LinearLayout>
@@ -108,13 +115,11 @@
             android:textSize="14sp" />
 
         <TextView
+            android:id="@+id/tv_project"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:lineHeight="18dp"
-            android:text="大大大公司大大大公司大大大公司大大大公司大大
-大公司大大大公司大大大公司大大大公司大大大公
-司大大大公司大大大公司大大大公司"
             android:textColor="@color/coloraaaaaa"
             android:textSize="14sp" />
 
@@ -144,6 +149,7 @@
                     android:src="@drawable/phone" />
 
                 <TextView
+                    android:id="@+id/tv_telephone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
@@ -166,6 +172,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/tv_save"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
