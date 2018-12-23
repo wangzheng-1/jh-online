@@ -16,6 +16,7 @@ import com.xcompany.jhonline.R;
 public class MenuButton extends LinearLayout {
     private TextView tvTitle;
     private ImageView ivImage;
+    private String title;
     private int image_normal;
     private int image_press;
     private int color_normal;
@@ -42,7 +43,7 @@ public class MenuButton extends LinearLayout {
         color_press = array.getColor(R.styleable.menu_button_menu_button_color_press, getContext().getResources().getColor(R.color.color0072FF));
         checked = array.getBoolean(R.styleable.menu_button_menu_button_checked, false);
 
-        String title = array.getString(R.styleable.menu_button_menu_button_title);
+        title = array.getString(R.styleable.menu_button_menu_button_title);
         int resource = array.getResourceId(R.styleable.menu_button_menu_button_resource, R.layout.view_menu_button);
         array.recycle();
 
@@ -55,6 +56,11 @@ public class MenuButton extends LinearLayout {
         } else {
             setNormal();
         }
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+        tvTitle.setText(title);
     }
 
     private void setNormal() {

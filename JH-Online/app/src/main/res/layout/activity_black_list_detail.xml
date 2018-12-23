@@ -34,17 +34,10 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tv_explain"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="15dp"
-                android:text="本施工队入驻惠州12年，专业承接档口、酒店、别墅等各种
-房型的改建、加建本施工队入驻惠州12年，专业承接档口、
-酒店、别墅等各种房型的改建、加建本施工队入驻惠州12年，
-专业承接档口、酒店、别墅等各种房型的改建、加建本施工
-队入驻惠州12年，专业承接档口、酒店、别墅等各种房型的
-改建、加建本施工队入驻惠州12年，专业承接档口、酒店、
-别墅等各种房型的改建、加建本施工队入驻惠州12年，专业
-承接档口、酒店、别墅等各种房型的改建、加建。"
                 android:textColor="@color/color333333"
                 android:textSize="13sp" />
 
@@ -55,29 +48,34 @@
                 android:padding="15dp">
 
                 <ImageView
+                    android:id="@+id/image1"
                     android:layout_width="0dp"
                     android:layout_height="105dp"
                     android:layout_marginRight="15dp"
                     android:layout_weight="1"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/a" />
+                    android:src="@drawable/a"
+                    android:visibility="invisible" />
 
                 <ImageView
+                    android:id="@+id/image2"
                     android:layout_width="0dp"
                     android:layout_height="105dp"
                     android:layout_marginRight="15dp"
                     android:layout_weight="1"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/b" />
+                    android:src="@drawable/b"
+                    android:visibility="invisible" />
 
                 <ImageView
+                    android:id="@+id/image3"
                     android:layout_width="0dp"
                     android:layout_height="105dp"
                     android:layout_weight="1"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/c" />
+                    android:src="@drawable/c"
+                    android:visibility="invisible" />
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

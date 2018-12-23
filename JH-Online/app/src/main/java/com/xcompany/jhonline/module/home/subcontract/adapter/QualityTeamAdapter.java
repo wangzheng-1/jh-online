@@ -2,46 +2,47 @@ package com.xcompany.jhonline.module.home.subcontract.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.StackView;
 import android.widget.TextView;
 
 import com.xcompany.jhonline.R;
+import com.xcompany.jhonline.model.home.QuailtyTeam;
+import com.xcompany.jhonline.utils.NullCheck;
 import com.xcompany.jhonline.widget.StarBar;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
 public class QualityTeamAdapter extends RecyclerView.Adapter {
-    private List<String> mDatas = new ArrayList<>();
+    private List<QuailtyTeam> mDatas = new ArrayList<>();
     public LayoutInflater mInflater;
     public Context context;
 
 
-    public void addDatas(List<String> datas) {
+    public void addDatas(List<QuailtyTeam> datas) {
         mDatas.addAll(datas);
         notifyDataSetChanged();
     }
 
-    public void setDatas(List<String> mDatas) {
+    public void setDatas(List<QuailtyTeam> mDatas) {
         this.mDatas = mDatas;
         notifyDataSetChanged();
     }
 
-    public List<String> getDatas() {
+    public List<QuailtyTeam> getDatas() {
         return mDatas;
     }
 
 
-    public QualityTeamAdapter(Context context, List<String> mdatas) {
+    public QualityTeamAdapter(Context context, List<QuailtyTeam> mdatas) {
         this.context = context;
         mInflater = LayoutInflater.from(context);
         this.mDatas = mdatas;
@@ -55,23 +56,28 @@ public class QualityTeamAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
-        final String bean = mDatas.get(position);
-        final ViewHolder holder = (ViewHolder) viewHolder;
-        holder.tvText.setText(bean);
-        holder.starBar.setStarMark(new Random().nextInt(6));
-        Random random = new Random();
-        int i = random.nextInt(2);
-        if (i == 0) {
+        QuailtyTeam bean = mDatas.get(position);
+        ViewHolder holder = (ViewHolder) viewHolder;
+        holder.tvName.setText(NullCheck.check(bean.getName()));
+        holder.tvInventory.setText(NullCheck.check("主要承接单项：", bean.getInventory()));
+
+        if (TextUtils.equals("0.00", bean.getPay())) {
+            holder.tvPay.setText("是否垫资：不可垫资");
+        } else {
+            holder.tvPay.setText("是否垫资：可垫资");
+        }
+        holder.tvContacts.setText(NullCheck.check("项目地址：", bean.getContacts()));
+        holder.tvEntryTime.setText(NullCheck.check("发布时间：", bean.getEntryTime()));
+
+        holder.starBar.setStarMark(bean.getGrade());
+        if (TextUtils.equals("0", bean.getAuthentication())) {
             holder.image.setImageResource(R.drawable.yes);
         } else {
             holder.image.setImageResource(R.drawable.no);
         }
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onItemClick(position, bean, holder);
-            }
-        });
+        if (mListener != null) {
+            holder.itemView.setOnClickListener(v -> mListener.onItemClick(position, bean, holder));
+        }
     }
 
     @Override
@@ -80,8 +86,16 @@ public class QualityTeamAdapter extends RecyclerView.Adapter {
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.text)
-        TextView tvText;
+        @BindView(R.id.tv_name)
+        TextView tvName;
+        @BindView(R.id.tv_inventory)
+        TextView tvInventory;
+        @BindView(R.id.tv_contacts)
+        TextView tvContacts;
+        @BindView(R.id.tv_pay)
+        TextView tvPay;
+        @BindView(R.id.tv_entryTime)
+        TextView tvEntryTime;
         @BindView(R.id.starBar)
         StarBar starBar;
         @BindView(R.id.image)
@@ -101,7 +115,7 @@ public class QualityTeamAdapter extends RecyclerView.Adapter {
     private OnItemClickListener mListener;
 
     public interface OnItemClickListener {
-        void onItemClick(int position, String bean, RecyclerView.ViewHolder holder);
+        void onItemClick(int position, QuailtyTeam bean, RecyclerView.ViewHolder holder);
     }
 
 }

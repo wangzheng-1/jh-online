@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -54,7 +55,8 @@
                     android:singleLine="true"
                     android:text="信息有效期：长期"
                     android:textColor="@color/color333333"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <View
@@ -77,14 +79,16 @@
                     android:src="@drawable/d4" />
 
                 <TextView
+                    android:id="@+id/tv_contacts"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="服务地区：广东省 惠州市"
                     android:textColor="@color/color333333"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:text="服务地区：广东省 惠州市" />
             </LinearLayout>
 
             <View
@@ -107,14 +111,16 @@
                     android:src="@drawable/d6" />
 
                 <TextView
+                    android:id="@+id/tv_linkman"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="联系人：朝建春"
                     android:textColor="@color/color333333"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:text="联系人：朝建春" />
             </LinearLayout>
 
             <View
@@ -144,9 +150,11 @@
                     android:singleLine="true"
                     android:text="电话"
                     android:textColor="@color/color333333"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tv_telephone"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginLeft="30dp"
@@ -154,9 +162,9 @@
                     android:gravity="center"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
-                    android:text="查看电话"
                     android:textColor="@color/white"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    tools:text="查看电话" />
             </LinearLayout>
 
 
@@ -171,19 +179,20 @@
                 android:textSize="16sp" />
 
             <TextView
+                android:id="@+id/tv_explain"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="15dp"
-                android:text="本施工队入驻惠州12年，专业承接档口、酒店、别墅等各种
+                android:textColor="@color/color333333"
+                android:textSize="13sp"
+                tools:text="本施工队入驻惠州12年，专业承接档口、酒店、别墅等各种
 房型的改建、加建本施工队入驻惠州12年，专业承接档口、
 酒店、别墅等各种房型的改建、加建本施工队入驻惠州12年，
 专业承接档口、酒店、别墅等各种房型的改建、加建本施工
 队入驻惠州12年，专业承接档口、酒店、别墅等各种房型的
 改建、加建本施工队入驻惠州12年，专业承接档口、酒店、
 别墅等各种房型的改建、加建本施工队入驻惠州12年，专业
-承接档口、酒店、别墅等各种房型的改建、加建。"
-                android:textColor="@color/color333333"
-                android:textSize="13sp" />
+承接档口、酒店、别墅等各种房型的改建、加建。" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -202,27 +211,33 @@
                 android:padding="15dp">
 
                 <ImageView
+                    android:id="@+id/image1"
                     android:layout_width="0dp"
                     android:layout_height="105dp"
                     android:layout_marginRight="15dp"
                     android:layout_weight="1"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/a" />
+                    android:src="@drawable/a"
+                    android:visibility="invisible" />
 
                 <ImageView
+                    android:id="@+id/image2"
                     android:layout_width="0dp"
                     android:layout_height="105dp"
                     android:layout_marginRight="15dp"
                     android:layout_weight="1"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/b" />
+                    android:src="@drawable/b"
+                    android:visibility="invisible" />
 
                 <ImageView
+                    android:id="@+id/image3"
                     android:layout_width="0dp"
                     android:layout_height="105dp"
                     android:layout_weight="1"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/c" />
+                    android:src="@drawable/c"
+                    android:visibility="invisible" />
             </LinearLayout>
 
         </LinearLayout>

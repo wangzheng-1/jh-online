@@ -68,6 +68,16 @@ public class ProjectToolbar extends RelativeLayout implements View.OnClickListen
                 toolbarRight.setVisibility(VISIBLE);
                 toolbarRight.setTextColor(getResources().getColor(R.color.color0072FF));
                 break;
+            case 3://left-black
+                toolbarBack.setVisibility(VISIBLE);
+                toolbarRight.setVisibility(GONE);
+                toolbarRight.setTextColor(getResources().getColor(R.color.color333333));
+                break;
+            case 4://left-blue
+                toolbarBack.setVisibility(VISIBLE);
+                toolbarRight.setVisibility(GONE);
+                toolbarRight.setTextColor(getResources().getColor(R.color.color0072FF));
+                break;
         }
     }
 

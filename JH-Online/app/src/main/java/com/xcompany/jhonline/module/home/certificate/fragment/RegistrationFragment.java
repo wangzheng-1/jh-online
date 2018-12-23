@@ -2,7 +2,6 @@ package com.xcompany.jhonline.module.home.certificate.fragment;
 
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
@@ -11,11 +10,14 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.base.BaseFragment;
-import com.xcompany.jhonline.model.home.MusicHotKey;
+import com.xcompany.jhonline.model.home.Registration;
 import com.xcompany.jhonline.module.home.certificate.acitivity.RegistrationDetailActivity;
 import com.xcompany.jhonline.module.home.certificate.adapter.RegistrationAdapter;
-import com.xcompany.jhonline.network.ApiResponse;
-import com.xcompany.jhonline.network.JsonCallback;
+import com.xcompany.jhonline.network.JHCallback;
+import com.xcompany.jhonline.network.JHResponse;
+import com.xcompany.jhonline.utils.ReleaseConfig;
+import com.xcompany.jhonline.utils.SharedPreferenceUtil;
+import com.xcompany.jhonline.utils.T;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +31,8 @@ public class RegistrationFragment extends BaseFragment {
     @BindView(R.id.recycler_list)
     XRecyclerView mRecyclerView;
     private RegistrationAdapter mAdapter;
-    private List<String> mdatas = new ArrayList<>();
-    String url = "https://c.y.qq.com/splcloud/fcgi-bin/gethotkey.fcg";
+    private List<Registration> mdatas = new ArrayList<>();
+    private String cityId;
 
     @Override
     protected int getLayoutId() {
@@ -39,9 +41,7 @@ public class RegistrationFragment extends BaseFragment {
 
     @Override
     protected void initEventAndData() {
-        for (int i = 0; i < 20; i++) {
-            mdatas.add("申请资质，长期聘请中级房建" + i);
-        }
+        cityId = SharedPreferenceUtil.getCityId(mContext);
         mAdapter = new RegistrationAdapter(mContext, mdatas);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -61,28 +61,30 @@ public class RegistrationFragment extends BaseFragment {
             public void onLoadMore() {
             }
         });
-        mAdapter.setOnItemClickListener(new RegistrationAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position, String bean, RecyclerView.ViewHolder holder) {
-                Intent intent = new Intent(mContext, RegistrationDetailActivity.class);
-                startActivity(intent);
-            }
-        });
+        mAdapter.setOnItemClickListener(((position, bean, holder) -> {
+            Intent intent = new Intent(mContext, RegistrationDetailActivity.class);
+            intent.putExtra("id", bean.getId());
+            startActivity(intent);
+        }));
+        getData();
     }
 
     public void getData() {
-        OkGo.<ApiResponse<MusicHotKey>>get(url)
+        OkGo.<JHResponse<List<Registration>>>post(ReleaseConfig.baseUrl() + "Licence/licenceList")
                 .tag(this)
-                .execute(new JsonCallback<ApiResponse<MusicHotKey>>() {
+                .params("Cityid", cityId)
+                .params("type", 0)
+                .execute(new JHCallback<JHResponse<List<Registration>>>() {
                     @Override
-                    public void onSuccess(Response<ApiResponse<MusicHotKey>> response) {
-                        MusicHotKey data = response.body().getData();
-                        List<String> list = new ArrayList<>();
-                        for (MusicHotKey.HotkeyBean bean : data.getHotkey()) {
-                            list.add(bean.getK());
-                        }
-                        mAdapter.setDatas(list);
+                    public void onSuccess(Response<JHResponse<List<Registration>>> response) {
+                        mdatas = response.body().getMsg();
+                        mAdapter.setDatas(mdatas);
                         mRecyclerView.refreshComplete();
+                    }
+
+                    @Override
+                    public void onError(Response<JHResponse<List<Registration>>> response) {
+                        T.showToast(mContext, response.getException().getMessage());
                     }
                 });
     }

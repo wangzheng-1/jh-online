@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -13,18 +13,24 @@ import android.widget.PopupWindow;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.HttpParams;
 import com.lzy.okgo.model.Response;
 import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.base.BaseFragment;
-import com.xcompany.jhonline.model.home.Dictionary;
-import com.xcompany.jhonline.model.home.MusicHotKey;
+import com.xcompany.jhonline.model.base.Category;
+import com.xcompany.jhonline.model.home.City;
+import com.xcompany.jhonline.model.home.Hiring;
+import com.xcompany.jhonline.module.home.base.CityListActivity;
 import com.xcompany.jhonline.module.home.labourWorker.activity.HiringDetailActivity;
 import com.xcompany.jhonline.module.home.labourWorker.adapter.HiringAdapter;
-import com.xcompany.jhonline.network.ApiResponse;
-import com.xcompany.jhonline.network.JsonCallback;
+import com.xcompany.jhonline.network.JHCallback;
+import com.xcompany.jhonline.network.JHResponse;
 import com.xcompany.jhonline.utils.DensityUtils;
+import com.xcompany.jhonline.utils.ReleaseConfig;
+import com.xcompany.jhonline.utils.SharedPreferenceUtil;
+import com.xcompany.jhonline.utils.T;
+import com.xcompany.jhonline.widget.JHGridView;
 import com.xcompany.jhonline.widget.MenuButton;
-import com.xcompany.jhonline.widget.MenuGridView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,9 +51,12 @@ public class HiringFragment extends BaseFragment {
     @BindView(R.id.menu2)
     MenuButton menu2;
     private HiringAdapter mAdapter;
-    private List<String> mdatas = new ArrayList<>();
-    String url = "https://c.y.qq.com/splcloud/fcgi-bin/gethotkey.fcg";
+    private List<Hiring> mdatas = new ArrayList<>();
     private PopupWindow window;
+    private String cityId;
+    private List<Category> categories = new ArrayList<>();
+    private String curCategory = "";
+    private String area_id = "";
 
     @Override
     protected int getLayoutId() {
@@ -56,9 +65,8 @@ public class HiringFragment extends BaseFragment {
 
     @Override
     protected void initEventAndData() {
-        for (int i = 0; i < 20; i++) {
-            mdatas.add("蓝色" + i);
-        }
+        cityId = SharedPreferenceUtil.getCityId(mContext);
+        getMenuData();
         mAdapter = new HiringAdapter(mContext, mdatas);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -78,48 +86,47 @@ public class HiringFragment extends BaseFragment {
             public void onLoadMore() {
             }
         });
-        mAdapter.setOnItemClickListener(new HiringAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position, String bean, RecyclerView.ViewHolder holder) {
-                Intent intent = new Intent(mContext, HiringDetailActivity.class);
-                startActivity(intent);
-            }
-        });
-        initMuenuData();
+        mAdapter.setOnItemClickListener(((position, bean, holder) -> {
+            Intent intent = new Intent(mContext, HiringDetailActivity.class);
+            intent.putExtra("id", bean.getId());
+            startActivity(intent);
+        }));
+        getData();
     }
 
-    List<Dictionary> lwgz = new ArrayList<>();
-    private int curLwgz;
-
-    private void initMuenuData() {
-        lwgz.add(new Dictionary("1", "木磨工"));
-        lwgz.add(new Dictionary("2", "架子工"));
-        lwgz.add(new Dictionary("3", "钢筋工"));
-        lwgz.add(new Dictionary("4", "泥瓦工"));
-        lwgz.add(new Dictionary("5", "水电工"));
-        lwgz.add(new Dictionary("6", "电焊工"));
-        lwgz.add(new Dictionary("7", "铝模工"));
-        lwgz.add(new Dictionary("8", "杂工"));
-        lwgz.add(new Dictionary("9", "电工"));
-        lwgz.add(new Dictionary("10", "油漆工"));
-        lwgz.add(new Dictionary("11", "机械操作工"));
-        lwgz.add(new Dictionary("12", "塔司信号工"));
-        lwgz.add(new Dictionary("13", "其他"));
+    public void getMenuData() {
+        OkGo.<JHResponse<List<Category>>>post(ReleaseConfig.baseUrl() + "class/classList")
+                .tag(this)
+                .params("type", 2)
+                .params("pid", 0)
+                .execute(new JHCallback<JHResponse<List<Category>>>() {
+                    @Override
+                    public void onSuccess(Response<JHResponse<List<Category>>> response) {
+                        categories = response.body().getMsg();
+                    }
+                });
     }
 
     public void getData() {
-        OkGo.<ApiResponse<MusicHotKey>>get(url)
+        HttpParams httpParams = new HttpParams();
+        httpParams.put("Cityid", cityId);
+        httpParams.put("type", 0);
+        if (!TextUtils.isEmpty(curCategory)) httpParams.put("cid", curCategory);
+        if (!TextUtils.isEmpty(area_id)) httpParams.put("area_id", area_id);
+        OkGo.<JHResponse<List<Hiring>>>post(ReleaseConfig.baseUrl() + "worker/workerList")
                 .tag(this)
-                .execute(new JsonCallback<ApiResponse<MusicHotKey>>() {
+                .params(httpParams)
+                .execute(new JHCallback<JHResponse<List<Hiring>>>() {
                     @Override
-                    public void onSuccess(Response<ApiResponse<MusicHotKey>> response) {
-                        MusicHotKey data = response.body().getData();
-                        List<String> list = new ArrayList<>();
-                        for (MusicHotKey.HotkeyBean bean : data.getHotkey()) {
-                            list.add(bean.getK());
-                        }
-                        mAdapter.setDatas(list);
+                    public void onSuccess(Response<JHResponse<List<Hiring>>> response) {
+                        mdatas = response.body().getMsg();
+                        mAdapter.setDatas(mdatas);
                         mRecyclerView.refreshComplete();
+                    }
+
+                    @Override
+                    public void onError(Response<JHResponse<List<Hiring>>> response) {
+                        T.showToast(mContext, response.getException().getMessage());
                     }
                 });
     }
@@ -139,6 +146,8 @@ public class HiringFragment extends BaseFragment {
                 }
                 break;
             case R.id.menu2:
+                Intent intent = new Intent(mContext, CityListActivity.class);
+                startActivityForResult(intent, 1001);
                 break;
         }
     }
@@ -146,8 +155,14 @@ public class HiringFragment extends BaseFragment {
     public void initPopuptWindow() {
         View view = View.inflate(mContext, R.layout.view_renting_menu,
                 null);
-        MenuGridView grid = view.findViewById(R.id.menu_grid);
-        grid.setDictionaries(lwgz, curLwgz);
+        JHGridView grid = view.findViewById(R.id.menu_grid);
+        grid.setMdatas(categories, curCategory);
+        grid.setCheckChangeListener(category -> {
+            curCategory = category.getId();
+            menu1.setTitle(category.getName());
+            getData();
+            window.dismiss();
+        });
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         params.setMargins(0, 0, 0, 200);
         view.setLayoutParams(params);
@@ -163,6 +178,16 @@ public class HiringFragment extends BaseFragment {
         window.showAtLocation(root, Gravity.LEFT | Gravity.TOP,
                 0, DensityUtils.dp2px(mContext, 134) + DensityUtils.getStatusBarHeight(mContext));
         menu1.setChecked(true);
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1001 && resultCode == 1002) {
+            City city = (City) data.getExtras().get("city");
+            area_id = city.getId();
+            menu2.setTitle(city.getName());
+            getData();
+        }
     }
 
 }

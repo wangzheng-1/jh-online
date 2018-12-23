@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.xcompany.jhonline.R;
+import com.xcompany.jhonline.model.home.Purchase;
+import com.xcompany.jhonline.utils.NullCheck;
+import com.xcompany.jhonline.widget.MultipleTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,27 +20,27 @@ import butterknife.ButterKnife;
 
 
 public class PurchaseAdapter extends RecyclerView.Adapter {
-    private List<String> mDatas = new ArrayList<>();
+    private List<Purchase> mDatas = new ArrayList<>();
     public LayoutInflater mInflater;
     public Context context;
 
 
-    public void addDatas(List<String> datas) {
+    public void addDatas(List<Purchase> datas) {
         mDatas.addAll(datas);
         notifyDataSetChanged();
     }
 
-    public void setDatas(List<String> mDatas) {
+    public void setDatas(List<Purchase> mDatas) {
         this.mDatas = mDatas;
         notifyDataSetChanged();
     }
 
-    public List<String> getDatas() {
+    public List<Purchase> getDatas() {
         return mDatas;
     }
 
 
-    public PurchaseAdapter(Context context, List<String> mdatas) {
+    public PurchaseAdapter(Context context, List<Purchase> mdatas) {
         this.context = context;
         mInflater = LayoutInflater.from(context);
         this.mDatas = mdatas;
@@ -51,15 +54,13 @@ public class PurchaseAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
-        final String bean = mDatas.get(position);
-        final ViewHolder holder = (ViewHolder) viewHolder;
-        holder.tvText.setText(bean);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onItemClick(position, bean, holder);
-            }
-        });
+        Purchase bean = mDatas.get(position);
+        ViewHolder holder = (ViewHolder) viewHolder;
+        holder.tvName.setText(NullCheck.check(bean.getName()));
+        holder.tvContacts.setContentText(bean.getContacts());
+        holder.tvEntryTime.setContentText(bean.getEntryTime());
+        if (mListener != null)
+            holder.itemView.setOnClickListener(v -> mListener.onItemClick(position, bean, holder));
     }
 
     @Override
@@ -68,8 +69,12 @@ public class PurchaseAdapter extends RecyclerView.Adapter {
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.text)
-        TextView tvText;
+        @BindView(R.id.tv_name)
+        TextView tvName;
+        @BindView(R.id.tv_contacts)
+        MultipleTextView tvContacts;
+        @BindView(R.id.tv_entryTime)
+        MultipleTextView tvEntryTime;
 
         ViewHolder(View view) {
             super(view);
@@ -85,7 +90,7 @@ public class PurchaseAdapter extends RecyclerView.Adapter {
     private OnItemClickListener mListener;
 
     public interface OnItemClickListener {
-        void onItemClick(int position, String bean, RecyclerView.ViewHolder holder);
+        void onItemClick(int position, Purchase bean, RecyclerView.ViewHolder holder);
     }
 
 }

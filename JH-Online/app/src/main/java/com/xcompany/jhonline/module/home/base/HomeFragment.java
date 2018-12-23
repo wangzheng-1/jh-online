@@ -1,66 +1,56 @@
 package com.xcompany.jhonline.module.home.base;
 
 import android.content.Intent;
-import android.os.Handler;
-import android.os.Message;
-import android.os.SystemClock;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 
-import com.jcodecraeer.xrecyclerview.ProgressStyle;
-import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.xcompany.jhonline.R;
-import com.xcompany.jhonline.app.GlideApp;
+import com.xcompany.jhonline.app.GlideImageLoader;
 import com.xcompany.jhonline.base.BaseFragment;
-import com.xcompany.jhonline.model.home.MusicHotKey;
+import com.xcompany.jhonline.model.home.BannerImages;
+import com.xcompany.jhonline.model.home.City;
+import com.xcompany.jhonline.model.home.Hiring;
 import com.xcompany.jhonline.module.home.blacklist.activity.BlackListActivity;
 import com.xcompany.jhonline.module.home.buildMaterial.activity.BuildMaterialList;
 import com.xcompany.jhonline.module.home.card.activity.AddCardActivity;
 import com.xcompany.jhonline.module.home.certificate.acitivity.CertificateList;
 import com.xcompany.jhonline.module.home.equipment.activity.EquipmentList;
+import com.xcompany.jhonline.module.home.labourWorker.activity.HiringDetailActivity;
 import com.xcompany.jhonline.module.home.labourWorker.activity.LabourWorkerList;
 import com.xcompany.jhonline.module.home.professionalSkills.activity.ProfessionalSkillsList;
 import com.xcompany.jhonline.module.home.siteMatching.activity.SiteMatchingList;
 import com.xcompany.jhonline.module.home.subcontract.activity.SubcontractList;
 import com.xcompany.jhonline.module.home.technical.activity.TechnicalList;
-import com.xcompany.jhonline.network.ApiResponse;
-import com.xcompany.jhonline.network.JsonCallback;
+import com.xcompany.jhonline.network.JHCallback;
+import com.xcompany.jhonline.network.JHResponse;
+import com.xcompany.jhonline.utils.ReleaseConfig;
+import com.xcompany.jhonline.utils.SharedPreferenceUtil;
+import com.xcompany.jhonline.utils.T;
+import com.youth.banner.Banner;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * Created by xieliang on 2018/11/21 11:47
  */
-public class HomeFragment extends BaseFragment implements ViewPager.OnPageChangeListener {
-    @BindView(R.id.recycler_list)
-    XRecyclerView mRecyclerView;
-    View headViwe;
-    ViewPager viewPager;
-    private HomeAdapter mAdapter;
-    List<String> mdatas = new ArrayList<>();
-    String url = "https://c.y.qq.com/splcloud/fcgi-bin/gethotkey.fcg";
-    private int[] imageUrl = new int[]{R.drawable.a, R.drawable.b, R.drawable.c, R.drawable.d};
-    private List<ImageView> imageList;
-    private LinearLayout dotGroup;//小圆点
-    private boolean isSwitchPager = true; //默认不切换
-    private int previousPosition = 0; //默认为0
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
-        }
-    };
+public class HomeFragment extends BaseFragment {
+    @BindView(R.id.list_view)
+    ListView listView;
+    @BindView(R.id.tv_city)
+    TextView tvCity;
+    private View headView;
+    private Banner banner;
+    private HomeListAdapter mAdapter;
+    private List<Hiring> mdatas = new ArrayList<>();
+    private List<String> images = new ArrayList<>();
+    private String cityId;
 
     @Override
     protected int getLayoutId() {
@@ -69,188 +59,161 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
 
     @Override
     protected void initEventAndData() {
-        for (int i = 0; i < 20; i++) {
-            mdatas.add("蓝色" + i);
-        }
-        mAdapter = new HomeAdapter(mContext, mdatas);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setAdapter(mAdapter);
-        headViwe = View.inflate(mContext, R.layout.view_home_head, null);
-        initHeadView();
-        mRecyclerView.addHeaderView(headViwe);
-        mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
-        mRecyclerView.setLoadingMoreEnabled(false);
-        mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
-            @Override
-            public void onRefresh() {
-                getData();
-            }
-
-            @Override
-            public void onLoadMore() {
-            }
+        mAdapter = new HomeListAdapter(mContext, mdatas);
+        listView.setAdapter(mAdapter);
+        headView = View.inflate(mContext, R.layout.view_home_head, null);
+        View footView = View.inflate(mContext, R.layout.view_hoem_footer, null);
+        footView.findViewById(R.id.tv_more).setOnClickListener(v -> {
+            Intent intent = new Intent(mContext, LabourWorkerList.class);
+            startActivity(intent);
         });
+        initHeadView();
+        listView.addHeaderView(headView);
+        listView.addFooterView(footView);
+        listView.setOnItemClickListener(((parent, view, position, id) -> {
+            Intent intent = new Intent(mContext, HiringDetailActivity.class);
+            intent.putExtra("id", mdatas.get(position-1).getId());
+            startActivity(intent);
+        }));
+        getCiry();
+    }
+
+    public void getCiry() {
+        String cityName = "杭州市";
+        tvCity.setText(cityName);
+        OkGo.<JHResponse<City>>post(ReleaseConfig.baseUrl() + "index/getCity")
+                .tag(this)
+                .params("name", cityName)
+                .execute(new JHCallback<JHResponse<City>>() {
+                    @Override
+                    public void onSuccess(Response<JHResponse<City>> response) {
+
+                        City city = response.body().getMsg();
+                        cityId = city.getId();
+                        SharedPreferenceUtil.setCityId(mContext, city.getId());
+                        SharedPreferenceUtil.setCityName(mContext, city.getName());
+                        getData();
+                    }
+
+                    @Override
+                    public void onError(Response<JHResponse<City>> response) {
+                        T.showToast(mContext, response.getException().getMessage());
+                    }
+                });
+    }
+
+    public void getBannerImages() {
+        OkGo.<JHResponse<BannerImages>>post(ReleaseConfig.baseUrl() + "index/Carousel")
+                .tag(this)
+                .params("id", 1)
+                .params("port", 3)
+                .execute(new JHCallback<JHResponse<BannerImages>>() {
+                    @Override
+                    public void onSuccess(Response<JHResponse<BannerImages>> response) {
+                        BannerImages bannerImages = response.body().getMsg();
+                        images = bannerImages.getImages();
+                        banner.setImages(images);
+                        banner.start();
+                    }
+
+                    @Override
+                    public void onError(Response<JHResponse<BannerImages>> response) {
+                        T.showToast(mContext, response.getException().getMessage());
+                    }
+                });
+
     }
 
     public void getData() {
-        OkGo.<ApiResponse<MusicHotKey>>get(url)
+        OkGo.<JHResponse<List<Hiring>>>post(ReleaseConfig.baseUrl() + "worker/workerList")
                 .tag(this)
-                .execute(new JsonCallback<ApiResponse<MusicHotKey>>() {
+                .params("Cityid", cityId)
+                .params("type", 0)
+                .execute(new JHCallback<JHResponse<List<Hiring>>>() {
                     @Override
-                    public void onSuccess(Response<ApiResponse<MusicHotKey>> response) {
-                        MusicHotKey data = response.body().getData();
-                        List<String> list = new ArrayList<>();
-                        for (MusicHotKey.HotkeyBean bean : data.getHotkey()) {
-                            list.add(bean.getK());
+                    public void onSuccess(Response<JHResponse<List<Hiring>>> response) {
+                        List<Hiring> list = response.body().getMsg();
+                        if (list.size() > 5) {
+                            list = list.subList(0, 5);
                         }
-                        mAdapter.setDatas(list);
-                        mRecyclerView.refreshComplete();
+                        mdatas = list;
+                        mAdapter.setMdatas(mdatas);
+                    }
+
+                    @Override
+                    public void onError(Response<JHResponse<List<Hiring>>> response) {
+                        T.showToast(mContext, response.getException().getMessage());
                     }
                 });
     }
 
     public void initHeadView() {
-        headViwe.findViewById(R.id.entrance1).setOnClickListener(v -> {
+        headView.findViewById(R.id.entrance1).setOnClickListener(v -> {
             Intent intent = new Intent(mContext, SubcontractList.class);
             mContext.startActivity(intent);
         });
-        headViwe.findViewById(R.id.entrance2).setOnClickListener(v -> {
+        headView.findViewById(R.id.entrance2).setOnClickListener(v -> {
             Intent intent = new Intent(mContext, EquipmentList.class);
             mContext.startActivity(intent);
         });
-        headViwe.findViewById(R.id.entrance3).setOnClickListener(v -> {
+        headView.findViewById(R.id.entrance3).setOnClickListener(v -> {
             Intent intent = new Intent(mContext, BuildMaterialList.class);
             mContext.startActivity(intent);
         });
-        headViwe.findViewById(R.id.entrance4).setOnClickListener(v -> {
+        headView.findViewById(R.id.entrance4).setOnClickListener(v -> {
             Intent intent = new Intent(mContext, CertificateList.class);
             mContext.startActivity(intent);
         });
-        headViwe.findViewById(R.id.entrance5).setOnClickListener(v -> {
+        headView.findViewById(R.id.entrance5).setOnClickListener(v -> {
             Intent intent = new Intent(mContext, ProfessionalSkillsList.class);
             mContext.startActivity(intent);
         });
-        headViwe.findViewById(R.id.entrance6).setOnClickListener(v -> {
+        headView.findViewById(R.id.entrance6).setOnClickListener(v -> {
             Intent intent = new Intent(mContext, LabourWorkerList.class);
             mContext.startActivity(intent);
         });
-        headViwe.findViewById(R.id.entrance7).setOnClickListener(v -> {
+        headView.findViewById(R.id.entrance7).setOnClickListener(v -> {
             Intent intent = new Intent(mContext, TechnicalList.class);
             mContext.startActivity(intent);
         });
-        headViwe.findViewById(R.id.entrance8).setOnClickListener(v -> {
+        headView.findViewById(R.id.entrance8).setOnClickListener(v -> {
             Intent intent = new Intent(mContext, AddCardActivity.class);
             mContext.startActivity(intent);
         });
-        headViwe.findViewById(R.id.entrance9).setOnClickListener(v -> {
+        headView.findViewById(R.id.entrance9).setOnClickListener(v -> {
             Intent intent = new Intent(mContext, SiteMatchingList.class);
             mContext.startActivity(intent);
         });
-        headViwe.findViewById(R.id.entrance10).setOnClickListener(v -> {
+        headView.findViewById(R.id.entrance10).setOnClickListener(v -> {
             Intent intent = new Intent(mContext, BlackListActivity.class);
             mContext.startActivity(intent);
         });
-        viewPager = headViwe.findViewById(R.id.viewPager);
-        dotGroup = headViwe.findViewById(R.id.dot_group);
-        initViewPagerData();
-        viewPager.setAdapter(new MyViewPager());
-
-        //设置当前viewPager要显示的第几个条目
-        int item = Integer.MAX_VALUE / 2 - (Integer.MAX_VALUE / 2 % imageList.size());
-        viewPager.setCurrentItem(item);
-
-        //把第一个小圆点设置成白色，显示第一个TExtView内容
-        dotGroup.getChildAt(previousPosition).setEnabled(true);
-        //设置viewPager滑动监听事件
-        viewPager.addOnPageChangeListener(this);
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (isSwitchPager) {
-                    SystemClock.sleep(3000);
-                    handler.sendEmptyMessage(0);
-                }
-            }
-        }).start();
-
+        banner = headView.findViewById(R.id.banner);
+        banner.setImageLoader(new GlideImageLoader());
+        banner.setDelayTime(10000);
+        getBannerImages();
     }
 
-    private void initViewPagerData() {
-        imageList = new ArrayList<>();
-        ImageView im;
-        View dotView;
-        for (int i = 0; i < imageUrl.length; i++) {
-            im = new ImageView(mContext);
-            GlideApp.with(this).load(imageUrl[i])
-                    .centerCrop()
-                    .into(im);
-            imageList.add(im);
-            //准备小圆点数据
-            dotView = new View(mContext);
-            dotView.setBackgroundResource(R.drawable.view_dot);
-            //设置小圆点宽和高
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(15, 15);
-            //设置每个小圆点之间的距离
-            if (i != 0) {
-                params.leftMargin = 15;
-            }
-            dotView.setLayoutParams(params);
-            //设置小圆点状态
-            dotView.setEnabled(false);
-            //把dotView加入到线性布局中
-            dotGroup.addView(dotView);
+    @OnClick({R.id.ll_city})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.ll_city:
+                Intent intent = new Intent(mContext, CityListActivity.class);
+                startActivityForResult(intent, 1001);
+                break;
         }
     }
 
     @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-    }
-
-    @Override
-    public void onPageSelected(int position) {
-        int newPostion = position % imageList.size();
-        //取出postion的位置小圆点设置为true
-        dotGroup.getChildAt(newPostion).setEnabled(true);
-        //把一个小圆点设置为false
-        dotGroup.getChildAt(previousPosition).setEnabled(false);
-        previousPosition = newPostion;
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
-
-    }
-
-    private class MyViewPager extends PagerAdapter {
-        @Override
-        public int getCount() {
-            return Integer.MAX_VALUE;
-        }
-
-        //初始化每个条目要显示的内容
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            int newPostion = position % imageList.size();
-            //获取到条目要显示的内容imageView
-            ImageView img = imageList.get(newPostion);
-            container.addView(img);
-            return img;
-        }
-
-        //是否复用当前view
-        @Override
-        public boolean isViewFromObject(View view, Object object) {
-            return view == object;
-        }
-
-        //销毁条目
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((View) object);
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1001 && resultCode == 1002) {
+            City city = (City) data.getExtras().get("city");
+            SharedPreferenceUtil.setCityName(mContext, city.getName());
+            SharedPreferenceUtil.setCityId(mContext, city.getId());
+            tvCity.setText(city.getName());
+            cityId = city.getId();
+            getData();
         }
     }
 }

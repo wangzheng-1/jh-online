@@ -1,41 +1,61 @@
 package com.xcompany.jhonline.model.home;
 
+import java.io.Serializable;
+
 /**
  * Created by xieliang on 2018/12/1 18:59
  */
-public class Dictionary {
-    private String key;
-    private String value;
+public class Dictionary implements Serializable {
 
-    public Dictionary() {
+    private static final long serialVersionUID = -6977739487790460307L;
+
+    public Dictionary(String id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
-    public Dictionary(String key, String value) {
-        this.key = key;
-        this.value = value;
+    /**
+     * id : 612
+     * name : 特项工程类
+     * pid : 0
+     * grade : 0
+     */
+
+    private String id;
+    private String name;
+    private String pid;
+    private String grade;
+
+    public String getId() {
+        return id;
     }
 
-    public String getKey() {
-        return key;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public String getName() {
+        return name;
     }
 
-    public String getValue() {
-        return value;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public String getPid() {
+        return pid;
     }
 
-    @Override
-    public String toString() {
-        return "Dictionary{" +
-                "key='" + key + '\'' +
-                ", value='" + value + '\'' +
-                '}';
+    public void setPid(String pid) {
+        this.pid = pid;
     }
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
+    }
+
 }

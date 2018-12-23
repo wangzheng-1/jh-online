@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorf8fbff"
@@ -20,14 +21,15 @@
         android:paddingBottom="15dp">
 
         <TextView
-            android:id="@+id/text"
+            android:id="@+id/tv_classname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="河东区植筋打孔"
             android:textColor="@color/color333333"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="河东区植筋打孔" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -42,15 +44,16 @@
                 android:scaleType="center"
                 android:src="@drawable/sy3" />
 
-            <TextView
+            <com.xcompany.jhonline.widget.MultipleTextView
+                android:id="@+id/tv_city"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="服务地区：广东省 惠州市"
                 android:textColor="@color/coloraaaaaa"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                app:prefixText="服务地区：" />
         </LinearLayout>
 
     </LinearLayout>

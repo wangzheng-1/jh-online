@@ -10,12 +10,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.xcompany.jhonline.R;
-import com.xcompany.jhonline.module.home.base.BaseFragmentListActivity;
 import com.xcompany.jhonline.module.home.base.PageAdapter;
 import com.xcompany.jhonline.module.home.professionalSkills.fragment.ProfessionalSkillsFragment;
-import com.xcompany.jhonline.module.home.subcontract.fragment.QualityTeamFragment;
-import com.xcompany.jhonline.module.home.subcontract.fragment.TenderFragment;
-import com.xcompany.jhonline.widget.ProjectToolbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,18 +28,19 @@ public class ProfessionalSkillsList extends AppCompatActivity {
     @BindView(R.id.viewpager)
     ViewPager viewpager;
     PageAdapter mAdapter;
+    private String[] labels = {"植筋", "打爆膜", "搭内架", "杂活清包", "墙体打点挂网", "烧焊（拦网片）", "墙体保温", "本地帮工队", "其他技能"};
+    private String[] cids = {"653", "654", "655", "656", "658", "657", "659", "660", "663"};
 
     protected List<Fragment> getFragments() {
         List<Fragment> fragments = new ArrayList<>();
-        String[] labels = getLabels();
-        for (String label : labels) {
-            fragments.add(ProfessionalSkillsFragment.newInstance(label));
+        for (String cid : cids) {
+            fragments.add(ProfessionalSkillsFragment.newInstance(cid));
         }
         return fragments;
     }
 
     protected String[] getLabels() {
-        return new String[]{"植筋", "打爆膜", "搭内架", "杂活清包", "墙体打点挂网", "烧焊（拦网片）", "墙体保温", "本地帮工队", "其他技能"};
+        return labels;
     }
 
     @Override

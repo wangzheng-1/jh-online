@@ -28,18 +28,19 @@ public class SiteMatchingList extends AppCompatActivity {
     @BindView(R.id.viewpager)
     ViewPager viewpager;
     PageAdapter mAdapter;
+    private String[] labels = {"装载运输服务", "工地食堂承包", "工具设备维修", "现场数字监控", "技能培训考证", "业内智力兼职", "工棚房搭建", "二手物料", "其他技能"};
+    private String[] cids = {"13", "14", "15", "16", "17", "18", "19", "20", "21"};
 
     protected List<Fragment> getFragments() {
         List<Fragment> fragments = new ArrayList<>();
-        String[] labels = getLabels();
-        for (String label : labels) {
-            fragments.add(SiteMatchingFragment.newInstance(label));
+        for (String cid : cids) {
+            fragments.add(SiteMatchingFragment.newInstance(cid));
         }
         return fragments;
     }
 
     protected String[] getLabels() {
-        return new String[]{"装载运输服务", "工地食堂承包", "工具设备维修", "现场数字监控", "技能培训考证", "业内智力兼职", "工棚房搭建", "二手物料", "其他技能"};
+        return labels;
     }
 
     @Override

@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -13,20 +13,28 @@ import android.widget.PopupWindow;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.HttpParams;
 import com.lzy.okgo.model.Response;
 import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.base.BaseFragment;
-import com.xcompany.jhonline.model.home.Dictionary;
-import com.xcompany.jhonline.model.home.MusicHotKey;
+import com.xcompany.jhonline.model.base.Category;
+import com.xcompany.jhonline.model.home.City;
+import com.xcompany.jhonline.model.home.QuailtyTeam;
+import com.xcompany.jhonline.module.home.base.CityListActivity;
 import com.xcompany.jhonline.module.home.subcontract.activity.QualityTeamDetailActivity;
 import com.xcompany.jhonline.module.home.subcontract.adapter.QualityTeamAdapter;
-import com.xcompany.jhonline.network.ApiResponse;
-import com.xcompany.jhonline.network.JsonCallback;
+import com.xcompany.jhonline.network.JHCallback;
+import com.xcompany.jhonline.network.JHResponse;
 import com.xcompany.jhonline.utils.DensityUtils;
+import com.xcompany.jhonline.utils.NullCheck;
+import com.xcompany.jhonline.utils.ReleaseConfig;
+import com.xcompany.jhonline.utils.SharedPreferenceUtil;
+import com.xcompany.jhonline.utils.T;
+import com.xcompany.jhonline.widget.JHGridView;
 import com.xcompany.jhonline.widget.MenuButton;
-import com.xcompany.jhonline.widget.MenuGridView;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -49,11 +57,15 @@ public class QualityTeamFragment extends BaseFragment {
     @BindView(R.id.menu4)
     MenuButton menu4;
     private QualityTeamAdapter mAdapter;
-    private List<String> mdatas = new ArrayList<>();
-    String url = "https://c.y.qq.com/splcloud/fcgi-bin/gethotkey.fcg";
+    private List<QuailtyTeam> mdatas = new ArrayList<>();
     private PopupWindow window;
     private PopupWindow window2;
     private PopupWindow window3;
+    private String cityId;
+    private LinkedHashMap<String, List<Category>> subcontractCategory = new LinkedHashMap<>();
+    List<JHGridView> jhGridViewList = new ArrayList<>();
+    private String curCategory = "";
+    private String area_id = "";
 
     @Override
     protected int getLayoutId() {
@@ -62,9 +74,8 @@ public class QualityTeamFragment extends BaseFragment {
 
     @Override
     protected void initEventAndData() {
-        for (int i = 0; i < 20; i++) {
-            mdatas.add("蓝色" + i);
-        }
+        cityId = SharedPreferenceUtil.getCityId(mContext);
+        getMenuData();
         mAdapter = new QualityTeamAdapter(mContext, mdatas);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -84,73 +95,69 @@ public class QualityTeamFragment extends BaseFragment {
             public void onLoadMore() {
             }
         });
-        mAdapter.setOnItemClickListener(new QualityTeamAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position, String bean, RecyclerView.ViewHolder holder) {
-                Intent intent = new Intent(mContext, QualityTeamDetailActivity.class);
-                startActivity(intent);
-            }
-        });
-        initMuenuData();
+        mAdapter.setOnItemClickListener(((position, bean, holder) -> {
+            Intent intent = new Intent(mContext, QualityTeamDetailActivity.class);
+            intent.putExtra("id", bean.getId());
+            startActivity(intent);
+        }));
+        getData();
     }
 
-    List<Dictionary> txgc = new ArrayList<>();
-    private int curTxgc;
-    List<Dictionary> zyjs = new ArrayList<>();
-    private int curZyjs;
-    List<Dictionary> fxlw = new ArrayList<>();
-    private int curFxlw;
-    List<Dictionary> sbaz = new ArrayList<>();
-    private int curSbaz;
+    public void getMenuData() {
+        subcontractCategory.clear();
+        jhGridViewList.clear();
+        OkGo.<JHResponse<List<Category>>>post(ReleaseConfig.baseUrl() + "class/classList")
+                .tag(this)
+                .params("type", 6)
+                .params("pid", 0)
+                .execute(new JHCallback<JHResponse<List<Category>>>() {
+                    @Override
+                    public void onSuccess(Response<JHResponse<List<Category>>> response) {
+                        List<Category> categories = response.body().getMsg();
+                        for (int i = 0; i < categories.size(); i++) {
+                            Category category = categories.get(i);
+                            getSubMenuData(category);
+                        }
+                    }
+                });
+    }
 
-    private void initMuenuData() {
-        //特殊工程
-        txgc.add(new Dictionary("1", "地基工程类"));
-        txgc.add(new Dictionary("2", "土方工程类"));
-        txgc.add(new Dictionary("3", "圆建绿化类"));
-        txgc.add(new Dictionary("4", "管网工程类"));
-        txgc.add(new Dictionary("5", "钢结构工程"));
-        txgc.add(new Dictionary("6", "人防工程类"));
-        txgc.add(new Dictionary("7", "消防工程类"));
-        //专业技术
-        zyjs.add(new Dictionary("1", "防水"));
-        zyjs.add(new Dictionary("2", "爆破"));
-        zyjs.add(new Dictionary("3", "幕墙"));
-        zyjs.add(new Dictionary("4", "环氧地坪"));
-        zyjs.add(new Dictionary("5", "干挂石材类"));
-        zyjs.add(new Dictionary("6", "GRC/罗马柱"));
-        zyjs.add(new Dictionary("7", "护坡/档口"));
-        //分项劳务
-        fxlw.add(new Dictionary("1", "劳务公司"));
-        fxlw.add(new Dictionary("2", "木工班组"));
-        fxlw.add(new Dictionary("3", "钢筋班组"));
-        fxlw.add(new Dictionary("4", "泥水班组"));
-        fxlw.add(new Dictionary("5", "砼工班组"));
-        fxlw.add(new Dictionary("6", "外架班组"));
-        fxlw.add(new Dictionary("7", "水电班组"));
-        fxlw.add(new Dictionary("8", "油漆涂料"));
-        //设备安装
-        sbaz.add(new Dictionary("1", "水暖管道安装"));
-        sbaz.add(new Dictionary("2", "电梯安装工程"));
-        sbaz.add(new Dictionary("3", "护栏门窗安装"));
-        sbaz.add(new Dictionary("4", "智能弱点工程"));
-        sbaz.add(new Dictionary("5", "制冷工程安装"));
-        sbaz.add(new Dictionary("6", "电气工程安装"));
+    public void getSubMenuData(Category category) {
+        List<Category> list = new ArrayList<>();
+        subcontractCategory.put(category.getName(), list);
+        OkGo.<JHResponse<List<Category>>>post(ReleaseConfig.baseUrl() + "class/classList")
+                .tag(this)
+                .params("type", 6)
+                .params("pid", category.getId())
+                .execute(new JHCallback<JHResponse<List<Category>>>() {
+                    @Override
+                    public void onSuccess(Response<JHResponse<List<Category>>> response) {
+                        list.addAll(response.body().getMsg());
+                    }
+                });
     }
 
     public void getData() {
-        OkGo.<ApiResponse<MusicHotKey>>get(url)
+        HttpParams httpParams = new HttpParams();
+        httpParams.put("Cityid", cityId);
+        if (!TextUtils.isEmpty(curCategory)) httpParams.put("cid", curCategory);
+        if (!TextUtils.isEmpty(area_id)) httpParams.put("area_id", area_id);
+        if (!TextUtils.isEmpty(curGrade)) httpParams.put("grade", curGrade);
+        if (!TextUtils.isEmpty(curPay)) httpParams.put("pay", curPay);
+        OkGo.<JHResponse<List<QuailtyTeam>>>post(ReleaseConfig.baseUrl() + "builder/builderList")
                 .tag(this)
-                .execute(new JsonCallback<ApiResponse<MusicHotKey>>() {
+                .params(httpParams)
+                .execute(new JHCallback<JHResponse<List<QuailtyTeam>>>() {
                     @Override
-                    public void onSuccess(Response<ApiResponse<MusicHotKey>> response) {
-                        MusicHotKey data = response.body().getData();
-                        List<String> list = new ArrayList<>();
-                        for (MusicHotKey.HotkeyBean bean : data.getHotkey()) {
-                            list.add(bean.getK());
-                        }
-                        mAdapter.setDatas(list);
+                    public void onSuccess(Response<JHResponse<List<QuailtyTeam>>> response) {
+                        mdatas = response.body().getMsg();
+                        mAdapter.setDatas(mdatas);
                         mRecyclerView.refreshComplete();
+                    }
+
+                    @Override
+                    public void onError(Response<JHResponse<List<QuailtyTeam>>> response) {
+                        T.showToast(mContext, response.getException().getMessage());
                     }
                 });
     }
@@ -170,6 +177,8 @@ public class QualityTeamFragment extends BaseFragment {
                 }
                 break;
             case R.id.menu2:
+                Intent intent = new Intent(mContext, CityListActivity.class);
+                startActivityForResult(intent, 1001);
                 break;
             case R.id.menu3:
                 if (window2 == null) {
@@ -199,7 +208,38 @@ public class QualityTeamFragment extends BaseFragment {
     public void initPopuptWindow() {
         View view = View.inflate(mContext, R.layout.view_subcontract_menu,
                 null);
-        initPopView(view);
+        LinearLayout llParent = view.findViewById(R.id.ll_parent);
+        for (String name : subcontractCategory.keySet()) {
+            List<Category> categories = subcontractCategory.get(name);
+            View v = View.inflate(mContext, R.layout.view_subcontract_menu_child, null);
+            MenuButton button = v.findViewById(R.id.menu_btn);
+            button.setTitle(NullCheck.check(name));
+            JHGridView gridView = v.findViewById(R.id.grid_view);
+            jhGridViewList.add(gridView);
+            gridView.setMdatas(categories, curCategory);
+            button.setOnClickListener(v1 -> {
+                if (gridView.getVisibility() == View.VISIBLE) {
+                    gridView.setVisibility(View.GONE);
+                    button.setChecked(false);
+                } else {
+                    gridView.setVisibility(View.VISIBLE);
+                    button.setChecked(true);
+                }
+            });
+            gridView.setCheckChangeListener(category -> {
+                curCategory = category.getId();
+                menu1.setTitle(category.getName());
+                for (int i = 0; i < jhGridViewList.size(); i++) {
+                    jhGridViewList.get(i).setCurrentId(curCategory);
+                }
+                getData();
+                window.dismiss();
+            });
+            llParent.addView(v);
+        }
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.setMargins(0, 0, 0, 200);
+        view.setLayoutParams(params);
         LinearLayout layout = new LinearLayout(mContext);
         layout.addView(view);
         layout.setBackgroundColor(Color.argb(120, 0, 0, 0));
@@ -214,33 +254,7 @@ public class QualityTeamFragment extends BaseFragment {
         menu1.setChecked(true);
     }
 
-    private void initPopView(View view) {
-        initMenuButton(view, R.id.txgc, R.id.txgc_child, txgc, curTxgc);
-        initMenuButton(view, R.id.zyjs, R.id.zyjs_child, zyjs, curZyjs);
-        initMenuButton(view, R.id.fxlw, R.id.fxlw_child, fxlw, curFxlw);
-        initMenuButton(view, R.id.sbaz, R.id.sbaz_child, sbaz, curSbaz);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.setMargins(0, 0, 0, 200);
-        view.setLayoutParams(params);
-    }
-
-    private void initMenuButton(View view, int btn, int child, List<Dictionary> data, int current) {
-        MenuButton button = view.findViewById(btn);
-        MenuGridView grid = view.findViewById(child);
-        grid.setDictionaries(data, current);
-        button.setOnClickListener(v -> {
-            if (grid.getVisibility() == View.VISIBLE) {
-                grid.setVisibility(View.GONE);
-                button.setChecked(false);
-            } else {
-                grid.setVisibility(View.VISIBLE);
-                button.setChecked(true);
-            }
-        });
-
-    }
-
-    private int curCredit;
+    private String curGrade = null;
 
     public void initPopuptWindow2() {
         View view = View.inflate(mContext, R.layout.view_credit_menu,
@@ -252,21 +266,27 @@ public class QualityTeamFragment extends BaseFragment {
             unlimited.setChecked(true);
             desc.setChecked(false);
             asc.setChecked(false);
-            curCredit = 0;
+            curGrade = "0";
+            getData();
+            window2.dismiss();
         });
 
         desc.setOnClickListener(v -> {
             unlimited.setChecked(false);
             desc.setChecked(true);
             asc.setChecked(false);
-            curCredit = 1;
+            curGrade = "1";
+            getData();
+            window2.dismiss();
         });
 
         asc.setOnClickListener(v -> {
             unlimited.setChecked(false);
             desc.setChecked(false);
             asc.setChecked(true);
-            curCredit = 2;
+            curGrade = "2";
+            getData();
+            window2.dismiss();
         });
         LinearLayout layout = new LinearLayout(mContext);
         layout.addView(view);
@@ -282,7 +302,7 @@ public class QualityTeamFragment extends BaseFragment {
         menu3.setChecked(true);
     }
 
-    private int curAdvance;
+    private String curPay = null;
 
     public void initPopuptWindow3() {
         View view = View.inflate(mContext, R.layout.view_advance_fund_menu,
@@ -292,13 +312,17 @@ public class QualityTeamFragment extends BaseFragment {
         advance_yes.setOnClickListener(v -> {
             advance_yes.setChecked(true);
             advance_no.setChecked(false);
-            curAdvance = 0;
+            curPay = "1";
+            getData();
+            window3.dismiss();
         });
 
         advance_no.setOnClickListener(v -> {
             advance_yes.setChecked(false);
             advance_no.setChecked(true);
-            curAdvance = 1;
+            curPay = "2";
+            getData();
+            window3.dismiss();
         });
         LinearLayout layout = new LinearLayout(mContext);
         layout.addView(view);
@@ -312,5 +336,16 @@ public class QualityTeamFragment extends BaseFragment {
         window3.showAtLocation(root, Gravity.LEFT | Gravity.TOP,
                 0, DensityUtils.dp2px(mContext, 134) + DensityUtils.getStatusBarHeight(mContext));
         menu4.setChecked(true);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1001 && resultCode == 1002) {
+            City city = (City) data.getExtras().get("city");
+            area_id = city.getId();
+            menu2.setTitle(city.getName());
+            getData();
+        }
     }
 }

@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.xcompany.jhonline.R;
+import com.xcompany.jhonline.model.home.Hiring;
+import com.xcompany.jhonline.utils.NullCheck;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,27 +19,27 @@ import butterknife.ButterKnife;
 
 
 public class HiringAdapter extends RecyclerView.Adapter {
-    private List<String> mDatas = new ArrayList<>();
+    private List<Hiring> mDatas = new ArrayList<>();
     public LayoutInflater mInflater;
     public Context context;
 
 
-    public void addDatas(List<String> datas) {
+    public void addDatas(List<Hiring> datas) {
         mDatas.addAll(datas);
         notifyDataSetChanged();
     }
 
-    public void setDatas(List<String> mDatas) {
+    public void setDatas(List<Hiring> mDatas) {
         this.mDatas = mDatas;
         notifyDataSetChanged();
     }
 
-    public List<String> getDatas() {
+    public List<Hiring> getDatas() {
         return mDatas;
     }
 
 
-    public HiringAdapter(Context context, List<String> mdatas) {
+    public HiringAdapter(Context context, List<Hiring> mdatas) {
         this.context = context;
         mInflater = LayoutInflater.from(context);
         this.mDatas = mdatas;
@@ -51,9 +53,12 @@ public class HiringAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
-        final String bean = mDatas.get(position);
-        final ViewHolder holder = (ViewHolder) viewHolder;
-        holder.tvText.setText(bean);
+        Hiring bean = mDatas.get(position);
+        ViewHolder holder = (ViewHolder) viewHolder;
+        holder.name.setText(NullCheck.check(bean.getName()));
+        holder.cid.setText(NullCheck.check("劳务工种：", bean.getCid()));
+        holder.contacts.setText(NullCheck.check("项目地址：", bean.getContacts()));
+        holder.entryTime.setText(NullCheck.check("发布时间：", bean.getEntryTime()));
         holder.itemView.setOnClickListener(v -> mListener.onItemClick(position, bean, holder));
     }
 
@@ -63,8 +68,14 @@ public class HiringAdapter extends RecyclerView.Adapter {
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.text)
-        TextView tvText;
+        @BindView(R.id.name)
+        TextView name;
+        @BindView(R.id.cid)
+        TextView cid;
+        @BindView(R.id.contacts)
+        TextView contacts;
+        @BindView(R.id.entryTime)
+        TextView entryTime;
 
         ViewHolder(View view) {
             super(view);
@@ -80,7 +91,7 @@ public class HiringAdapter extends RecyclerView.Adapter {
     private OnItemClickListener mListener;
 
     public interface OnItemClickListener {
-        void onItemClick(int position, String bean, RecyclerView.ViewHolder holder);
+        void onItemClick(int position, Hiring bean, RecyclerView.ViewHolder holder);
     }
 
 }

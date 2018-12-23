@@ -20,14 +20,15 @@
         android:paddingBottom="15dp">
 
         <TextView
-            android:id="@+id/text"
+            android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:singleLine="true"
             android:text="东莞市大朗-招瓦工"
             android:textColor="@color/color333333"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -43,6 +44,7 @@
                 android:src="@drawable/fb1" />
 
             <TextView
+                android:id="@+id/cid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -67,6 +69,7 @@
                 android:src="@drawable/sy3" />
 
             <TextView
+                android:id="@+id/contacts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -76,6 +79,7 @@
                 android:textColor="@color/coloraaaaaa"
                 android:textSize="14sp" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -90,6 +94,7 @@
                 android:src="@drawable/sy5" />
 
             <TextView
+                android:id="@+id/entryTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"

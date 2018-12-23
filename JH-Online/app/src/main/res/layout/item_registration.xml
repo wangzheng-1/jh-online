@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorf8fbff"
@@ -20,15 +21,15 @@
         android:paddingBottom="15dp">
 
         <TextView
-            android:id="@+id/text"
+            android:id="@+id/tv_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="申请资质，长期聘请中级房建"
             android:textColor="@color/color333333"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:text="申请资质，长期聘请中级房建" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -43,15 +44,16 @@
                 android:scaleType="center"
                 android:src="@drawable/fb1" />
 
-            <TextView
+            <com.xcompany.jhonline.widget.MultipleTextView
+                android:id="@+id/tv_classname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="挂靠类型：寻证挂靠"
                 android:textColor="@color/coloraaaaaa"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                app:prefixText="挂靠类型：" />
         </LinearLayout>
 
         <LinearLayout
@@ -67,15 +69,16 @@
                 android:scaleType="center"
                 android:src="@drawable/sy3" />
 
-            <TextView
+            <com.xcompany.jhonline.widget.MultipleTextView
+                android:id="@+id/tv_contacts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="地址：广东省 深圳市"
                 android:textColor="@color/coloraaaaaa"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                app:prefixText="地址：" />
         </LinearLayout>
 
         <LinearLayout
@@ -91,15 +94,16 @@
                 android:scaleType="center"
                 android:src="@drawable/fb2" />
 
-            <TextView
+            <com.xcompany.jhonline.widget.MultipleTextView
+                android:id="@+id/tv_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="挂靠价格：面议"
                 android:textColor="@color/coloraaaaaa"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                app:prefixText="挂靠价格：" />
         </LinearLayout>
 
         <LinearLayout
@@ -115,15 +119,16 @@
                 android:scaleType="center"
                 android:src="@drawable/sy5" />
 
-            <TextView
+            <com.xcompany.jhonline.widget.MultipleTextView
+                android:id="@+id/tv_entryTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="信息有效期至：2018-11-28"
                 android:textColor="@color/coloraaaaaa"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                app:prefixText="信息有效期至：" />
         </LinearLayout>
 
     </LinearLayout>

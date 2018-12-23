@@ -46,13 +46,14 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/d6" />
 
-                <TextView
+                <com.xcompany.jhonline.widget.MultipleTextView
+                    android:id="@+id/tv_linkman"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="联系人：朝建春"
+                    app:prefixText="联系人："
                     android:textColor="@color/color333333"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -78,13 +79,14 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/d4" />
 
-                <TextView
+                <com.xcompany.jhonline.widget.MultipleTextView
+                    android:id="@+id/tv_city"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="地址：广东省 惠州市"
+                    app:prefixText="地址："
                     android:textColor="@color/color333333"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -121,6 +123,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tv_telephone"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginLeft="30dp"
@@ -144,6 +147,7 @@
                 android:textSize="16sp" />
 
             <TextView
+                android:id="@+id/tv_explain"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="15dp"

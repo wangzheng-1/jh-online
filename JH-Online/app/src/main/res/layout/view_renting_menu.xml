@@ -6,7 +6,7 @@
     android:clickable="true"
     android:orientation="vertical">
 
-    <com.xcompany.jhonline.widget.MenuGridView
+    <com.xcompany.jhonline.widget.JHGridView
         android:id="@+id/menu_grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

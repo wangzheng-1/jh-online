@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -47,14 +48,16 @@
                     android:src="@drawable/d6" />
 
                 <TextView
+                    android:id="@+id/tv_linkman"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="联系人：朝建春"
                     android:textColor="@color/color333333"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:text="联系人：朝建春" />
             </LinearLayout>
 
             <View
@@ -84,9 +87,11 @@
                     android:singleLine="true"
                     android:text="电话"
                     android:textColor="@color/color333333"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tv_telephone"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginLeft="30dp"
@@ -114,14 +119,16 @@
                     android:src="@drawable/d4" />
 
                 <TextView
+                    android:id="@+id/tv_contacts"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="地址：广东省 惠州市"
                     android:textColor="@color/color333333"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:text="地址：广东省 惠州市" />
             </LinearLayout>
 
             <View
@@ -144,14 +151,16 @@
                     android:src="@drawable/z2" />
 
                 <TextView
+                    android:id="@+id/tv_entryTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="信息有效期：2018-11-07"
                     android:textColor="@color/color333333"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:text="信息有效期：2018-11-07" />
             </LinearLayout>
 
             <TextView
@@ -165,19 +174,20 @@
                 android:textSize="16sp" />
 
             <TextView
+                android:id="@+id/tv_explain"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="15dp"
-                android:text="本施工队入驻惠州12年，专业承接档口、酒店、别墅等各种
+                android:textColor="@color/color333333"
+                android:textSize="13sp"
+                tools:text="本施工队入驻惠州12年，专业承接档口、酒店、别墅等各种
 房型的改建、加建本施工队入驻惠州12年，专业承接档口、
 酒店、别墅等各种房型的改建、加建本施工队入驻惠州12年，
 专业承接档口、酒店、别墅等各种房型的改建、加建本施工
 队入驻惠州12年，专业承接档口、酒店、别墅等各种房型的
 改建、加建本施工队入驻惠州12年，专业承接档口、酒店、
 别墅等各种房型的改建、加建本施工队入驻惠州12年，专业
-承接档口、酒店、别墅等各种房型的改建、加建。"
-                android:textColor="@color/color333333"
-                android:textSize="13sp" />
+承接档口、酒店、别墅等各种房型的改建、加建。" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

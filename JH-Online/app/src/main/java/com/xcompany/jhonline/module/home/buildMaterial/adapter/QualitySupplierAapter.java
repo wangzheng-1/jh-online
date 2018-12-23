@@ -5,9 +5,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import com.xcompany.jhonline.R;
+import com.xcompany.jhonline.app.GlideApp;
+import com.xcompany.jhonline.model.home.QualitySupplier;
+import com.xcompany.jhonline.widget.MultipleTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,27 +20,27 @@ import butterknife.ButterKnife;
 
 
 public class QualitySupplierAapter extends RecyclerView.Adapter {
-    private List<String> mDatas = new ArrayList<>();
+    private List<QualitySupplier> mDatas = new ArrayList<>();
     public LayoutInflater mInflater;
     public Context context;
 
 
-    public void addDatas(List<String> datas) {
+    public void addDatas(List<QualitySupplier> datas) {
         mDatas.addAll(datas);
         notifyDataSetChanged();
     }
 
-    public void setDatas(List<String> mDatas) {
+    public void setDatas(List<QualitySupplier> mDatas) {
         this.mDatas = mDatas;
         notifyDataSetChanged();
     }
 
-    public List<String> getDatas() {
+    public List<QualitySupplier> getDatas() {
         return mDatas;
     }
 
 
-    public QualitySupplierAapter(Context context, List<String> mdatas) {
+    public QualitySupplierAapter(Context context, List<QualitySupplier> mdatas) {
         this.context = context;
         mInflater = LayoutInflater.from(context);
         this.mDatas = mdatas;
@@ -51,15 +54,16 @@ public class QualitySupplierAapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
-        final String bean = mDatas.get(position);
-        final ViewHolder holder = (ViewHolder) viewHolder;
-        holder.tvText.setText(bean);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onItemClick(position, bean, holder);
-            }
-        });
+        QualitySupplier bean = mDatas.get(position);
+        ViewHolder holder = (ViewHolder) viewHolder;
+        holder.tvName.setContentText(bean.getName());
+        holder.tvClassname.setContentText(bean.getClassname());
+        if (bean.getShop().size() > 0)
+            GlideApp.with(context).load(bean.getShop().get(0))
+                    .centerCrop()
+                    .into(holder.image);
+        if (mListener != null)
+            holder.itemView.setOnClickListener(v -> mListener.onItemClick(position, bean, holder));
     }
 
     @Override
@@ -68,8 +72,12 @@ public class QualitySupplierAapter extends RecyclerView.Adapter {
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.text)
-        TextView tvText;
+        @BindView(R.id.image)
+        ImageView image;
+        @BindView(R.id.tv_name)
+        MultipleTextView tvName;
+        @BindView(R.id.tv_classname)
+        MultipleTextView tvClassname;
 
         ViewHolder(View view) {
             super(view);
@@ -85,7 +93,7 @@ public class QualitySupplierAapter extends RecyclerView.Adapter {
     private OnItemClickListener mListener;
 
     public interface OnItemClickListener {
-        void onItemClick(int position, String bean, RecyclerView.ViewHolder holder);
+        void onItemClick(int position, QualitySupplier bean, RecyclerView.ViewHolder holder);
     }
 
 }

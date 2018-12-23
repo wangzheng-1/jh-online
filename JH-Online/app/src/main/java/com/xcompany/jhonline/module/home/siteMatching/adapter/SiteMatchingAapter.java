@@ -5,9 +5,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xcompany.jhonline.R;
+import com.xcompany.jhonline.app.GlideApp;
+import com.xcompany.jhonline.model.home.SiteMatching;
+import com.xcompany.jhonline.utils.NullCheck;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,27 +21,27 @@ import butterknife.ButterKnife;
 
 
 public class SiteMatchingAapter extends RecyclerView.Adapter {
-    private List<String> mDatas = new ArrayList<>();
+    private List<SiteMatching> mDatas = new ArrayList<>();
     public LayoutInflater mInflater;
     public Context context;
 
 
-    public void addDatas(List<String> datas) {
+    public void addDatas(List<SiteMatching> datas) {
         mDatas.addAll(datas);
         notifyDataSetChanged();
     }
 
-    public void setDatas(List<String> mDatas) {
+    public void setDatas(List<SiteMatching> mDatas) {
         this.mDatas = mDatas;
         notifyDataSetChanged();
     }
 
-    public List<String> getDatas() {
+    public List<SiteMatching> getDatas() {
         return mDatas;
     }
 
 
-    public SiteMatchingAapter(Context context, List<String> mdatas) {
+    public SiteMatchingAapter(Context context, List<SiteMatching> mdatas) {
         this.context = context;
         mInflater = LayoutInflater.from(context);
         this.mDatas = mdatas;
@@ -51,10 +55,14 @@ public class SiteMatchingAapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
-        final String bean = mDatas.get(position);
-        final ViewHolder holder = (ViewHolder) viewHolder;
-        holder.tvText.setText(bean);
+        SiteMatching bean = mDatas.get(position);
+        ViewHolder holder = (ViewHolder) viewHolder;
+        holder.tvName.setText(NullCheck.check(bean.getName()));
+        holder.tvContacts.setText(NullCheck.check("地址：", bean.getContacts()));
         holder.itemView.setOnClickListener(v -> mListener.onItemClick(position, bean, holder));
+        GlideApp.with(context).load(bean.getImage())
+                .centerCrop()
+                .into(holder.image);
     }
 
     @Override
@@ -63,8 +71,12 @@ public class SiteMatchingAapter extends RecyclerView.Adapter {
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.text)
-        TextView tvText;
+        @BindView(R.id.tv_name)
+        TextView tvName;
+        @BindView(R.id.tv_contacts)
+        TextView tvContacts;
+        @BindView(R.id.image)
+        ImageView image;
 
         ViewHolder(View view) {
             super(view);
@@ -80,7 +92,7 @@ public class SiteMatchingAapter extends RecyclerView.Adapter {
     private OnItemClickListener mListener;
 
     public interface OnItemClickListener {
-        void onItemClick(int position, String bean, RecyclerView.ViewHolder holder);
+        void onItemClick(int position, SiteMatching bean, RecyclerView.ViewHolder holder);
     }
 
 }

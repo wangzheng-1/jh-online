@@ -35,12 +35,13 @@
                 android:src="@drawable/sy16" />
 
             <EditText
+                android:id="@+id/et_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_weight="1"
                 android:background="@color/transparent"
-                android:hint="搜索关键字：木工、混泥土、挖机等"
+                android:hint="输入产品名称或供应商名称"
                 android:singleLine="true"
                 android:textColor="@color/color666666"
                 android:textColorHint="@color/color999999"
