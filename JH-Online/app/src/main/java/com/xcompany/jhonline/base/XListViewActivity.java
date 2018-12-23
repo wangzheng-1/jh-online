@@ -14,9 +14,9 @@ import java.util.List;
 // 实现上拉更多，下拉刷新，实现IXListViewListener接口
 public abstract class XListViewActivity extends AbstractActivity implements XRecyclerView.LoadingListener{
 
-	XRecyclerView xRecyclerView;
+	public XRecyclerView xRecyclerView;
 
-	protected List<Object> SourceDateList = new ArrayList<>();
+	protected List<Model> SourceDateList = new ArrayList<>();
 
 	// 分页数量
 	protected int limit = 20;
@@ -24,15 +24,14 @@ public abstract class XListViewActivity extends AbstractActivity implements XRec
 	//页码
 	protected int offset = 0;
 
-	public interface Callback{
-		void setDataItems(List<Model> items);
+	public interface Callback< T extends Model>{
+		void setDataItems(List<T> items);
 	}
 
 	public abstract void getDataItems(int start, int limit,Callback callback);
 
 	@Override
 	protected void loadData() {
-
 		onRefresh();
 	}
 
@@ -46,7 +45,7 @@ public abstract class XListViewActivity extends AbstractActivity implements XRec
 
 				return;
 			}
-			List<Object> items = (List<Object>) msg.obj;
+			List<Model> items = (List<Model>) msg.obj;
 			// 判断是否是上拉更多，上拉更多时保持当前操作的显示位置
 			if (msg.what == 2) {
 				SourceDateList.addAll(items);
@@ -75,15 +74,13 @@ public abstract class XListViewActivity extends AbstractActivity implements XRec
 	};
 
 	// 初始化适配器
-	protected void initAdapter() {
-
-	}
+	public abstract void initAdapter();
 
 	// 下拉刷新
 	@Override
 	public void onRefresh() {
 
-		getDataItems(0, limit, new Callback() {
+		getDataItems(0, limit, new Callback<Model>() {
 			@Override
 			public void setDataItems(List<Model> items) {
 				if (items.size() == 0) {
@@ -103,7 +100,7 @@ public abstract class XListViewActivity extends AbstractActivity implements XRec
 	@Override
 	public void onLoadMore() {
 
-		getDataItems(offset, limit, new Callback() {
+		getDataItems(offset, limit, new Callback<Model>() {
 
 			@Override
 			public void setDataItems(List<Model> items) {

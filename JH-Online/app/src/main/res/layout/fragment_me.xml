@@ -82,6 +82,7 @@
         android:layout_height="115dp"
         android:background="@color/back_white">
         <LinearLayout
+            android:id="@+id/mineIntegralLayout"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -106,6 +107,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/mineCollectLayout"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -129,6 +131,7 @@
                 />
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/mineFellowLayout"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

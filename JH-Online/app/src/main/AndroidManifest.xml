@@ -69,6 +69,10 @@
         <activity android:name=".module.home.card.activity.CardDetailActivity" />
 
         <activity android:name=".module.report.activity.MediaTakeActivity"/>
+        <activity android:name=".module.me.activity.MeCreditActivity"/>
+        <activity android:name=".module.me.activity.MeCollectListActivity"/>
+        <activity android:name=".module.me.activity.MeFollowListActivity"/>
+
 
 
     </application>
