@@ -24,8 +24,8 @@ public abstract class ListBaseFragment extends BaseFragment implements XRecycler
     //页码
     protected int offset = 0;
 
-    public interface Callback{
-        void setDataItems(List<Model> items);
+    public interface Callback<T extends Model>{
+        void setDataItems(List<T> items);
     }
 
     public abstract void getDataItems(int start, int limit,Callback callback);
@@ -89,15 +89,13 @@ public abstract class ListBaseFragment extends BaseFragment implements XRecycler
     };
 
     // 初始化适配器
-    protected void initAdapter() {
-
-    }
+    protected abstract void initAdapter();
 
     // 下拉刷新
     @Override
     public void onRefresh() {
 
-        getDataItems(0, limit, new Callback() {
+        getDataItems(0, limit, new Callback<Model>() {
             @Override
             public void setDataItems(List<Model> items) {
                 if (items.size() == 0) {
@@ -117,7 +115,7 @@ public abstract class ListBaseFragment extends BaseFragment implements XRecycler
     @Override
     public void onLoadMore() {
 
-        getDataItems(offset, limit, new Callback() {
+        getDataItems(offset, limit, new Callback<Model>() {
 
             @Override
             public void setDataItems(List<Model> items) {
@@ -133,7 +131,5 @@ public abstract class ListBaseFragment extends BaseFragment implements XRecycler
             }
         });
     }
-
-
 
 }

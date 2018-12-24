@@ -67,6 +67,8 @@
         <activity android:name=".module.me.activity.MeCreditActivity"/>
         <activity android:name=".module.me.activity.MeCollectListActivity"/>
         <activity android:name=".module.me.activity.MeFollowListActivity"/>
+        <activity android:name=".module.publish.activity.PublishSelectTypeActivity"/>
+
 
 
 
