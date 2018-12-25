@@ -110,15 +110,16 @@
             android:src="@drawable/splash">
             <ImageView
                 android:id="@+id/videoAddImage"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
                 android:src="@drawable/splash"
                 />
             <ImageView
                 android:id="@+id/videoPlayImage"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@mipmap/share_moment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/play_white"
                 android:layout_gravity="center"
                 />
         </FrameLayout>

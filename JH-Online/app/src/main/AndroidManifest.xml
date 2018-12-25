@@ -34,7 +34,7 @@
             android:exported="true"/>
         <activity android:name=".module.report.activity.VideoPreviewActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".module.report.fragment.activity.ImagePreviewActivity"
+        <activity android:name=".module.report.activity.ImagePreviewActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".module.home.subcontract.activity.QualityTeamDetailActivity" />
         <activity android:name=".module.home.subcontract.activity.TenderDetailActivity" />

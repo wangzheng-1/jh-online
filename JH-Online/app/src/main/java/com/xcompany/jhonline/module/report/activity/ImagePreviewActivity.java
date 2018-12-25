@@ -1,4 +1,4 @@
-package com.xcompany.jhonline.module.report.fragment.activity;
+package com.xcompany.jhonline.module.report.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,11 +14,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.base.BaseActivity;
-import com.xcompany.jhonline.model.report.ImageMsg;
 import com.xcompany.jhonline.model.report.MediaBaseBean;
 import com.xcompany.jhonline.model.report.MediaBaseBeanSerial;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;

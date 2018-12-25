@@ -23,15 +23,8 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.base.BaseActivity;
 import com.xcompany.jhonline.model.report.MediaBaseBean;
-import com.xcompany.jhonline.model.report.ImageMsg;
 import com.xcompany.jhonline.model.report.MediaBaseBeanSerial;
-import com.xcompany.jhonline.model.report.VideoMsg;
-import com.xcompany.jhonline.module.report.fragment.activity.ImagePreviewActivity;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -52,10 +45,6 @@ public class PhotoSelectActivity extends BaseActivity {
 
     @BindView(R.id.back)
     LinearLayout back;
-    @BindView(R.id.toolbarTitle)
-    TextView toolbarTitle;
-    @BindView(R.id.toolbarMenuRight)
-    ImageView toolbarMenuRight;
     @BindView(R.id.okSelectText)
     TextView okSelectText;
     @BindView(R.id.mEasyRecylerView)

@@ -2,61 +2,52 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/toolbar"
+
+    <RelativeLayout
+        android:id="@+id/titleLayout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/nav_height"
-        android:background="#fff"
-        android:backgroundTint="#fff"
-        android:layout_gravity="center_vertical"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:theme="@style/ThemeOverlay.AppCompat.Light"
-        app:titleTextAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
+        android:background="@color/back_white"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:gravity="center_vertical"
+        >
+
         <LinearLayout
-            android:layout_width="50dp"
             android:id="@+id/back"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
             android:gravity="center_vertical"
-            android:layout_height="50dp">
+            >
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/back_icon"/>
+                android:layout_gravity="center_vertical"
+                android:scaleType="fitStart"
+                android:src="@drawable/back_icon" />
         </LinearLayout>
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:ellipsize="end"
             android:gravity="center"
-            android:layout_marginTop="20dp"
-            android:lines="1"
-            android:id="@+id/toolbar_title"
-            android:maxEms="10"
             android:text="视频预览"
-            android:textColor="#000" />
-
-        <ImageView
-            android:id="@+id/toolbar_menu_right"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_gravity="right"
-            android:background="@null"
-            android:clickable="true"
-            android:minWidth="50dp"
-            android:visibility="gone" />
-
+            android:textColor="@color/text_black"
+            android:textSize="18sp"
+            android:layout_centerInParent="true"/>
         <TextView
             android:id="@+id/tv_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:layout_marginRight="15dp"
+            android:layout_marginRight="16dp"
             android:text="删除"
-            android:layout_marginTop="34dp"
             android:textColor="#1479de"
-            android:textSize="16sp" />
-    </android.support.v7.widget.Toolbar>
+            android:textSize="16sp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"/>
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -3,7 +3,6 @@ package com.xcompany.jhonline.module.report.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -21,7 +20,6 @@ import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.base.BaseActivity;
 import com.xcompany.jhonline.model.report.MediaBaseBean;
 import com.xcompany.jhonline.model.report.MediaBaseBeanSerial;
-import com.xcompany.jhonline.module.report.fragment.activity.ImagePreviewActivity;
 import com.xcompany.jhonline.utils.FileUtil;
 
 import java.io.File;
@@ -44,7 +42,7 @@ import static com.xcompany.jhonline.module.report.activity.PhotoSelectActivity.E
 import static com.xcompany.jhonline.module.report.activity.PhotoSelectActivity.IMAGE_NUM;
 import static com.xcompany.jhonline.module.report.activity.PhotoSelectActivity.SELECT_MEDIA_TYPE;
 import static com.xcompany.jhonline.module.report.fragment.ReportFragment.SELECT_TYPE;
-import static com.xcompany.jhonline.module.report.fragment.activity.ImagePreviewActivity.INIT_SELECT_POSITION;
+import static com.xcompany.jhonline.module.report.activity.ImagePreviewActivity.INIT_SELECT_POSITION;
 
 public class ReportAddActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks, BGASortableNinePhotoLayout.Delegate {
 
