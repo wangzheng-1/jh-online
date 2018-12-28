@@ -28,7 +28,7 @@ public class MeCollectListActivity extends XListViewActivity {
 
 
     @Override
-    public void getDataItems(int start, int limit, Callback callback) {
+    public void getDataItems(int page, Callback callback) {
         List<MeCollectBean> data = new ArrayList<>();
         for(int i = 0; i<20 ;i++){
             data.add(new MeCollectBean("分包单位"));

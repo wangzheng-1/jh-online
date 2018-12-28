@@ -52,7 +52,7 @@ public class MeFollowListActivity extends XListViewActivity implements EasyPermi
     }
 
     @Override
-    public void getDataItems(int start, int limit, Callback callback) {
+    public void getDataItems(int page, Callback callback) {
         List<Model> moments = new ArrayList<>();
         moments.add(new Moment("1张网络图片", "http://gslb.miaopai.com/stream/ed5HCfnhovu3tyIQAiv60Q__.mp4"));
         moments.add(new Moment("2张网络图片", new ArrayList<>(Arrays.asList("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered2.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered3.png"))));

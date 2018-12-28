@@ -44,7 +44,7 @@ public class PublishFragment extends ListBaseFragment {
     }
 
     @Override
-    public void getDataItems(int start, int limit, Callback callback) {
+    public void getDataItems(int page, Callback callback) {
         List<PublishItemBean> data = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
             data.add(new PublishItemBean("分包单位"));

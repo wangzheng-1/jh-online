@@ -18,36 +18,18 @@ public abstract class ListBaseFragment extends BaseFragment implements XRecycler
 
     protected List<Model> SourceDateList = new ArrayList<>();
 
-    // 分页数量
-    protected int limit = 20;
-
-    //页码
-    protected int offset = 0;
+    // 页码
+    protected int page = 1;
 
     public interface Callback<T extends Model>{
         void setDataItems(List<T> items);
     }
 
-    public abstract void getDataItems(int start, int limit,Callback callback);
+    public abstract void getDataItems(int page,Callback callback);
 
 
     protected void loadData() {
-
         onRefresh();
-
-//        getDataItems(offset, limit, new Callback() {
-//            @Override
-//            public void setDataItems(List<Model> items) {
-//                if (items.size() == 0) {
-//                    T.showToast(mContext,"暂无数据，请刷新尝试...");
-//                }
-//                offset = items.size();
-//                Message msg = new Message();
-//                msg.what = 1;
-//                msg.obj = items;
-//                mHandler.sendMessage(msg);
-//            }
-//        });
     }
 
     @SuppressLint("HandlerLeak")
@@ -94,14 +76,16 @@ public abstract class ListBaseFragment extends BaseFragment implements XRecycler
     // 下拉刷新
     @Override
     public void onRefresh() {
-
-        getDataItems(0, limit, new Callback<Model>() {
+        page = 1;
+        getDataItems(page, new Callback<Model>() {
             @Override
             public void setDataItems(List<Model> items) {
                 if (items.size() == 0) {
                     T.showToast(ListBaseFragment.this.getActivity(),"暂无数据，请刷新尝试...");
                 }
-                offset = items.size();
+                else{
+                   page++;
+                }
                 Message msg = new Message();
                 msg.what = 3;
                 msg.obj = items;
@@ -115,14 +99,16 @@ public abstract class ListBaseFragment extends BaseFragment implements XRecycler
     @Override
     public void onLoadMore() {
 
-        getDataItems(offset, limit, new Callback<Model>() {
+        getDataItems(page, new Callback<Model>() {
 
             @Override
             public void setDataItems(List<Model> items) {
                 if (items.size() == 0) {
                     T.showToast(ListBaseFragment.this.getActivity(),"暂无数据，请刷新尝试...");
                 }
-                offset += items.size();
+                else {
+                    page++;
+                }
                 //最后一页不足一页的处理
                 Message msg = new Message();
                 msg.what = 2;
