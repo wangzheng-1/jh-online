@@ -5,7 +5,7 @@
     android:layout_height="fill_parent"
     android:layout_gravity="center|center"
     android:gravity="center_vertical"
-    android:background="@drawable/splash"
+    android:background="@mipmap/splash"
     android:orientation="vertical" >
     
 </LinearLayout>
