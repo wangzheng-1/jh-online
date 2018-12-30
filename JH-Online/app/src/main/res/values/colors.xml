@@ -34,6 +34,7 @@
     <color name="text_red">#FF4500</color>
     <color name="text_yellow">#FFB400</color>
     <color name="text_light_gray">#999999</color>
+    <color name="text_deep_gray">#666666</color>
     <color name="text_black">#333333</color>
 
 
