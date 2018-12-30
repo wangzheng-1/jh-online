@@ -1,5 +1,6 @@
 package com.xcompany.jhonline.module.publish.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -75,6 +76,7 @@ public class PublishSelectTypeActivity extends BaseActivity {
                 onBackPressed();
                 break;
             case R.id.divideConstructionLayout:
+                startActivity(new Intent(PublishSelectTypeActivity.this,PublishRecruitingActivity.class));
                 break;
             case R.id.deviceLeaseLayout:
                 break;

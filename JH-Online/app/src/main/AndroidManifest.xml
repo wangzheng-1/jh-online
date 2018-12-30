@@ -69,6 +69,10 @@
         <activity android:name=".module.me.activity.MeFollowListActivity"/>
         <activity android:name=".module.publish.activity.PublishSelectTypeActivity"/>
 
+        <activity android:name=".module.publish.activity.PublishAptitudeHandleActivity"/>
+        <activity android:name=".module.publish.activity.PublishCertificateAnchoredActivity"/>
+        <activity android:name=".module.publish.activity.PublishPurchasingActivity"/>
+        <activity android:name=".module.publish.activity.PublishRecruitingActivity"/>
 
 
 

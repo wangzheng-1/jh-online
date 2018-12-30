@@ -107,13 +107,13 @@
             android:layout_marginBottom="10dp"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/splash">
+            android:src="@mipmap/splash">
             <ImageView
                 android:id="@+id/videoAddImage"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center"
-                android:src="@drawable/splash"
+                android:src="@mipmap/splash"
                 />
             <ImageView
                 android:id="@+id/videoPlayImage"
