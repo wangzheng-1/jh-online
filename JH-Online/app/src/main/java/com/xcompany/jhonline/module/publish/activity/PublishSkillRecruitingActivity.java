@@ -4,10 +4,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -26,10 +26,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * 发布劳务招聘 正在招工
+ * 发布技管正在招聘信息
  */
-public class PublishRecruitingActivity extends BaseActivity {
+public class PublishSkillRecruitingActivity extends BaseActivity {
 
+
+    CheckboxItemAdapter checkboxItemAdapter;
     @BindView(R.id.backHomeLayout)
     LinearLayout backHomeLayout;
     @BindView(R.id.reportTitleText)
@@ -46,48 +48,57 @@ public class PublishRecruitingActivity extends BaseActivity {
     LinearLayout typeLevelLayout;
     @BindView(R.id.selectTypeLayout)
     LinearLayout selectTypeLayout;
-    @BindView(R.id.projectNameEdit)
-    EditText projectNameEdit;
-    @BindView(R.id.projectAddressText)
-    TextView projectAddressText;
-    @BindView(R.id.selectProjectAddressLayout)
-    LinearLayout selectProjectAddressLayout;
-    @BindView(R.id.workCategoryListView)
-    XRecyclerView workCategoryListView;
-    @BindView(R.id.personNumEdit)
-    EditText personNumEdit;
-    @BindView(R.id.validateDateText)
-    TextView validateDateText;
-    @BindView(R.id.selectValidateDateLayout)
-    LinearLayout selectValidateDateLayout;
+    @BindView(R.id.titleNameEdit)
+    EditText titleNameEdit;
+    @BindView(R.id.companyRadio)
+    RadioButton companyRadio;
+    @BindView(R.id.companyNameEdit)
+    EditText companyNameEdit;
+    @BindView(R.id.privateRadio)
+    RadioButton privateRadio;
+    @BindView(R.id.privateNameEdit)
+    EditText privateNameEdit;
+    @BindView(R.id.radioGroup_gender)
+    RadioGroup radioGroupGender;
+    @BindView(R.id.recruitDepartListView)
+    XRecyclerView recruitDepartListView;
+    @BindView(R.id.otherPostEdit)
+    EditText otherPostEdit;
+    @BindView(R.id.addressText)
+    TextView addressText;
+    @BindView(R.id.selectAddressLayout)
+    LinearLayout selectAddressLayout;
+    @BindView(R.id.projectAreaEdit)
+    EditText projectAreaEdit;
     @BindView(R.id.linkmanEdit)
     EditText linkmanEdit;
+    @BindView(R.id.projectServiceExplanationEdit)
+    EditText projectServiceExplanationEdit;
     @BindView(R.id.addExplanationEdit)
     EditText addExplanationEdit;
     @BindView(R.id.publishSubmitText)
     TextView publishSubmitText;
 
-    CheckboxItemAdapter checkboxItemAdapter;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recruiting_publish);
+        setContentView(R.layout.activity_skill_recruiting_publish);
         ButterKnife.bind(this);
         initView();
     }
-    private void initView(){
+
+    private void initView() {
         List<Model> categoryList = getWorkCategoryData();
-        checkboxItemAdapter = new CheckboxItemAdapter(this.getApplicationContext(),categoryList);
-        workCategoryListView.setAdapter(checkboxItemAdapter);
-        workCategoryListView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 3));
-        workCategoryListView.setLoadingMoreEnabled(false);
-        workCategoryListView.setPullRefreshEnabled(false);
+        checkboxItemAdapter = new CheckboxItemAdapter(this.getApplicationContext(), categoryList);
+        recruitDepartListView.setAdapter(checkboxItemAdapter);
+        recruitDepartListView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 3));
+        recruitDepartListView.setLoadingMoreEnabled(false);
+        recruitDepartListView.setPullRefreshEnabled(false);
     }
 
-    private List<Model> getWorkCategoryData(){
+    private List<Model> getWorkCategoryData() {
         List<Model> categoryList = new ArrayList<>();
-        for(int i = 0; i < 10; i++){
+        for (int i = 0; i < 10; i++) {
             CheckboxItemBean checkboxItemBean = new CheckboxItemBean();
             checkboxItemBean.setId(i);
             checkboxItemBean.setName("工种" + i);
@@ -96,7 +107,8 @@ public class PublishRecruitingActivity extends BaseActivity {
         return categoryList;
     }
 
-    @OnClick({R.id.backHomeLayout, R.id.selectTypeLayout, R.id.selectProjectAddressLayout, R.id.selectValidateDateLayout, R.id.publishSubmitText})
+
+    @OnClick({R.id.backHomeLayout, R.id.selectTypeLayout, R.id.companyRadio, R.id.privateRadio, R.id.selectAddressLayout, R.id.publishSubmitText})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.backHomeLayout:
@@ -105,9 +117,11 @@ public class PublishRecruitingActivity extends BaseActivity {
                 break;
             case R.id.selectTypeLayout:
                 break;
-            case R.id.selectProjectAddressLayout:
+            case R.id.companyRadio:
                 break;
-            case R.id.selectValidateDateLayout:
+            case R.id.privateRadio:
+                break;
+            case R.id.selectAddressLayout:
                 break;
             case R.id.publishSubmitText:
                 break;

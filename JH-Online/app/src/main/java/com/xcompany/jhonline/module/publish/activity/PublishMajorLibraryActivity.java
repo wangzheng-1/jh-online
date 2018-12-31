@@ -16,10 +16,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * 发布正在采购
+ * 发布专业技能库信息
  */
+public class PublishMajorLibraryActivity extends BaseActivity {
 
-public class PublishPurchasingActivity extends BaseActivity {
 
     @BindView(R.id.backHomeLayout)
     LinearLayout backHomeLayout;
@@ -37,12 +37,12 @@ public class PublishPurchasingActivity extends BaseActivity {
     LinearLayout typeLevelLayout;
     @BindView(R.id.selectTypeLayout)
     LinearLayout selectTypeLayout;
-    @BindView(R.id.purchaseNameEdit)
-    EditText purchaseNameEdit;
-    @BindView(R.id.deliveryAddressText)
-    TextView deliveryAddressText;
-    @BindView(R.id.selectDeliveryAddressLayout)
-    LinearLayout selectDeliveryAddressLayout;
+    @BindView(R.id.titleNameEdit)
+    EditText titleNameEdit;
+    @BindView(R.id.serviceProvinceText)
+    TextView serviceProvinceText;
+    @BindView(R.id.selectServiceProvinceLayout)
+    LinearLayout selectServiceProvinceLayout;
     @BindView(R.id.linkmanEdit)
     EditText linkmanEdit;
     @BindView(R.id.addExplanationEdit)
@@ -53,20 +53,22 @@ public class PublishPurchasingActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_purchasing_publish);
+        setContentView(R.layout.activity_major_library_publish);
         ButterKnife.bind(this);
 
     }
 
-    @OnClick({R.id.backHomeLayout, R.id.selectTypeLayout, R.id.selectDeliveryAddressLayout, R.id.publishSubmitText})
+
+    @OnClick({R.id.backHomeLayout, R.id.selectTypeLayout, R.id.selectServiceProvinceLayout, R.id.publishSubmitText})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.backHomeLayout:
                 onBackPressed();
+                this.finish();
                 break;
             case R.id.selectTypeLayout:
                 break;
-            case R.id.selectDeliveryAddressLayout:
+            case R.id.selectServiceProvinceLayout:
                 break;
             case R.id.publishSubmitText:
                 break;

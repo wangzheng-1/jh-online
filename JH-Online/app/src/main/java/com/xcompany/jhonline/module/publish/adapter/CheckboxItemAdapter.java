@@ -50,7 +50,7 @@ public class CheckboxItemAdapter extends XRecyclerView.Adapter {
                 CheckboxItemBean checkboxItemBean = (CheckboxItemBean)models.get(position);
                 if(checkboxItemBean.isCheck()){
                     checkboxItemBean.setCheck(false);
-                    myViewHolder.optionText.setBackgroundResource(0);
+                    myViewHolder.optionText.setBackgroundResource(R.drawable.background_rectangle_all_corner_gray);
                     myViewHolder.optionText.setTextColor(context.getResources().getColor(R.color.text_black));
                 }
                 else{

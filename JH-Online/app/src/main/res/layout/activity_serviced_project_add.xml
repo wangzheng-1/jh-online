@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/back_light_gray"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/titleLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/nav_height"
+        android:background="@color/back_white"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+        <LinearLayout
+            android:id="@+id/backHomeLayout"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:scaleType="fitStart"
+                android:src="@drawable/back_icon" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/reportTitleText"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="发布"
+            android:textColor="@color/text_black"
+            android:textSize="18sp" />
+        <TextView
+            android:id="@+id/addServiceText"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:text="添加项目"
+            android:textColor="@color/text_black"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/projectItemList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/back_white"
+        android:layout_below="@+id/titleLayout"
+        android:layout_marginBottom="60dp">
+
+    </ListView>
+
+    <TextView
+        android:id="@+id/publishSubmitText"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/text_blue"
+        android:gravity="center"
+        android:text="保存信息"
+        android:textColor="@color/text_white"
+        android:textSize="16sp"
+        android:layout_alignParentBottom="true"/>
+
+
+</RelativeLayout>
