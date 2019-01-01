@@ -57,6 +57,9 @@ dependencies {
     implementation 'cn.jzvd:jiaozivideoplayer:6.0.0'
     implementation 'org.greenrobot:eventbus:3.0.0'
     implementation 'cjt.library.wheel:camera:1.1.6'
+    implementation 'com.contrarywind:Android-PickerView:4.1.6'
+
+
 
 
 

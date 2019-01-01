@@ -6,19 +6,31 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.icu.text.UnicodeSet;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.Response;
 import com.squareup.haha.perflib.Main;
 import com.xcompany.jhonline.R;
+import com.xcompany.jhonline.app.JhApplication;
+import com.xcompany.jhonline.model.base.CityService;
+import com.xcompany.jhonline.model.home.City;
 import com.xcompany.jhonline.module.login.LoginActivity;
+import com.xcompany.jhonline.network.JHCallback;
+import com.xcompany.jhonline.network.JHResponse;
 import com.xcompany.jhonline.network.UserService;
+import com.xcompany.jhonline.utils.CityUtil;
+import com.xcompany.jhonline.utils.ReleaseConfig;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -107,6 +119,12 @@ public class SplashActivity extends AppCompatActivity implements ActivityCompat.
                 }
                 startActivity(intent);
                 SplashActivity.this.finish();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        CityUtil.getCityList(1, "0",null);
+                    }
+                }).start();
             }
         }, delayed);
     }

@@ -156,14 +156,6 @@ public class PublishPurchasingActivity extends BaseActivity {
                         T.showToast(PublishPurchasingActivity.this, response.getException().getMessage());
                     }
                 });
-
-
-        DataRequestUtil.postRequest("Supplier/PurchaseAddLogic", params, new NetCallBack<JSONObject>() {
-            @Override
-            public void done(List<JSONObject> list, int count, Exception e) {
-                System.out.println(JSON.toJSONString(list));
-            }
-        });
     }
     //表单必填项校验
     private boolean checkFromOK(){

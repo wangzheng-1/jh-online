@@ -12,6 +12,7 @@ import com.lzy.okgo.cookie.store.SPCookieStore;
 import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
 import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.model.HttpParams;
+import com.xcompany.jhonline.model.base.CityService;
 
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -22,6 +23,8 @@ import okhttp3.OkHttpClient;
 public class JhApplication extends Application {
 
     private static JhApplication instance;
+
+    private static CityService cityService = new CityService();
 
     public static synchronized JhApplication getInstance() {
         return instance;
@@ -69,4 +72,11 @@ public class JhApplication extends Application {
                 .addCommonParams(params);                       //全局公共参数
     }
 
+    public CityService getCityService() {
+        return cityService;
+    }
+
+    public void setCityService(CityService cityService) {
+        JhApplication.cityService = cityService;
+    }
 }
