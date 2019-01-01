@@ -68,8 +68,10 @@
         <activity android:name=".module.me.activity.MeCollectListActivity"/>
         <activity android:name=".module.me.activity.MeFollowListActivity"/>
         <activity android:name=".module.publish.activity.PublishSelectTypeActivity"/>
-
-
+        <activity android:name=".module.publish.activity.PublishTypeActivity" />
+        <activity android:name=".module.publish.activity.PublishSubpackageQualityTeamActivity" />
+        <activity android:name=".module.publish.activity.QualityTeamFormActivity" />
+        <activity android:name=".module.publish.activity.InventoryActivity" />
 
 
     </application>

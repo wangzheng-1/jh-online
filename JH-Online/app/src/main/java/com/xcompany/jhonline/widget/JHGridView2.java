@@ -5,14 +5,13 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xcompany.jhonline.R;
-import com.xcompany.jhonline.model.home.Dictionary;
+import com.xcompany.jhonline.model.base.Category;
 import com.xcompany.jhonline.utils.DensityUtils;
 
 import java.util.ArrayList;
@@ -24,23 +23,23 @@ import butterknife.ButterKnife;
 /**
  * Created by xieliang on 2018/12/01 20:56
  */
-public class MenuGridView extends GridView {
+public class JHGridView2 extends GridView {
     private Myadapter adapter;
-    private List<Dictionary> dictionaries = new ArrayList<>();
-    private int currentIndex = 0;
+    private List<Category> mdatas = new ArrayList<>();
+    private List<String> ids = new ArrayList<>();
 
-    public MenuGridView(Context context) {
+    public JHGridView2(Context context) {
         super(context);
         init();
 
     }
 
-    public MenuGridView(Context context, AttributeSet attrs) {
+    public JHGridView2(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public MenuGridView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public JHGridView2(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
@@ -61,41 +60,40 @@ public class MenuGridView extends GridView {
         setStretchMode(STRETCH_COLUMN_WIDTH);
         setSelector(R.color.transparent);
         adapter = new Myadapter();
-        setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                currentIndex = position;
-                adapter.notifyDataSetChanged();
-                if (mListener != null) mListener.onCheckChange(dictionaries.get(position));
-            }
-        });
+        setOnItemClickListener(((parent, view, position, id) -> {
+            adapter.notifyDataSetChanged();
+            if (mListener != null) mListener.onCheckChange(mdatas.get(position));
+        }));
         setAdapter(adapter);
     }
 
-    public void setDictionaries(List<Dictionary> dictionaries, int index) {
-        this.dictionaries = dictionaries;
-        this.currentIndex = index;
+    public void setMdatas(List<Category> mdatas) {
+        this.mdatas = mdatas;
         adapter.notifyDataSetChanged();
     }
 
-    public void setCurrentIndex(int currentIndex) {
-        this.currentIndex = currentIndex;
-        adapter.notifyDataSetChanged();
+    public boolean isChecked() {
+        return ids.size() > 0;
     }
 
-    public int getCurrentIndex() {
-        return currentIndex;
+    public List<String> getIds() {
+        return ids;
+    }
+
+    public void setIds(List<String> ids) {
+        this.ids = ids;
+        adapter.notifyDataSetChanged();
     }
 
     private class Myadapter extends BaseAdapter {
         @Override
         public int getCount() {
-            return dictionaries.size();
+            return mdatas.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return dictionaries.get(position);
+            return mdatas.get(position);
         }
 
         @Override
@@ -113,8 +111,8 @@ public class MenuGridView extends GridView {
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
-            holder.tvTitle.setText(dictionaries.get(position).getName());
-            if (currentIndex == position) {
+            holder.tvTitle.setText(mdatas.get(position).getName());
+            if (ids.contains(mdatas.get(position).getId())) {
                 holder.menuItem.setBackground(getResources().getDrawable(R.drawable.bg_menu2));
                 holder.tvTitle.setTextColor(getResources().getColor(R.color.white));
             } else {
@@ -144,6 +142,6 @@ public class MenuGridView extends GridView {
     private OnCheckChangeListener mListener;
 
     public interface OnCheckChangeListener {
-        void onCheckChange(Dictionary dictionary);
+        void onCheckChange(Category category);
     }
 }

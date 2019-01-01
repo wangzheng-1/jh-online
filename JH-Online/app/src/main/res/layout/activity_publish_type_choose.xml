@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorf8fbff"
+    android:orientation="vertical">
+
+    <com.xcompany.jhonline.widget.ProjectToolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:toolbar_right_mode="left-black"
+        app:toolbar_title="选择发布类型" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.xcompany.jhonline.widget.TypeButton
+                android:id="@+id/type_button1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:type_button_logo="@mipmap/divide_construction"
+                app:type_button_title="特项工程类" />
+
+            <com.xcompany.jhonline.widget.TypeButton
+                android:id="@+id/type_button2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:type_button_logo="@mipmap/device_lease"
+                app:type_button_title="设备租赁信息" />
+
+            <com.xcompany.jhonline.widget.TypeButton
+                android:id="@+id/type_button3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:type_button_logo="@mipmap/building_materials_trade"
+                app:type_button_title="建材买卖信息" />
+
+            <com.xcompany.jhonline.widget.TypeButton
+                android:id="@+id/type_button4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:type_button_logo="@mipmap/certificate_service"
+                app:type_button_title="证照服务信息" />
+
+            <com.xcompany.jhonline.widget.TypeButton
+                android:id="@+id/type_button5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:type_button_logo="@mipmap/labor_recruit"
+                app:type_button_title="劳务招聘信息" />
+
+            <com.xcompany.jhonline.widget.TypeButton
+                android:id="@+id/type_button6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:type_button_logo="@mipmap/skill_recruit"
+                app:type_button_title="技管招聘信息" />
+
+            <com.xcompany.jhonline.widget.TypeButton
+                android:id="@+id/type_button7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:type_button_logo="@mipmap/construction_match"
+                app:type_button_title="工地配套信息" />
+
+            <com.xcompany.jhonline.widget.TypeButton
+                android:id="@+id/type_button8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:type_button_logo="@mipmap/major_skill_library"
+                app:type_button_title="专业技能库信息" />
+
+            <LinearLayout
+                android:id="@+id/type_button9"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/industry_black_list_info" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:text="业内黑名单信息"
+                    android:textColor="@color/color333333"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitStart"
+                    android:src="@drawable/arrow4" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

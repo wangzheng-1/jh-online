@@ -42,6 +42,11 @@
         <attr name="menu_button_color_press" format="reference" />
         <attr name="menu_button_resource" format="reference" />
     </declare-styleable>
+    <declare-styleable name="type_button">
+        <attr name="type_button_title" format="string" />
+        <attr name="type_button_checked" format="boolean" />
+        <attr name="type_button_logo" format="reference" />
+    </declare-styleable>
     <declare-styleable name="MultipleTextView">
 
         <!--前缀文字-->

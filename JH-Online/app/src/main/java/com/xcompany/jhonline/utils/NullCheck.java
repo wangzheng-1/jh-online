@@ -5,7 +5,7 @@ public class NullCheck {
 
     public static String check(String str) {
         if (str == null) return "";
-        return str;
+        return str.trim();
     }
 
     public static String check(String prefix, String str) {

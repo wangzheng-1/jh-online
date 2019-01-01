@@ -1,6 +1,7 @@
 package com.xcompany.jhonline.model.base;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Created by xieliang on 2018/12/16 13:55
@@ -51,5 +52,22 @@ public class Category implements Serializable {
 
     public void setGrade(String grade) {
         this.grade = grade;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Category category = (Category) o;
+        return Objects.equals(id, category.id) &&
+                Objects.equals(name, category.name) &&
+                Objects.equals(pid, category.pid) &&
+                Objects.equals(grade, category.grade);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, name, pid, grade);
     }
 }

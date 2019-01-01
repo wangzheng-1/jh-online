@@ -12,6 +12,7 @@ import com.xcompany.jhonline.base.ListBaseFragment;
 import com.xcompany.jhonline.model.base.Model;
 import com.xcompany.jhonline.model.publish.PublishItemBean;
 import com.xcompany.jhonline.module.publish.activity.PublishSelectTypeActivity;
+import com.xcompany.jhonline.module.publish.activity.PublishTypeActivity;
 import com.xcompany.jhonline.module.publish.adapter.PublishAdapter;
 
 import java.util.ArrayList;
@@ -77,7 +78,7 @@ public class PublishFragment extends ListBaseFragment {
             case R.id.meShareText:
                 break;
             case R.id.mePublishText:
-                Intent intent = new Intent(PublishFragment.this.getContext(),PublishSelectTypeActivity.class);
+                Intent intent = new Intent(PublishFragment.this.getContext(),PublishTypeActivity.class);
                 startActivity(intent);
                 break;
         }

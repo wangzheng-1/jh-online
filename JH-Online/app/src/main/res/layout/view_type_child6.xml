@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.xcompany.jhonline.widget.TypeButton2
+        android:id="@+id/entrance1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:type_button_title="正在求职" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="@color/colorEFEFEF" />
+
+    <com.xcompany.jhonline.widget.TypeButton2
+        android:id="@+id/entrance2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:type_button_title="正在招聘" />
+</LinearLayout>
