@@ -29,7 +29,7 @@ public abstract class JHCallback<T> extends AbsCallback<T> {
                     if (((JHResponse) t).getCode() == 666) {//请求成功
                         return t;
                     } else {
-                        throw new IllegalStateException("请求失败！");
+                        throw new IllegalStateException(((JHResponse) t).getMsg().toString());
                     }
                 } else {
                     throw new IllegalStateException("服务器返回数据格式异常!");
