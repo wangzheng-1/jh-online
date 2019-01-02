@@ -229,11 +229,10 @@ public class PublishCertificateAnchoredActivity extends BaseActivity {
                 || city == null
                 || province == null
                 || StringUtil.isEmpty(anchoredDateText.getText().toString())  //挂靠时长
-                || StringUtil.isEmpty(linkmanEdit.getText().toString())
+                || StringUtil.isEmpty(anchoredPriceEdit.getText().toString())
                 || StringUtil.isEmpty(addExplanationEdit.getText().toString()) // 说明
                 || StringUtil.isEmpty(linkmanEdit.getText().toString()) // 联系人
                 || StringUtil.isEmpty(mobileEdit.getText().toString()) // 电话
-                || StringUtil.isEmpty(mobileEdit.getText().toString()) // 联系人
                 ){
             return false;
         }
