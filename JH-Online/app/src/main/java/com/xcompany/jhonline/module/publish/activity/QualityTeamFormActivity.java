@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.model.base.Category;
-import com.xcompany.jhonline.model.home.City;
 import com.xcompany.jhonline.utils.NullCheck;
 import com.xcompany.jhonline.widget.CleanEditText;
 
@@ -65,7 +64,7 @@ public class QualityTeamFormActivity extends AppCompatActivity {
         tvInventory.setText(NullCheck.check(c2.getName()));
     }
 
-    @OnClick({R.id.ll_cid, R.id.ll_inventory})
+    @OnClick({R.id.ll_cid, R.id.ll_inventory, R.id.ll_example})
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
@@ -76,6 +75,10 @@ public class QualityTeamFormActivity extends AppCompatActivity {
             case R.id.ll_inventory:
                 intent = new Intent(this, InventoryActivity.class);
                 startActivityForResult(intent, 1005);
+                break;
+            case R.id.ll_example:
+                intent = new Intent(this, ConstructionCaseActivity.class);
+                startActivityForResult(intent, 1007);
                 break;
         }
     }

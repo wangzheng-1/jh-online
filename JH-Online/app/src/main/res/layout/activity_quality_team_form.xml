@@ -230,6 +230,7 @@
                     android:background="@color/colorEFEFEF" />
 
                 <LinearLayout
+                    android:id="@+id/ll_example"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@color/white"
@@ -439,7 +440,6 @@
                     <TextView
                         android:layout_width="110dp"
                         android:layout_height="match_parent"
-                        android:gravity="center_vertical"
                         android:paddingLeft="15dp"
                         android:text="班组简述"
                         android:textColor="@color/color333333"

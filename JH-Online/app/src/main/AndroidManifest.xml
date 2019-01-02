@@ -72,8 +72,18 @@
         <activity android:name=".module.publish.activity.PublishSubpackageQualityTeamActivity" />
         <activity android:name=".module.publish.activity.QualityTeamFormActivity" />
         <activity android:name=".module.publish.activity.InventoryActivity" />
-
-
+        <activity android:name=".module.publish.activity.PublishAptitudeHandleActivity"/>
+        <activity android:name=".module.publish.activity.PublishCertificateAnchoredActivity"/>
+        <activity android:name=".module.publish.activity.PublishPurchasingActivity"/>
+        <activity android:name=".module.publish.activity.PublishRecruitingActivity"/>
+        <activity android:name=".module.publish.activity.PublishServicedProjectActivity"/>
+        <activity android:name=".module.publish.activity.PublishSkillJobHuntingActivity"/>
+        <activity android:name=".module.publish.activity.PublishSkillRecruitingActivity"/>
+        <activity android:name=".module.publish.activity.PublishJobHuntingActivity"/>
+        <activity android:name=".module.publish.activity.PublisConstructionMatchActivity"/>
+        <activity android:name=".module.publish.activity.PublishMajorLibraryActivity"/>
+        <activity android:name=".module.publish.activity.PublisIndustryBlackListActivity"/>
+        <activity android:name=".module.publish.activity.ConstructionCaseActivity" />
     </application>
 
 </manifest>
