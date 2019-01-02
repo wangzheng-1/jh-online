@@ -77,7 +77,7 @@
         <activity android:name=".module.publish.activity.PublishSkillJobHuntingActivity"/>
         <activity android:name=".module.publish.activity.PublishSkillRecruitingActivity"/>
         <activity android:name=".module.publish.activity.PublishJobHuntingActivity"/>
-        <activity android:name=".module.publish.activity.PublisConstructionMatchActivity"/>
+        <activity android:name=".module.publish.activity.PublishConstructionMatchActivity"/>
         <activity android:name=".module.publish.activity.PublishMajorLibraryActivity"/>
         <activity android:name=".module.publish.activity.PublisIndustryBlackListActivity"/>
         <activity android:name=".module.commen.ProvinceListActivity"/>

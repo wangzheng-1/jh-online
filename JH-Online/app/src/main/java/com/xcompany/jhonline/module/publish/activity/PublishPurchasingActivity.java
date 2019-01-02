@@ -67,8 +67,6 @@ public class PublishPurchasingActivity extends BaseActivity {
     LinearLayout selectDeliveryAddressLayout;
     @BindView(R.id.linkmanEdit)
     EditText linkmanEdit;
-    @BindView(R.id.mobileEdit)
-    EditText mobileEdit;
     @BindView(R.id.addExplanationEdit)
     EditText addExplanationEdit;
     @BindView(R.id.publishSubmitText)
@@ -131,7 +129,7 @@ public class PublishPurchasingActivity extends BaseActivity {
         params.put("contacts_pid",city.getPid());  //省份
         params.put("explain",addExplanationEdit.getText().toString());  //其他说明
         params.put("linkman",linkmanEdit.getText().toString());  // 联系人
-        params.put("telephone",mobileEdit.getText().toString());  //电话
+        params.put("telephone",UserService.getInstance().getMobile());  //电话
         params.put("uid",UserService.getInstance().getUid());  //用户ID
 
         OkGo.<JHResponse<String>>post(ReleaseConfig.baseUrl() + "Supplier/PurchaseAddLogic")
@@ -163,7 +161,6 @@ public class PublishPurchasingActivity extends BaseActivity {
                 || city == null
                 || StringUtil.isEmpty(addExplanationEdit.getText().toString())
                 || StringUtil.isEmpty(linkmanEdit.getText().toString())
-                || StringUtil.isEmpty(mobileEdit.getText().toString())
                 ){
             return false;
         }

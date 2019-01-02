@@ -286,6 +286,7 @@
                     android:textSize="13sp" >
 
                     <LinearLayout
+                        android:id="@+id/addImageBackView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/background_rectangle_all_corner_blue"

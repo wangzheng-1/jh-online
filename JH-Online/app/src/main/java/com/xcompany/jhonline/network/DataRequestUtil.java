@@ -2,20 +2,33 @@ package com.xcompany.jhonline.network;
 
 import android.text.TextUtils;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.HttpParams;
 import com.lzy.okgo.model.Response;
 import com.lzy.okgo.request.base.BodyRequest;
 import com.xcompany.jhonline.utils.ReleaseConfig;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 
 /**
  *  网络请求工具类
@@ -112,4 +125,62 @@ public class DataRequestUtil {
         return urlBuffer.toString();
 
     }
+
+    /**
+     *上传文件
+     * @param interfaceName 接口地址
+     * @param paramsMap 参数
+     * @param netCallBack 回调
+     */
+    public static <T> void upLoadFile(String interfaceName, Map<String, Object> paramsMap, OKNetCallBack<T> netCallBack) {
+        try {
+
+            String requestUrl = ReleaseConfig.baseUrl() + interfaceName;
+            MultipartBody.Builder builder = new MultipartBody.Builder();
+            //设置类型
+            builder.setType(MultipartBody.FORM);
+            //追加参数
+            for (String key : paramsMap.keySet()) {
+                Object object = paramsMap.get(key);
+                if (!(object instanceof File)) {
+                    builder.addFormDataPart(key, object.toString());
+                } else {
+                    File file = (File) object;
+                    builder.addFormDataPart(key, file.getName(), RequestBody.create(null, file));
+                }
+            }
+            //创建Request
+            final Request request = new Request.Builder().url(requestUrl).post(builder.build()).build();
+            OkHttpClient okHttpClient = new OkHttpClient();
+            //单独设置参数 比如读取超时时间
+            final Call call = okHttpClient.newBuilder().writeTimeout(50, TimeUnit.SECONDS).build().newCall(request);
+            call.enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    netCallBack.done(null,e);
+                }
+                @Override
+                public void onResponse(Call call, okhttp3.Response response) {
+                    try{
+                        JSONObject jsonObject = JSON.parseObject(response.body().string());
+                        if (jsonObject.getIntValue("code") == 555) {//请求成功
+
+                            Type clazz = ((ParameterizedType)netCallBack.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+                            T t = new Gson().fromJson(jsonObject.getString("msg"), clazz);
+                            netCallBack.done(t,null);
+                        } else {
+                            netCallBack.done(null,new Exception(jsonObject.getString("msg")));
+                        }
+                    }
+                    catch (Exception e){
+                        netCallBack.done(null,e);
+                    }
+
+                }
+            });
+        } catch (Exception e) {
+            netCallBack.done(null,e);
+        }
+    }
+
 }

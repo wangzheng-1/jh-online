@@ -31,6 +31,7 @@ import com.xcompany.jhonline.utils.ReleaseConfig;
 import com.xcompany.jhonline.utils.StringUtil;
 import com.xcompany.jhonline.utils.T;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -84,8 +85,6 @@ public class PublishCertificateAnchoredActivity extends BaseActivity {
     LinearLayout selectAddressLayout;
     @BindView(R.id.linkmanEdit)
     EditText linkmanEdit;
-    @BindView(R.id.mobileEdit)
-    EditText mobileEdit;
     @BindView(R.id.addExplanationEdit)
     EditText addExplanationEdit;
     @BindView(R.id.publishSubmitText)
@@ -194,11 +193,12 @@ public class PublishCertificateAnchoredActivity extends BaseActivity {
         params.put("price",anchoredPriceEdit.getText().toString());  //价格
         params.put("explain",addExplanationEdit.getText().toString());  //其他说明
         params.put("linkman",linkmanEdit.getText().toString());  // 联系人
-        params.put("telephone",mobileEdit.getText().toString());  //电话
+        params.put("telephone",UserService.getInstance().getMobile());  //电话
         params.put("contacts_pid",province.getId());  //省份
         params.put("contacts_aid",city.getId());  // 城市
         params.put("contacts_cid",district.getId());  //区域
         params.put("uid",UserService.getInstance().getUid());  //用户ID
+
 
         OkGo.<JHResponse<String>>post(ReleaseConfig.baseUrl() + "Licence/PurchaseAddLogic")
                 .tag(this)
@@ -232,7 +232,6 @@ public class PublishCertificateAnchoredActivity extends BaseActivity {
                 || StringUtil.isEmpty(anchoredPriceEdit.getText().toString())
                 || StringUtil.isEmpty(addExplanationEdit.getText().toString()) // 说明
                 || StringUtil.isEmpty(linkmanEdit.getText().toString()) // 联系人
-                || StringUtil.isEmpty(mobileEdit.getText().toString()) // 电话
                 ){
             return false;
         }

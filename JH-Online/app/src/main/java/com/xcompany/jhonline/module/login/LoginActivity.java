@@ -228,6 +228,7 @@ public class LoginActivity extends BaseActivity {
             UserService userService = UserService.getInstance();
             userService.setCode(loginResponse.getCode());
             userService.setUid(loginResponse.getUid());
+            userService.setMobile(mobile);
             userService.save();
             Intent intent = new Intent();
             intent.setClass(LoginActivity.this, MainActivity.class);
