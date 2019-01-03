@@ -2,7 +2,6 @@ package com.xcompany.jhonline.module.publish.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,14 +26,12 @@ import com.xcompany.jhonline.model.home.City;
 import com.xcompany.jhonline.model.report.MediaBaseBean;
 import com.xcompany.jhonline.model.report.MediaBaseBeanSerial;
 import com.xcompany.jhonline.module.report.activity.PhotoSelectActivity;
-import com.xcompany.jhonline.module.report.activity.ReportAddActivity;
 import com.xcompany.jhonline.network.DataRequestUtil;
 import com.xcompany.jhonline.network.JHCallback;
 import com.xcompany.jhonline.network.JHResponse;
-import com.xcompany.jhonline.network.OKNetCallBack;
+import com.xcompany.jhonline.network.FileNetCallBack;
 import com.xcompany.jhonline.network.UserService;
 import com.xcompany.jhonline.utils.CityUtil;
-import com.xcompany.jhonline.utils.FileUtil;
 import com.xcompany.jhonline.utils.ReleaseConfig;
 import com.xcompany.jhonline.utils.StringUtil;
 import com.xcompany.jhonline.utils.T;
@@ -155,10 +152,10 @@ public class PublishConstructionMatchActivity extends BaseActivity {
                 selectProjectImage();
                 break;
             case R.id.publishSubmitText:
-//                if(!checkFromOK()){
-//                    T.showToast(PublishConstructionMatchActivity.this, "表单信息未填写完整，无法提交");
-//                    return;
-//                }
+                if(!checkFromOK()){
+                    T.showToast(PublishConstructionMatchActivity.this, "表单信息未填写完整，无法提交");
+                    return;
+                }
                 dialog = ProgressDialog.show(this, "", "正在提交，请稍后", true);
                 dialog.setCanceledOnTouchOutside(false);
                 dialog.setCancelable(false);
@@ -182,6 +179,16 @@ public class PublishConstructionMatchActivity extends BaseActivity {
 
                 }
             }).build();
+            if(provinceList == null ){
+                provinceList = CityUtil.getProvinceList();
+            }
+            if(provinceAndCityList == null){
+                provinceAndCityList = CityUtil.getCityList();
+            }
+            if(provinceAndCityAndAddList == null){
+                provinceAndCityAndAddList = CityUtil.getDistrictList();
+                System.out.println("provinceAndCityAndAddList size is **************** " + provinceAndCityAndAddList == null ? -1 : provinceAndCityAndAddList.size());
+            }
             cityOptionsPickerView.setPicker(provinceList, provinceAndCityList, provinceAndCityAndAddList);
 
         }
@@ -203,6 +210,13 @@ public class PublishConstructionMatchActivity extends BaseActivity {
                     serviceProvinceText.setText(serviceProvince.getName() + "  " + serviceCity.getName() );
                 }
             }).build();
+
+            if(provinceList == null ){
+                provinceList = CityUtil.getProvinceList();
+            }
+            if(provinceAndCityList == null){
+                provinceAndCityList = CityUtil.getCityList();
+            }
             provinceOptionsPickerView.setPicker(provinceList,provinceAndCityList);
         }
         provinceOptionsPickerView.show();
@@ -306,11 +320,11 @@ public class PublishConstructionMatchActivity extends BaseActivity {
         params.put("file",file);
 
 
-        DataRequestUtil.<String>upLoadFile("Public/upload", params, new OKNetCallBack<String>() {
+        DataRequestUtil.<JHResponse<String>>upLoadFile("Public/upload", params, new FileNetCallBack<JHResponse<String>>() {
             @Override
-            public void done(String result, Exception e) {
+            public void done(JHResponse<String> result, Exception e) {
                 if(e == null){
-                    projectImageUrl = result;
+                    projectImageUrl = result.getMsg();
                     Message message = new Message();
                     message.what = 1;
                     handler.sendMessage(message);
@@ -323,7 +337,6 @@ public class PublishConstructionMatchActivity extends BaseActivity {
                 }
             }
         });
-
     }
 
     private Handler handler = new Handler(){
