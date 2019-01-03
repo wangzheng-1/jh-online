@@ -261,7 +261,7 @@ public class PublishAptitudeHandleActivity extends BaseActivity {
 
         File file = new File(storeImagePath);
         Map<String,Object> params = new HashMap<>();
-        params.put("type","Serve");
+        params.put("type","Supplier");
         params.put("file",file);
 
 
