@@ -146,8 +146,7 @@ public class PublishCertificateAnchoredActivity extends BaseActivity {
                         pvTime.dismiss();
                     }
                 }
-            }).isDialog(true)//是否显示为对话框样式
-              .build();
+            }).build();
         }
         pvTime.setDate(deadLineDate);
         pvTime.show();
