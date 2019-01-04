@@ -6,7 +6,7 @@ import java.util.Objects;
 /**
  * Created by xieliang on 2018/12/16 13:55
  */
-public class Category implements Serializable {
+public class Category extends Model implements Serializable {
 
     private static final long serialVersionUID = 1141917308544860455L;
 

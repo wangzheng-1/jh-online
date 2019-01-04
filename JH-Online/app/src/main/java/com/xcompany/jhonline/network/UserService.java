@@ -26,8 +26,8 @@ public class UserService {
 	private String uid;
 	//验证吗
 	private String code;
-
-
+	//手机号
+	private String mobile;
 	public boolean isLogin(){
 		if(uid==null||"".equalsIgnoreCase(uid)){
 			return false;
@@ -50,6 +50,7 @@ public class UserService {
 		SharedPreferences.Editor editor = preference.edit();
 		editor.putString("uid", uid);
 		editor.putString("code", code);
+		editor.putString("mobile", mobile);
 		editor.apply();
 	}
 
@@ -57,6 +58,8 @@ public class UserService {
 		SharedPreferences preference = JhApplication.getInstance().getSharedPreferences("user_config", Context.MODE_PRIVATE);
 		uid = preference.getString("uid", null);
 		code = preference.getString("code", null);
+		mobile = preference.getString("mobile", null);
+
 	}
 
 	public String getUid() {
@@ -73,5 +76,13 @@ public class UserService {
 
 	public void setCode(String code) {
 		this.code = code;
+	}
+
+	public String getMobile() {
+		return mobile;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
 	}
 }

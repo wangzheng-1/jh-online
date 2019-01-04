@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -20,18 +19,13 @@ import com.alibaba.fastjson.JSON;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
-import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.base.BaseActivity;
-import com.xcompany.jhonline.model.base.Category;
-import com.xcompany.jhonline.model.base.Model;
 import com.xcompany.jhonline.model.home.City;
-import com.xcompany.jhonline.model.publish.CheckboxItemBean;
 import com.xcompany.jhonline.model.report.MediaBaseBean;
 import com.xcompany.jhonline.model.report.MediaBaseBeanSerial;
-import com.xcompany.jhonline.module.publish.adapter.CheckboxItemAdapter;
 import com.xcompany.jhonline.module.report.activity.PhotoSelectActivity;
 import com.xcompany.jhonline.network.DataRequestUtil;
 import com.xcompany.jhonline.network.FileNetCallBack;
@@ -58,15 +52,16 @@ import static com.xcompany.jhonline.module.report.activity.PhotoSelectActivity.I
 import static com.xcompany.jhonline.module.report.activity.PhotoSelectActivity.SELECT_MEDIA_TYPE;
 
 /**
- * 发布劳务招聘 正在找活
+ * 发布行业黑名单信息
  */
-public class PublishJobHuntingActivity extends BaseActivity {
+public class PublishIndustryBlackListActivity extends BaseActivity {
+
     /**
      * 选择照片视频
      */
     private static final int RC_CHOOSE_PHOTO = 1;
 
-    CheckboxItemAdapter checkboxItemAdapter;
+
     @BindView(R.id.backHomeLayout)
     LinearLayout backHomeLayout;
     @BindView(R.id.reportTitleText)
@@ -83,30 +78,27 @@ public class PublishJobHuntingActivity extends BaseActivity {
     LinearLayout typeLevelLayout;
     @BindView(R.id.selectTypeLayout)
     LinearLayout selectTypeLayout;
-    @BindView(R.id.titleNameEdit)
-    EditText titleNameEdit;
-    @BindView(R.id.workCategoryListView)
-    XRecyclerView workCategoryListView;
-    @BindView(R.id.personNumEdit)
-    EditText personNumEdit;
-    @BindView(R.id.intentAddressText)
-    TextView intentAddressText;
-    @BindView(R.id.selectIntentAddressLayout)
-    LinearLayout selectIntentAddressLayout;
-    @BindView(R.id.teamImageView)
-    ImageView teamImageView;
-    @BindView(R.id.teamImageLayout)
-    FrameLayout teamImageLayout;
+    @BindView(R.id.alertMainEdit)
+    EditText alertMainEdit;
+    @BindView(R.id.addressText)
+    TextView addressText;
+    @BindView(R.id.selectAddressLayout)
+    LinearLayout selectAddressLayout;
+    @BindView(R.id.complainManEdit)
+    EditText complainManEdit;
+    @BindView(R.id.storeImageView)
+    ImageView storeImageView;
+    @BindView(R.id.uploadStoreImageLayout)
+    FrameLayout uploadStoreImageLayout;
     @BindView(R.id.linkmanEdit)
     EditText linkmanEdit;
-    @BindView(R.id.addExplanationEdit)
-    EditText addExplanationEdit;
+    @BindView(R.id.explainEdit)
+    EditText explainEdit;
     @BindView(R.id.publishSubmitText)
     TextView publishSubmitText;
 
-
-    private String teamImagePath;
-    private String teamImageUrl;
+    private String storeImagePath;
+    private String storeImageUrl;
 
     List<City> provinceList = null;
     List<List<City>> provinceAndCityList = null;
@@ -119,80 +111,39 @@ public class PublishJobHuntingActivity extends BaseActivity {
     //地址  区
     City district;
 
-    List<Category> categoryList = new ArrayList<>();
-
-    List<Model> checkItemList = new ArrayList<>();
-
-    String checkedCategory;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_jod_hunting_publish);
+        setContentView(R.layout.activity_industry_black_list_publish);
         ButterKnife.bind(this);
-        initView();
 
-        getMenuData();
-        provinceList = CityUtil.getProvinceList();
-        provinceAndCityList = CityUtil.getCityList();
-        provinceAndCityAndAddList = CityUtil.getDistrictList();
-    }
-
-    private void initView() {
-        checkboxItemAdapter = new CheckboxItemAdapter(this.getApplicationContext(), checkItemList);
-        workCategoryListView.setAdapter(checkboxItemAdapter);
-        workCategoryListView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 3));
-        workCategoryListView.setLoadingMoreEnabled(false);
-        workCategoryListView.setPullRefreshEnabled(false);
     }
 
 
-    public void getMenuData() {
-        OkGo.<JHResponse<List<Category>>>post(ReleaseConfig.baseUrl() + "class/classList")
-                .tag(this)
-                .params("type", 2)
-                .params("pid", 0)
-                .execute(new JHCallback<JHResponse<List<Category>>>() {
-                    @Override
-                    public void onSuccess(Response<JHResponse<List<Category>>> response) {
-                        categoryList = response.body().getMsg();
-                        for(Category category : categoryList){
-                            CheckboxItemBean model = new CheckboxItemBean();
-                            model.setId(category.getId());
-                            model.setName(category.getName());
-                            model.setCheck(false);
-                            checkItemList.add(model);
-                        }
-                        checkboxItemAdapter.notifyDataSetChanged();
-                    }
-                });
-    }
-
-    @OnClick({R.id.backHomeLayout, R.id.selectTypeLayout, R.id.selectIntentAddressLayout, R.id.teamImageLayout, R.id.publishSubmitText})
+    @OnClick({R.id.backHomeLayout, R.id.selectTypeLayout, R.id.selectAddressLayout, R.id.uploadStoreImageLayout, R.id.publishSubmitText})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.backHomeLayout:
-                this.finish();
                 onBackPressed();
+                this.finish();
                 break;
             case R.id.selectTypeLayout:
                 break;
-            case R.id.selectIntentAddressLayout:
+            case R.id.selectAddressLayout:
                 showCityOptionsPickerView();
                 break;
-            case R.id.teamImageLayout:
+            case R.id.uploadStoreImageLayout:
                 selectStoreImage();
                 break;
             case R.id.publishSubmitText:
                 dialog = ProgressDialog.show(this, "", "正在提交，请稍后", true);
                 dialog.setCanceledOnTouchOutside(false);
                 dialog.setCancelable(false);
-                getCheckedCategory();
                 if(!checkFromOK()){
                     if (dialog != null && dialog.isShowing()) {
                         dialog.dismiss();
                     }
-                    T.showToast(PublishJobHuntingActivity.this, "表单信息未填写完整，无法提交");
+                    T.showToast(PublishIndustryBlackListActivity.this, "表单信息未填写完整，无法提交");
                     return;
                 }
                 uploadImage();
@@ -200,18 +151,19 @@ public class PublishJobHuntingActivity extends BaseActivity {
         }
     }
 
+
     //省市区选择器
     OptionsPickerView cityOptionsPickerView;
     private void showCityOptionsPickerView(){
 
         if(cityOptionsPickerView == null){
-            cityOptionsPickerView = new OptionsPickerBuilder(PublishJobHuntingActivity.this, new OnOptionsSelectListener() {
+            cityOptionsPickerView = new OptionsPickerBuilder(PublishIndustryBlackListActivity.this, new OnOptionsSelectListener() {
                 @Override
                 public void onOptionsSelect(int options1, int option2, int options3 ,View v) {
                     province = provinceList.get(options1);
                     city = provinceAndCityList.get(options1).get(option2);
                     district = provinceAndCityAndAddList.get(options1).get(option2).get(options3);
-                    intentAddressText.setText(province.getName() + "  " + city.getName() + "  " + district.getName());
+                    addressText.setText(province.getName() + "  " + city.getName() + "  " + district.getName());
 
                 }
             }).build();
@@ -223,18 +175,16 @@ public class PublishJobHuntingActivity extends BaseActivity {
             }
             if(provinceAndCityAndAddList == null){
                 provinceAndCityAndAddList = CityUtil.getDistrictList();
-                System.out.println("provinceAndCityAndAddList size is **************** " + provinceAndCityAndAddList == null ? -1 : provinceAndCityAndAddList.size());
             }
             cityOptionsPickerView.setPicker(provinceList, provinceAndCityList, provinceAndCityAndAddList);
 
         }
         cityOptionsPickerView.show();
-
     }
 
 
     private void selectStoreImage(){
-        Intent intent = new Intent(PublishJobHuntingActivity.this, PhotoSelectActivity.class);
+        Intent intent = new Intent(PublishIndustryBlackListActivity.this, PhotoSelectActivity.class);
         intent.putExtra(SELECT_MEDIA_TYPE,0);
         intent.putExtra(IMAGE_NUM,1);
         intent.putExtra(SELECT_MEDIA_TYPE,1);
@@ -249,8 +199,8 @@ public class PublishJobHuntingActivity extends BaseActivity {
             List<MediaBaseBean> mediaBaseBeanList = result.getMediaBaseBeanList();
             //选择的视频
             if(mediaBaseBeanList != null && mediaBaseBeanList.size() > 0){
-                teamImagePath = mediaBaseBeanList.get(0).getUrl();
-                teamImageView.setImageURI(Uri.fromFile(new File(teamImagePath)));
+                storeImagePath = mediaBaseBeanList.get(0).getUrl();
+                storeImageView.setImageURI(Uri.fromFile(new File(storeImagePath)));
             }
 
         }
@@ -260,19 +210,19 @@ public class PublishJobHuntingActivity extends BaseActivity {
 
     private void submit(){
         Map<String,String> params = new HashMap<>();
-        params.put("cid",checkedCategory);  //所选工种
-        params.put("name",titleNameEdit.getText().toString());  //名称
-        params.put("register",teamImageUrl);  //队伍图片
-        params.put("number",personNumEdit.getText().toString());  //人数
-        params.put("contacts_pid",province.getId());  //省份
-        params.put("contacts_aid",city.getId());  // 城市
-        params.put("contacts_cid",district.getId());  //区域
-        params.put("explain",addExplanationEdit.getText().toString());  //其他说明
+        params.put("name",alertMainEdit.getText().toString());  //名称
+        if(!StringUtil.isEmpty(storeImageUrl)){
+            params.put("register", storeImageUrl);  //队伍图片
+        }
+        params.put("area",getArea());  //省份
+        params.put("explain",explainEdit.getText().toString());  //其他说明
         params.put("linkman",linkmanEdit.getText().toString());  // 联系人
         params.put("telephone",UserService.getInstance().getMobile());  //电话
         params.put("uid",UserService.getInstance().getUid());  //用户ID
+        params.put("port","3");  // 联系人
 
-        OkGo.<JHResponse<String>>post(ReleaseConfig.baseUrl() + "Worker/workAddLogic")
+
+        OkGo.<JHResponse<String>>post(ReleaseConfig.baseUrl() + "Black/blackAdd")
                 .tag(this)
                 .params(params)
                 .execute(new JHCallback<JHResponse<String>>() {
@@ -281,8 +231,8 @@ public class PublishJobHuntingActivity extends BaseActivity {
                         if (dialog != null && dialog.isShowing()) {
                             dialog.dismiss();
                         }
-                        T.showToast(PublishJobHuntingActivity.this, "发布成功");
-                        PublishJobHuntingActivity.this.finish();
+                        T.showToast(PublishIndustryBlackListActivity.this, "发布成功");
+                        PublishIndustryBlackListActivity.this.finish();
 
                     }
                     @Override
@@ -291,17 +241,14 @@ public class PublishJobHuntingActivity extends BaseActivity {
                         if (dialog != null && dialog.isShowing()) {
                             dialog.dismiss();
                         }
-                        T.showToast(PublishJobHuntingActivity.this, response.getException().getMessage());
+                        T.showToast(PublishIndustryBlackListActivity.this, response.getException().getMessage());
                     }
                 });
     }
     //表单必填项校验
     private boolean checkFromOK(){
-        if(StringUtil.isEmpty(titleNameEdit.getText().toString())  //证件名称
-                || StringUtil.isEmpty(checkedCategory) //  所选工种
-                || StringUtil.isEmpty(personNumEdit.getText().toString()) // 人数
-                || StringUtil.isEmpty(teamImagePath) // 队伍图片
-                || StringUtil.isEmpty(addExplanationEdit.getText().toString())  //说明
+        if(StringUtil.isEmpty(alertMainEdit.getText().toString())  //警惕主体
+                || StringUtil.isEmpty(explainEdit.getText().toString()) // 说明
                 || StringUtil.isEmpty(linkmanEdit.getText().toString()) // 联系人
                 || province == null
                 || city == null
@@ -310,23 +257,21 @@ public class PublishJobHuntingActivity extends BaseActivity {
         }
         return true;
     }
-
     /**
      * 上传图片
      */
     private void uploadImage(){
 
-        File file = new File(teamImagePath);
+        File file = new File(storeImagePath);
         Map<String,Object> params = new HashMap<>();
-        params.put("type","Supplier");
+        params.put("type","Licence");
         params.put("file",file);
-
 
         DataRequestUtil.<JHResponse<String>>upLoadFile("Public/upload", params, new FileNetCallBack<JHResponse<String>>() {
             @Override
             public void done(JHResponse<String> result, Exception e) {
                 if(e == null){
-                    teamImageUrl = result.getMsg();
+                    storeImageUrl = result.getMsg();
                     Message message = new Message();
                     message.what = 1;
                     handler.sendMessage(message);
@@ -335,25 +280,11 @@ public class PublishJobHuntingActivity extends BaseActivity {
                     if (dialog != null && dialog.isShowing()) {
                         dialog.dismiss();
                     }
-                    T.showToast(PublishJobHuntingActivity.this, e.getMessage());
+                    T.showToast(PublishIndustryBlackListActivity.this, e.getMessage());
                 }
             }
         });
     }
-
-    private void getCheckedCategory(){
-        List<String> checkedItemList = new ArrayList<>();
-        for(Model model :checkItemList){
-            CheckboxItemBean checkboxItemBean = (CheckboxItemBean)model;
-            if(checkboxItemBean.isCheck()){
-                checkedItemList.add(checkboxItemBean.getId());
-            }
-        }
-        if(checkedItemList.size() > 0){
-            checkedCategory = JSON.toJSONString(checkedItemList);
-        }
-    }
-
 
     private Handler handler = new Handler(){
         @Override
@@ -369,4 +300,12 @@ public class PublishJobHuntingActivity extends BaseActivity {
         }
     };
 
+    private String getArea(){
+        List<String> areaList = new ArrayList<>();
+        areaList.add(province.getName());
+        areaList.add(city.getName());
+        areaList.add(district.getName());
+        String temp = JSON.toJSONString(areaList);
+        return temp.substring(2,temp.length()-2);
+    }
 }

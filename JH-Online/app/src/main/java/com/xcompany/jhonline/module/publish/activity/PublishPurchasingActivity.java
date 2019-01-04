@@ -10,27 +10,20 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.base.BaseActivity;
 import com.xcompany.jhonline.model.home.City;
 import com.xcompany.jhonline.module.home.base.CityListActivity;
-import com.xcompany.jhonline.module.system.activity.MainActivity;
-import com.xcompany.jhonline.network.DataRequestUtil;
 import com.xcompany.jhonline.network.JHCallback;
 import com.xcompany.jhonline.network.JHResponse;
-import com.xcompany.jhonline.network.NetCallBack;
 import com.xcompany.jhonline.network.UserService;
 import com.xcompany.jhonline.utils.ReleaseConfig;
 import com.xcompany.jhonline.utils.StringUtil;
 import com.xcompany.jhonline.utils.T;
 
-import org.json.JSONObject;
-
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -67,8 +60,6 @@ public class PublishPurchasingActivity extends BaseActivity {
     LinearLayout selectDeliveryAddressLayout;
     @BindView(R.id.linkmanEdit)
     EditText linkmanEdit;
-    @BindView(R.id.mobileEdit)
-    EditText mobileEdit;
     @BindView(R.id.addExplanationEdit)
     EditText addExplanationEdit;
     @BindView(R.id.publishSubmitText)
@@ -131,7 +122,7 @@ public class PublishPurchasingActivity extends BaseActivity {
         params.put("contacts_pid",city.getPid());  //省份
         params.put("explain",addExplanationEdit.getText().toString());  //其他说明
         params.put("linkman",linkmanEdit.getText().toString());  // 联系人
-        params.put("telephone",mobileEdit.getText().toString());  //电话
+        params.put("telephone",UserService.getInstance().getMobile());  //电话
         params.put("uid",UserService.getInstance().getUid());  //用户ID
 
         OkGo.<JHResponse<String>>post(ReleaseConfig.baseUrl() + "Supplier/PurchaseAddLogic")
@@ -163,7 +154,6 @@ public class PublishPurchasingActivity extends BaseActivity {
                 || city == null
                 || StringUtil.isEmpty(addExplanationEdit.getText().toString())
                 || StringUtil.isEmpty(linkmanEdit.getText().toString())
-                || StringUtil.isEmpty(mobileEdit.getText().toString())
                 ){
             return false;
         }

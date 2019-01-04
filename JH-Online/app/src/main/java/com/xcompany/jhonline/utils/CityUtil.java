@@ -78,6 +78,11 @@ public class CityUtil {
         }
         return cityList;
     }
+
+    /**
+     *  获取地区列表  遍历省，市 返回三层结构
+     * @return
+     */
     public static List<List<List<City>>> getDistrictList(){
         CityService cityService = JhApplication.getInstance().getCityService();
         Map<String,City> provinceListMap = cityService.getProvinceListMap();

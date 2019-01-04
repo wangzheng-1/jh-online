@@ -117,7 +117,7 @@ public class PublishSkillJobHuntingActivity extends BaseActivity {
         List<Model> categoryList = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             CheckboxItemBean checkboxItemBean = new CheckboxItemBean();
-            checkboxItemBean.setId(i);
+            checkboxItemBean.setId(i + "");
             checkboxItemBean.setName("工种" + i);
             categoryList.add(checkboxItemBean);
         }
