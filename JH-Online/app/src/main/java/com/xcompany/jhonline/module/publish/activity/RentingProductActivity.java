@@ -1,6 +1,5 @@
 package com.xcompany.jhonline.module.publish.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -11,10 +10,9 @@ import android.widget.TextView;
 import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.model.publish.Case;
 import com.xcompany.jhonline.utils.T;
-import com.xcompany.jhonline.widget.CaseView;
+import com.xcompany.jhonline.widget.ProductView;
 import com.xcompany.jhonline.widget.ProjectToolbar;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,19 +23,19 @@ import butterknife.OnClick;
 /**
  * Created by xieliang on 2019/1/1 23:04
  */
-public class ConstructionCaseActivity extends AppCompatActivity {
+public class RentingProductActivity extends AppCompatActivity {
     @BindView(R.id.ll_parent)
     LinearLayout llParent;
     @BindView(R.id.tv_submit)
     TextView tvSubmit;
     @BindView(R.id.toolbar)
     ProjectToolbar toolbar;
-    private List<CaseView> mdatas = new ArrayList<>();
+    private List<ProductView> mdatas = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_construction_case);
+        setContentView(R.layout.activity_renting_product);
         ButterKnife.bind(this);
         if (mdatas.size() == 0) {
             addForm(null, false);
@@ -47,13 +45,13 @@ public class ConstructionCaseActivity extends AppCompatActivity {
                 boolean flag = mdatas.size() != 0;
                 addForm(null, flag);
             } else {
-                T.showToast(this, "最多添加3个案例");
+                T.showToast(this, "最多添加3个产品");
             }
         });
     }
 
     public void addForm(Case mcase, boolean isDelete) {
-        CaseView view = new CaseView(this, isDelete);
+        ProductView view = new ProductView(this, isDelete);
         llParent.addView(view.mView);
         mdatas.add(view);
         view.setOnDeleteListener(() -> {
@@ -68,26 +66,25 @@ public class ConstructionCaseActivity extends AppCompatActivity {
             case R.id.ll_parent:
                 break;
             case R.id.tv_submit:
-                List<String> entry = new ArrayList<>();
-                List<String> illustrate = new ArrayList<>();
-                List<String> imgUrl = new ArrayList<>();
-                for (int i = 0; i < mdatas.size(); i++) {
-                    CaseView v = mdatas.get(i);
-                    if (!v.check()) {
-                        T.showToast(this, "请将表单填写完整！");
-                        return;
-                    } else {
-                        entry.add(v.getEntry());
-                        illustrate.add(v.getIllustrate());
-                        imgUrl.add("https://www.jhzxnet.com/Uploads/Build/images/2018-10-19/5bc930a363e53.jpg");
-                    }
-                }
-                Intent intent = new Intent();
-                intent.putExtra("entry", (Serializable) entry);
-                intent.putExtra("illustrate", (Serializable) illustrate);
-                intent.putExtra("imgUrl", (Serializable) imgUrl);
-                setResult(1008, intent);
-                finish();
+//                List<String> entry = new ArrayList<>();
+//                List<String> illustrate = new ArrayList<>();
+//                List<String> imgUrl = new ArrayList<>();
+//                for (int i = 0; i < mdatas.size(); i++) {
+//                    ProductView v = mdatas.get(i);
+//                    if (!v.check()) {
+//                        T.showToast(this, "请将表单填写完整！");
+//                        return;
+//                    } else {
+//                        entry.add(v.getEntry());
+//                        imgUrl.add("https://www.jhzxnet.com/Uploads/Build/images/2018-10-19/5bc930a363e53.jpg");
+//                    }
+//                }
+//                Intent intent = new Intent();
+//                intent.putExtra("entry", (Serializable) entry);
+//                intent.putExtra("illustrate", (Serializable) illustrate);
+//                intent.putExtra("imgUrl", (Serializable) imgUrl);
+//                setResult(1008, intent);
+//                finish();
                 break;
         }
     }

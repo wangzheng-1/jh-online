@@ -1,5 +1,6 @@
 package com.xcompany.jhonline.module.publish.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -53,6 +54,9 @@ public class PublishTypeActivity extends AppCompatActivity {
 
     private void initBtn1() {
         View view = View.inflate(this, R.layout.view_type_child1, null);
+        view.findViewById(R.id.entrance1).setOnClickListener(v -> {
+            startActivity(new Intent(PublishTypeActivity.this, TenderFormActivity.class));
+        });
         typeButton1.addChild(view);
         TypeButton2 child = view.findViewById(R.id.type_button_quality_team);
         QualityTeamTypeView qualityTeamTypeView = new QualityTeamTypeView(this);
@@ -61,9 +65,16 @@ public class PublishTypeActivity extends AppCompatActivity {
 
     private void initBtn2() {
         View view = View.inflate(this, R.layout.view_type_child2, null);
+        view.findViewById(R.id.entrance1).setOnClickListener(v -> {
+            startActivity(new Intent(PublishTypeActivity.this, RentSeekingActivity.class));
+        });
         typeButton2.addChild(view);
         TypeButton2 child = view.findViewById(R.id.entrance2);
         TypeGridView grandson = new TypeGridView(this, 0, 1);
+        grandson.setOnItemClickListener(category -> {
+            Intent intent= new Intent(this,RentingFormActivity.class);
+            startActivity(intent);
+        });
         child.addChild(grandson.mView);
     }
 
@@ -74,6 +85,9 @@ public class PublishTypeActivity extends AppCompatActivity {
 
     private void initBtn4() {
         View view = View.inflate(this, R.layout.view_type_child4, null);
+        view.findViewById(R.id.entrance1).setOnClickListener(v -> {
+            startActivity(new Intent(PublishTypeActivity.this, PublishCertificateAnchoredActivity.class));
+        });
         typeButton4.addChild(view);
     }
 
@@ -95,10 +109,12 @@ public class PublishTypeActivity extends AppCompatActivity {
         TypeGridView grandson2 = new TypeGridView(this, 3, 40);
         child2.addChild(grandson2.mView);
     }
+
     private void initBtn7() {
         TypeGridView gridView = new TypeGridView(this, 1, 0);
         typeButton7.addChild(gridView.mView);
     }
+
     private void initBtn8() {
         TypeGridView gridView = new TypeGridView(this, 7, 0);
         typeButton8.addChild(gridView.mView);

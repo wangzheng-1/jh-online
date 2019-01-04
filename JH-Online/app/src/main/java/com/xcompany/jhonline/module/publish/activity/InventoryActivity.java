@@ -150,10 +150,12 @@ public class InventoryActivity extends AppCompatActivity {
                     name += names.get(i);
                 }
                 Intent intent = new Intent();
-                intent.putExtra("id", id);
-                intent.putExtra("name", name);
+                Category inventory = new Category();
+                inventory.setId(id);
+                inventory.setName(name);
+                intent.putExtra("inventory", inventory);
                 intent.putExtra("cid", parent);
-                setResult(1006,intent);
+                setResult(1006, intent);
                 finish();
                 break;
             case R.id.rl_submit:

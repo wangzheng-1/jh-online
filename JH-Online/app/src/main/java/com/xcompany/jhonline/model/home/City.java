@@ -52,4 +52,9 @@ public class City implements Serializable {
     public void setGrade(String grade) {
         this.grade = grade;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

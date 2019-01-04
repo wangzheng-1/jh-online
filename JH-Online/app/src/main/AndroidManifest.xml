@@ -84,6 +84,11 @@
         <activity android:name=".module.publish.activity.PublishMajorLibraryActivity"/>
         <activity android:name=".module.publish.activity.PublisIndustryBlackListActivity"/>
         <activity android:name=".module.publish.activity.ConstructionCaseActivity" />
+        <activity android:name=".module.commen.ProvinceListActivity"/>
+        <activity android:name=".module.publish.activity.TenderFormActivity" />
+        <activity android:name=".module.publish.activity.RentingProductActivity" />
+        <activity android:name=".module.publish.activity.RentingFormActivity" />
+        <activity android:name=".module.publish.activity.RentSeekingActivity" />
     </application>
 
 </manifest>

@@ -1,6 +1,8 @@
 package com.xcompany.jhonline.module.publish.activity;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -15,9 +17,8 @@ import android.widget.TextView;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.base.BaseActivity;
-import com.xcompany.jhonline.model.base.Model;
-import com.xcompany.jhonline.model.publish.CheckboxItemBean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,10 +26,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.xcompany.jhonline.module.report.activity.PhotoSelectActivity.EXTRA_SELECTED_PHOTOS;
+
 /**
  * 新增服务过的项目
  */
 public class PublishServicedProjectActivity extends BaseActivity {
+
+    public static final String SELECTED_PROJECT = "selected_project";
+
     @BindView(R.id.backHomeLayout)
     LinearLayout backHomeLayout;
     @BindView(R.id.reportTitleText)
@@ -44,19 +50,23 @@ public class PublishServicedProjectActivity extends BaseActivity {
 
     ProjectItemAdapter projectItemAdapter;
 
-    private List<Model> checkboxItemBeanList = new ArrayList<>();
+    private List<String> servicedProjectList = null;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_serviced_project_add);
+        servicedProjectList = (List<String>) getIntent().getSerializableExtra(SELECTED_PROJECT);
         ButterKnife.bind(this);
         initListener();
     }
 
     private void initListener(){
-        checkboxItemBeanList.add(new CheckboxItemBean());
+        if(servicedProjectList == null || servicedProjectList.size() <= 0){
+            servicedProjectList = new ArrayList<>();
+            servicedProjectList.add("");
+        }
         projectItemAdapter = new ProjectItemAdapter(this.getApplicationContext());
         projectItemList.setAdapter(projectItemAdapter);
         projectItemList.setDividerHeight(0);
@@ -70,10 +80,9 @@ public class PublishServicedProjectActivity extends BaseActivity {
                 onBackPressed();
                 break;
             case R.id.addServiceText:
-                Model model = new CheckboxItemBean();
-                checkboxItemBeanList.add(model);
+                servicedProjectList.add("");
                 projectItemAdapter.notifyDataSetChanged();
-                projectItemList.setSelection(checkboxItemBeanList.size() - 1);
+                projectItemList.setSelection(servicedProjectList.size() - 1);
                 break;
             case R.id.publishSubmitText:
                 saveInfo();
@@ -92,7 +101,7 @@ public class PublishServicedProjectActivity extends BaseActivity {
 
         @Override
         public int getCount() {
-            return checkboxItemBeanList.size();
+            return servicedProjectList.size();
         }
 
         @Override
@@ -108,7 +117,7 @@ public class PublishServicedProjectActivity extends BaseActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             final MyViewHolder myViewHolder;
-            final CheckboxItemBean checkboxItemBean =  (CheckboxItemBean)checkboxItemBeanList.get(position);
+            final String  servicedProject = servicedProjectList.get(position);
             if (convertView == null) {
                 convertView = View.inflate(context, R.layout.activity_serviced_project_item, null);
                 myViewHolder = new MyViewHolder(convertView);
@@ -116,10 +125,11 @@ public class PublishServicedProjectActivity extends BaseActivity {
             } else {
                 myViewHolder = (MyViewHolder) convertView.getTag();
             }
+            myViewHolder.projectNameEdit.setText(servicedProject);
             myViewHolder.delProjectLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    checkboxItemBeanList.remove(position);
+                    servicedProjectList.remove(position);
                     ProjectItemAdapter.this.notifyDataSetChanged();
                 }
             });
@@ -131,7 +141,6 @@ public class PublishServicedProjectActivity extends BaseActivity {
             EditText projectNameEdit;
             @BindView(R.id.delProjectLayout)
             LinearLayout delProjectLayout;
-
             public MyViewHolder(View itemView) {
                 super(itemView);
                 ButterKnife.bind(this, itemView);
@@ -140,10 +149,8 @@ public class PublishServicedProjectActivity extends BaseActivity {
     }
 
     private void saveInfo(){
-
         List<String> projectNameList = new ArrayList<>();
-
-        for(int i = 0;i < checkboxItemBeanList.size(); i++){
+        for(int i = 0; i < servicedProjectList.size(); i++){
             View view = projectItemList.getChildAt(i);
             EditText editText = view.findViewById(R.id.projectNameEdit);
             String projectName = editText.getText().toString();
@@ -151,8 +158,9 @@ public class PublishServicedProjectActivity extends BaseActivity {
                 projectNameList.add(projectName);
             }
         }
-        for(String name : projectNameList){
-            System.out.println("projectName:*************************" + name);
-        }
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_SELECTED_PHOTOS, (Serializable) projectNameList);
+        setResult(Activity.RESULT_OK, intent);
+        finish();
     }
 }

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorf8fbff"
+    android:orientation="vertical">
+
+    <com.xcompany.jhonline.widget.ProjectToolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:toolbar_right="收藏"
+        app:toolbar_right_mode="left-black"
+        app:toolbar_title="所在省份" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/colorf8fbff"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginLeft="15dp"
+            android:gravity="center_vertical"
+            android:text="请选择省份"
+            android:textColor="#ff535353"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/provinceListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/transparent"
+        android:dividerHeight="0dp"
+        android:fadingEdge="none"
+        android:listSelector="@color/transparent"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        android:scrollingCache="false" />
+</LinearLayout>

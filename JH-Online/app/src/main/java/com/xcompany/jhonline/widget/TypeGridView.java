@@ -48,7 +48,18 @@ public class TypeGridView {
         grid.setMdatas(categories, curCategory);
         grid.setCheckChangeListener(category -> {
             curCategory = category.getId();
+            grid.setCurrentId(curCategory);
+            if (mListener != null) mListener.onItemClick(category);
         });
     }
 
+    public void setOnItemClickListener(OnItemClickListener mListener) {
+        this.mListener = mListener;
+    }
+
+    private OnItemClickListener mListener;
+
+    public interface OnItemClickListener {
+        void onItemClick(Category category);
+    }
 }
