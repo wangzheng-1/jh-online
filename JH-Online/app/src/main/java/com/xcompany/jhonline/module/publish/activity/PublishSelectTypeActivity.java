@@ -76,7 +76,7 @@ public class PublishSelectTypeActivity extends BaseActivity {
                 onBackPressed();
                 break;
             case R.id.divideConstructionLayout:
-                startActivity(new Intent(PublishSelectTypeActivity.this,PublishRecruitingActivity.class));
+                startActivity(new Intent(PublishSelectTypeActivity.this,PublishSkillRecruitingActivity.class));
                 break;
             case R.id.deviceLeaseLayout:
                 break;

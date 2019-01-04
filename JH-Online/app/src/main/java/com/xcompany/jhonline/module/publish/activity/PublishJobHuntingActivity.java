@@ -352,6 +352,9 @@ public class PublishJobHuntingActivity extends BaseActivity {
         if(checkedItemList.size() > 0){
             checkedCategory = JSON.toJSONString(checkedItemList);
         }
+        else{
+            checkedCategory = null;
+        }
     }
 
 

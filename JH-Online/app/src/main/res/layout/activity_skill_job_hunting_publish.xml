@@ -235,7 +235,7 @@
                 android:layout_marginBottom="10dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
-                <RadioGroup
+                <com.xcompany.jhonline.widget.MultiLineRadioGroup
                     android:id="@+id/radioGroup_gender"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -260,7 +260,9 @@
                             android:layout_weight="1"
                             android:text="初中以下"
                             android:textSize="13sp"
-                            android:textColor="@color/text_deep_gray"/>
+                            android:checked="true"
+                            android:textColor="@color/text_deep_gray"
+                            android:tag="0"/>
 
                         <RadioButton
                             android:id="@+id/levelHighMiddleRadio"
@@ -269,7 +271,8 @@
                             android:layout_weight="1"
                             android:text="中专/高中"
                             android:textSize="13sp"
-                            android:textColor="@color/text_deep_gray"/>
+                            android:textColor="@color/text_deep_gray"
+                            android:tag="1"/>
                         <RadioButton
                             android:id="@+id/levelJuniorCollegeRadio"
                             android:layout_width="0dp"
@@ -277,7 +280,8 @@
                             android:layout_weight="1"
                             android:text="专科"
                             android:textSize="13sp"
-                            android:textColor="@color/text_deep_gray"/>
+                            android:textColor="@color/text_deep_gray"
+                            android:tag="2"/>
 
                     </LinearLayout>
                     <LinearLayout
@@ -291,7 +295,8 @@
                             android:layout_weight="1"
                             android:text="本科"
                             android:textSize="13sp"
-                            android:textColor="@color/text_deep_gray"/>
+                            android:textColor="@color/text_deep_gray"
+                            android:tag="3"/>
                         <RadioButton
                             android:id="@+id/levelMasterRadio"
                             android:layout_width="0dp"
@@ -299,7 +304,8 @@
                             android:layout_weight="1"
                             android:text="硕士"
                             android:textSize="13sp"
-                            android:textColor="@color/text_deep_gray"/>
+                            android:textColor="@color/text_deep_gray"
+                            android:tag="4"/>
 
                         <RadioButton
                             android:id="@+id/levelDoctorRadio"
@@ -308,7 +314,8 @@
                             android:layout_weight="1"
                             android:text="博士"
                             android:textSize="13sp"
-                            android:textColor="@color/text_deep_gray"/>
+                            android:textColor="@color/text_deep_gray"
+                            android:tag="5"/>
                         <RadioButton
                             android:id="@+id/levelHighDoctorRadio"
                             android:layout_width="0dp"
@@ -316,10 +323,11 @@
                             android:layout_weight="1"
                             android:text="博士以上"
                             android:textSize="13sp"
-                            android:textColor="@color/text_deep_gray"/>
+                            android:textColor="@color/text_deep_gray"
+                            android:tag="6"/>
 
                     </LinearLayout>
-                </RadioGroup>
+                </com.xcompany.jhonline.widget.MultiLineRadioGroup>
             </LinearLayout>
 
             <View
