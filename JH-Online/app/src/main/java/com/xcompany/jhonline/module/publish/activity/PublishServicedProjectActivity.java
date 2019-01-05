@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -81,7 +83,9 @@ public class PublishServicedProjectActivity extends BaseActivity {
                 break;
             case R.id.addServiceText:
                 servicedProjectList.add("");
-                projectItemAdapter.notifyDataSetChanged();
+                projectItemAdapter = new ProjectItemAdapter(this.getApplicationContext());
+                projectItemList.setAdapter(projectItemAdapter);
+                projectItemList.setDividerHeight(0);
                 projectItemList.setSelection(servicedProjectList.size() - 1);
                 break;
             case R.id.publishSubmitText:
@@ -117,7 +121,7 @@ public class PublishServicedProjectActivity extends BaseActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             final MyViewHolder myViewHolder;
-            final String  servicedProject = servicedProjectList.get(position);
+            final String servicedProject = servicedProjectList.get(position);
             if (convertView == null) {
                 convertView = View.inflate(context, R.layout.activity_serviced_project_item, null);
                 myViewHolder = new MyViewHolder(convertView);
@@ -125,12 +129,29 @@ public class PublishServicedProjectActivity extends BaseActivity {
             } else {
                 myViewHolder = (MyViewHolder) convertView.getTag();
             }
+
             myViewHolder.projectNameEdit.setText(servicedProject);
             myViewHolder.delProjectLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     servicedProjectList.remove(position);
                     ProjectItemAdapter.this.notifyDataSetChanged();
+                }
+            });
+            myViewHolder.projectNameEdit.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    servicedProjectList.set(position,s.toString());
+                    System.out.println(servicedProjectList.get(position));
                 }
             });
             return convertView;
@@ -159,7 +180,7 @@ public class PublishServicedProjectActivity extends BaseActivity {
             }
         }
         Intent intent = new Intent();
-        intent.putExtra(EXTRA_SELECTED_PHOTOS, (Serializable) projectNameList);
+        intent.putExtra(SELECTED_PROJECT, (Serializable) projectNameList);
         setResult(Activity.RESULT_OK, intent);
         finish();
     }
