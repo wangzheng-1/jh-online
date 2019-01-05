@@ -22,9 +22,12 @@ public class TypeGridView {
     private Context mContext;
     private List<Category> categories = new ArrayList<>();
     private String curCategory = "";
+    private JHGridView grid;
+    private boolean isCheckFirst;
 
-    public TypeGridView(Context context, int type, int pid) {
+    public TypeGridView(Context context, int type, int pid,boolean isCheckFirst) {
         mContext = context;
+        this.isCheckFirst = isCheckFirst;
         mView = View.inflate(context, R.layout.view_type_grid, null);
         getMenuData(type, pid);
     }
@@ -43,14 +46,24 @@ public class TypeGridView {
                 });
     }
 
+    public String getCurCategory() {
+        return curCategory;
+    }
+
     private void initView() {
-        JHGridView grid = mView.findViewById(R.id.grid);
+        grid = mView.findViewById(R.id.grid);
         grid.setMdatas(categories, curCategory);
         grid.setCheckChangeListener(category -> {
             curCategory = category.getId();
             grid.setCurrentId(curCategory);
             if (mListener != null) mListener.onItemClick(category);
         });
+        if(isCheckFirst){
+            Category category = categories.get(0);
+            curCategory = category.getId();
+            grid.setCurrentId(curCategory);
+            if (mListener != null) mListener.onItemClick(category);
+        }
     }
 
     public void setOnItemClickListener(OnItemClickListener mListener) {

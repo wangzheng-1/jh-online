@@ -18,9 +18,10 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:paddingLeft="15dp"
-            android:text="新增项目"
+            android:text="产品类目"
             android:textColor="@color/color0072FF"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/iv_delete"
@@ -37,40 +38,18 @@
         android:background="@color/colorEFEFEF" />
 
     <LinearLayout
+        android:id="@+id/ll_parent"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/white"
-        android:orientation="horizontal"
-        android:paddingRight="15dp">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"></LinearLayout>
 
-        <TextView
-            android:layout_width="110dp"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:paddingLeft="15dp"
-            android:text="项目名称"
-            android:textColor="@color/color333333"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-
-        <com.xcompany.jhonline.widget.CleanEditText
-            android:id="@+id/et_entry"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:background="@null"
-            android:hint="请输入项目名称"
-            android:singleLine="true"
-            android:textColor="@color/color333333"
-            android:textColorHint="#CCCCCC"
-            android:textSize="13sp" />
-    </LinearLayout>
-
-    <View
+    <com.xcompany.jhonline.widget.AutoGridView
+        android:id="@+id/child_grid"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/colorEFEFEF" />
+        android:layout_height="wrap_content"
+        android:listSelector="@color/transparent"
+        android:numColumns="5" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="145dp"
@@ -135,44 +114,6 @@
                 android:textStyle="bold"
                 android:visibility="gone" />
         </FrameLayout>
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/colorEFEFEF" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="140dp"
-        android:background="@color/white"
-        android:orientation="horizontal"
-        android:paddingTop="20dp"
-        android:paddingRight="15dp"
-        android:paddingBottom="20dp">
-
-        <TextView
-            android:layout_width="110dp"
-            android:layout_height="match_parent"
-            android:paddingLeft="15dp"
-            android:text="施工案例说明"
-            android:textColor="@color/color333333"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/et_illustrate"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:background="@null"
-            android:gravity="top"
-            android:hint="请输入说明"
-            android:lineHeight="20dp"
-            android:textColor="@color/color333333"
-            android:textColorHint="#CCCCCC"
-            android:textSize="13sp" />
     </LinearLayout>
 
     <View

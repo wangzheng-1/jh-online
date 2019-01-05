@@ -27,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:type_button_logo="@mipmap/divide_construction"
-                app:type_button_title="特项工程类" />
+                app:type_button_title="分包承建信息" />
 
             <com.xcompany.jhonline.widget.TypeButton
                 android:id="@+id/type_button2"

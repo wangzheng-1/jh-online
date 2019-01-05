@@ -460,42 +460,6 @@
                         android:textColorHint="#CCCCCC"
                         android:textSize="13sp" />
                 </LinearLayout>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/colorEFEFEF" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="@color/white"
-                    android:orientation="horizontal"
-                    android:paddingRight="15dp">
-
-                    <TextView
-                        android:layout_width="110dp"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="15dp"
-                        android:text="手机号码 "
-                        android:textColor="@color/color333333"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <com.xcompany.jhonline.widget.CleanEditText
-                        android:id="@+id/et_telephone"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="10dp"
-                        android:layout_weight="1"
-                        android:background="@null"
-                        android:hint="请输入手机号码"
-                        android:inputType="phone"
-                        android:singleLine="true"
-                        android:textColor="@color/color333333"
-                        android:textColorHint="#CCCCCC"
-                        android:textSize="13sp" />
-                </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"

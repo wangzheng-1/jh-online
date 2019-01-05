@@ -14,8 +14,8 @@ import com.xcompany.jhonline.model.report.MediaBaseBean;
 import com.xcompany.jhonline.model.report.MediaBaseBeanSerial;
 import com.xcompany.jhonline.module.report.activity.PhotoSelectActivity;
 import com.xcompany.jhonline.utils.T;
-import com.xcompany.jhonline.widget.CaseView;
 import com.xcompany.jhonline.widget.ProjectToolbar;
+import com.xcompany.jhonline.widget.SupplierProductView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -31,22 +31,22 @@ import static com.xcompany.jhonline.module.report.activity.PhotoSelectActivity.I
 /**
  * Created by xieliang on 2019/1/1 23:04
  */
-public class ConstructionCaseActivity extends AppCompatActivity {
+public class SupplierProductActivity extends AppCompatActivity {
     @BindView(R.id.ll_parent)
     LinearLayout llParent;
     @BindView(R.id.tv_submit)
     TextView tvSubmit;
     @BindView(R.id.toolbar)
     ProjectToolbar toolbar;
-    private List<CaseView> mdatas = new ArrayList<>();
-    private CaseView current = null;
+    private List<SupplierProductView> mdatas = new ArrayList<>();
+    private SupplierProductView current = null;
     private static String SELECT_MEDIA_TYPE = "selectMediaType";
     private static final int RC_CHOOSE_PHOTO = 1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_construction_case);
+        setContentView(R.layout.activity_renting_product);
         ButterKnife.bind(this);
         if (mdatas.size() == 0) {
             addForm(false);
@@ -56,21 +56,21 @@ public class ConstructionCaseActivity extends AppCompatActivity {
                 boolean flag = mdatas.size() != 0;
                 addForm(flag);
             } else {
-                T.showToast(this, "最多添加3个案例");
+                T.showToast(this, "最多添加3个产品");
             }
         });
     }
 
     public void addForm(boolean isDelete) {
-        CaseView view = new CaseView(this, isDelete);
+        SupplierProductView view = new SupplierProductView(this, isDelete);
         llParent.addView(view.mView);
         mdatas.add(view);
         view.setOnDeleteListener(() -> {
             mdatas.remove(view);
             llParent.removeView(view.mView);
         });
-        view.setOnImageListener(caseView -> {
-            current = caseView;
+        view.setOnImageListener(productView -> {
+            current = productView;
             Intent intent = new Intent(this, PhotoSelectActivity.class);
             intent.putExtra(SELECT_MEDIA_TYPE, 0);
             intent.putExtra(IMAGE_NUM, 1);
@@ -84,24 +84,28 @@ public class ConstructionCaseActivity extends AppCompatActivity {
             case R.id.ll_parent:
                 break;
             case R.id.tv_submit:
-                List<String> entry = new ArrayList<>();
-                List<String> illustrate = new ArrayList<>();
-                List<String> imgUrl = new ArrayList<>();
+                List<String> cid = new ArrayList<>();
+                List<String> classid = new ArrayList<>();
+                String cname = "";
+                List<String> register = new ArrayList<>();
                 for (int i = 0; i < mdatas.size(); i++) {
-                    CaseView v = mdatas.get(i);
+                    SupplierProductView v = mdatas.get(i);
                     if (!v.check()) {
                         T.showToast(this, "请将表单填写完整！");
                         return;
                     } else {
-                        entry.add(v.getEntry());
-                        illustrate.add(v.getIllustrate());
-                        imgUrl.add(v.getImageUrl());
+                        cid.add(v.getCurCategory().getId());
+                        classid.add(v.getCurChild().getId());
+                        if (!TextUtils.isEmpty(cname)) cname += ",";
+                        cname += v.getCurCategory().getName();
+                        register.add(v.getImageUrl());
                     }
                 }
                 Intent intent = new Intent();
-                intent.putExtra("entry", (Serializable) entry);
-                intent.putExtra("illustrate", (Serializable) illustrate);
-                intent.putExtra("imgUrl", (Serializable) imgUrl);
+                intent.putExtra("cname", cname);
+                intent.putExtra("cid", (Serializable) cid);
+                intent.putExtra("classid", (Serializable) classid);
+                intent.putExtra("register", (Serializable) register);
                 setResult(1008, intent);
                 finish();
                 break;

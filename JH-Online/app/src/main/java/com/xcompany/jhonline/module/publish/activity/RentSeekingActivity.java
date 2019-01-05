@@ -1,7 +1,6 @@
 package com.xcompany.jhonline.module.publish.activity;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -158,8 +157,9 @@ public class RentSeekingActivity extends AppCompatActivity {
         params.put("telephone", "123456");
         params.put("uid", UserService.getInstance().getUid());
         params.put("cid", 2);
+        params.put("contacts","");//页面没有的字段，但接口不传不行
 
-        OkGo.<JHResponse<String>>post(ReleaseConfig.baseUrl() + "Lease/ lendAddLogic")
+        OkGo.<JHResponse<String>>post(ReleaseConfig.baseUrl() + "Lease/lendAddLogic")
                 .tag(this)
                 .params(params)
                 .execute(new JHCallback<JHResponse<String>>() {

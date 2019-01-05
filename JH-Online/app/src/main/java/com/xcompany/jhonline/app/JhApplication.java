@@ -9,15 +9,17 @@ import com.lzy.okgo.cache.CacheEntity;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.cookie.CookieJarImpl;
 import com.lzy.okgo.cookie.store.SPCookieStore;
-import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
 import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.model.HttpParams;
+import com.socks.library.KLog;
 import com.xcompany.jhonline.model.base.CityService;
 
+import java.net.URLDecoder;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 
 public class JhApplication extends Application {
@@ -34,6 +36,7 @@ public class JhApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        KLog.init(true, "JHOnline");//开发阶段打印日志，正式环境请关闭！
         initOkGo();
     }
 
@@ -46,10 +49,11 @@ public class JhApplication extends Application {
 
     private void initOkGo() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor("OkGo");
-        loggingInterceptor.setPrintLevel(HttpLoggingInterceptor.Level.BODY);
-        loggingInterceptor.setColorLevel(Level.INFO);
-        builder.addInterceptor(loggingInterceptor);
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor(message -> {
+            KLog.i(URLDecoder.decode(message));
+        });
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        builder.addInterceptor(logging);
         //全局的读取超时时间
         builder.readTimeout(30000, TimeUnit.MILLISECONDS);
         //全局的写入超时时间
@@ -60,9 +64,7 @@ public class JhApplication extends Application {
         builder.cookieJar(new CookieJarImpl(new SPCookieStore(this)));
 
         HttpHeaders headers = new HttpHeaders();
-        headers.put("token", "123");
         HttpParams params = new HttpParams();
-        params.put("user", "汪正");
         OkGo.getInstance().init(this)
                 .setOkHttpClient(builder.build())
                 .setCacheMode(CacheMode.NO_CACHE)               //全局统一缓存模式，默认不使用缓存，可以不传

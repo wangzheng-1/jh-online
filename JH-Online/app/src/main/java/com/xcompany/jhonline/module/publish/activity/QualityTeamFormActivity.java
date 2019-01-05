@@ -30,15 +30,11 @@ import com.xcompany.jhonline.utils.T;
 import com.xcompany.jhonline.widget.CleanEditText;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.IdentityHashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.MultipartBody;
 
 /**
  * Created by xieliang on 2019/1/1 10:14
@@ -82,8 +78,6 @@ public class QualityTeamFormActivity extends AppCompatActivity {
     LinearLayout llNative;
     @BindView(R.id.ll_address)
     LinearLayout llAddress;
-    @BindView(R.id.et_telephone)
-    CleanEditText etTelephone;
     private Category cid;
     private Category inventory;
     List<String> entry = new ArrayList<>();
@@ -257,9 +251,9 @@ public class QualityTeamFormActivity extends AppCompatActivity {
         HttpParams params = new HttpParams();
         params.put("cid", cid.getId());
         params.put("name", etName.getText().toString());
-        params.put("inventory", inventory.getName());
+        params.put("inventory", inventory.getId());
         params.put("pay", etPay.getText().toString());
-        params.put("service", service_pid + "," + service_aid + "," + service_cid);
+        params.put("service", service_pid.getId() + "," + service_aid.getId() + "," + service_cid.getId());
         params.putUrlParams("entry", entry);
         params.putUrlParams("illustrate", illustrate);
         params.putUrlParams("imgUrl", imgUrl);
@@ -267,7 +261,7 @@ public class QualityTeamFormActivity extends AppCompatActivity {
         params.put("idea", etIdea.getText().toString());
         params.put("enounce", etEnounce.getText().toString());
         params.put("linkman", etLinkman.getText().toString());
-        params.put("telephone", etTelephone.getText().toString());
+        params.put("telephone", UserService.getInstance().getMobile());
         params.put("native", native_cid.getId());
         params.put("contacts_pid", contacts_pid.getId());
         params.put("contacts_aid", contacts_aid.getId());
@@ -306,11 +300,10 @@ public class QualityTeamFormActivity extends AppCompatActivity {
                 || service_pid == null
                 || service_aid == null
                 || service_cid == null
-                || entry == null
-                || imgUrl == null
+                || entry == null||entry.size()==0
+                || imgUrl == null||imgUrl.size()==0
                 || StringUtil.isEmpty(etExplain.getText().toString())
                 || StringUtil.isEmpty(etLinkman.getText().toString())
-                || StringUtil.isEmpty(etTelephone.getText().toString())
                 || native_cid == null
                 || contacts_pid == null
                 || contacts_aid == null
@@ -320,17 +313,4 @@ public class QualityTeamFormActivity extends AppCompatActivity {
         }
         return true;
     }
-//    public MultipartBody multipartBodyData(IdentityHashMap<String,String> identityHashMap){
-//        MultipartBody.Builder requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM);
-//        if(identityHashMap ==null || identityHashMap.size() ==0){
-//            return requestBody.build();
-//        }
-//
-//        for (String key :identityHashMap.keySet()){
-//            requestBody.addFormDataPart(key,identityHashMap.get(key));
-//
-//        }
-//
-//        return requestBody.build();
-//    }
 }

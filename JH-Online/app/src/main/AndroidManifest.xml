@@ -82,13 +82,15 @@
         <activity android:name=".module.publish.activity.PublishJobHuntingActivity"/>
         <activity android:name=".module.publish.activity.PublishConstructionMatchActivity"/>
         <activity android:name=".module.publish.activity.PublishMajorLibraryActivity"/>
-        <activity android:name=".module.publish.activity.PublisIndustryBlackListActivity"/>
+        <!--<activity android:name=".module.publish.activity.PublisIndustryBlackListActivity"/>-->
         <activity android:name=".module.publish.activity.ConstructionCaseActivity" />
         <activity android:name=".module.commen.ProvinceListActivity"/>
         <activity android:name=".module.publish.activity.TenderFormActivity" />
         <activity android:name=".module.publish.activity.RentingProductActivity" />
         <activity android:name=".module.publish.activity.RentingFormActivity" />
         <activity android:name=".module.publish.activity.RentSeekingActivity" />
+        <activity android:name=".module.publish.activity.SupplierProductActivity" />
+        <activity android:name=".module.publish.activity.QualitySupplierFormActivity" />
     </application>
 
 </manifest>

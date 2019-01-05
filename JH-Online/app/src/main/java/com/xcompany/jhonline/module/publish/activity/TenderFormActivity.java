@@ -55,8 +55,6 @@ public class TenderFormActivity extends AppCompatActivity {
     CleanEditText etEmail;
     @BindView(R.id.et_linkman)
     CleanEditText etLinkman;
-    @BindView(R.id.et_telephone)
-    CleanEditText etTelephone;
     @BindView(R.id.et_explain)
     EditText etExplain;
     @BindView(R.id.tv_submit)
@@ -146,10 +144,10 @@ public class TenderFormActivity extends AppCompatActivity {
         params.put("company", etCompany.getText().toString());
         params.put("acreage", etAcreage.getText().toString());
         params.put("cid", cid.getId());
-        params.put("inventory", inventory.getName());
+        params.put("inventory", inventory.getId());
         params.put("explain", etExplain.getText().toString());
         params.put("linkman", etLinkman.getText().toString());
-        params.put("telephone", etTelephone.getText().toString());
+        params.put("telephone",UserService.getInstance().getMobile());  //电话
         params.put("email", etEmail.getText().toString());
         params.put("contacts_pid", contacts_pid.getId());
         params.put("contacts_aid", contacts_aid.getId());
@@ -189,7 +187,6 @@ public class TenderFormActivity extends AppCompatActivity {
                 || inventory == null
                 || StringUtil.isEmpty(etExplain.getText().toString())
                 || StringUtil.isEmpty(etLinkman.getText().toString())
-                || StringUtil.isEmpty(etTelephone.getText().toString())
                 || contacts_pid == null
                 || contacts_aid == null
                 || contacts_cid == null

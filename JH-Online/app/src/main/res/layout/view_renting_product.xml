@@ -77,7 +77,7 @@
             android:textStyle="bold" />
 
         <com.xcompany.jhonline.widget.CleanEditText
-            android:id="@+id/et_class"
+            android:id="@+id/et_title"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginRight="10dp"
@@ -147,13 +147,13 @@
 
             <TextView
                 android:id="@+id/tv_upload"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_gravity="center"
                 android:background="@drawable/bg_upload"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="重新上传"
+                android:text="重新\n上传"
                 android:textColor="@color/white"
                 android:textSize="12sp"
                 android:textStyle="bold"
