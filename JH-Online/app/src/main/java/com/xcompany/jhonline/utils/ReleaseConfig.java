@@ -62,31 +62,45 @@ public class ReleaseConfig {
         return this.urlInfo.getBaseUrl();
     }
 
+    public String getDisplayBaseUrl() {
+        return this.urlInfo.getDisplayBaseUrl();
+    }
+
     private static class URLInfo {
         private String baseUrl;
+        private String displayBaseUrl;
 
         URLInfo(ReleaseType releaseType) {
             switch (releaseType) {
                 case DEV:
                     this.baseUrl = "https://www.jhzxnet.com/Api/";
+                    this.displayBaseUrl = "https://www.jhzxnet.com";
                     break;
                 case SIT:
                     this.baseUrl = "https://www.jhzxnet.com/Api/";
+                    this.displayBaseUrl = "https://www.jhzxnet.com";
                     break;
                 case UAT:
                     this.baseUrl = "https://www.jhzxnet.com/Api/";
+                    this.displayBaseUrl = "https://www.jhzxnet.com";
                     break;
                 case PRD:
                     this.baseUrl = "https://www.jhzxnet.com/Api/";
+                    this.displayBaseUrl = "https://www.jhzxnet.com";
                     break;
                 default:
                     this.baseUrl = "https://www.jhzxnet.com/Api/";
+                    this.displayBaseUrl = "https://www.jhzxnet.com";
                     break;
             }
         }
 
         public String getBaseUrl() {
             return baseUrl;
+        }
+
+        public String getDisplayBaseUrl() {
+            return displayBaseUrl;
         }
 
     }

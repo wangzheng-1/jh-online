@@ -6,20 +6,11 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">>
 
-    <!--<com.cjt2325.cameralibrary.JCameraView-->
-        <!--android:id="@+id/cameraview"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--app:iconMargin="20dp"-->
-        <!--app:iconWidth="30dp"-->
-        <!--app:iconSrc="@drawable/ic_repeat_black_24dp"-->
-        <!--/>-->
-
     <com.cjt2325.cameralibrary.JCameraView
         android:id="@+id/jcameraview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:duration_max="10000"
+        app:duration_max="30000"
         app:iconMargin="20dp"
         app:iconSize="30dp"
         app:iconSrc="@drawable/ic_camera"/>

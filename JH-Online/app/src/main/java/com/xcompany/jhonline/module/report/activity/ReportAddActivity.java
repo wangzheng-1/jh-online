@@ -1,10 +1,13 @@
 package com.xcompany.jhonline.module.report.activity;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
@@ -16,16 +19,33 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.Response;
 import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.base.BaseActivity;
+import com.xcompany.jhonline.model.base.Model;
+import com.xcompany.jhonline.model.publish.CheckboxItemBean;
 import com.xcompany.jhonline.model.report.MediaBaseBean;
 import com.xcompany.jhonline.model.report.MediaBaseBeanSerial;
+import com.xcompany.jhonline.module.publish.activity.PublishJobHuntingActivity;
+import com.xcompany.jhonline.network.DataRequestUtil;
+import com.xcompany.jhonline.network.FileNetCallBack;
+import com.xcompany.jhonline.network.FileResponse;
+import com.xcompany.jhonline.network.JHCallback;
+import com.xcompany.jhonline.network.JHResponse;
+import com.xcompany.jhonline.network.UserService;
 import com.xcompany.jhonline.utils.FileUtil;
+import com.xcompany.jhonline.utils.ReleaseConfig;
+import com.xcompany.jhonline.utils.StringUtil;
+import com.xcompany.jhonline.utils.T;
 
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -93,6 +113,14 @@ public class ReportAddActivity extends BaseActivity implements EasyPermissions.P
 
 
     private  MediaBaseBean videoBaseBean = null; //所拍的视频。
+
+
+    List<String> mediaPathList = null; //已经选择的视频或者图片Path
+
+    List<String> mediaPathUrl = null; //已经选择的视频或者图片url
+
+
+    private String ext;  //文件格式
 
 
     @Override
@@ -273,14 +301,39 @@ public class ReportAddActivity extends BaseActivity implements EasyPermissions.P
         }
     }
 
-    @OnClick({R.id.snpl_moment_add_photos, R.id.videoAddLayout})
+    @OnClick({R.id.snpl_moment_add_photos, R.id.videoAddLayout,R.id.backHomeLayout,R.id.publishSubmitText})
     public void onClick(View view) {
         switch (view.getId()) {
+
             case R.id.videoAddLayout:
                 if(videoBaseBean != null){
                     Intent intent = new Intent(ReportAddActivity.this, VideoPreviewActivity.class);
                     intent.putExtra("videopath",videoBaseBean.getUrl());
                     startActivityForResult(intent,RC_VIDEO_PREVIEW);
+                }
+                break;
+            case R.id.backHomeLayout:
+                ReportAddActivity.this.finish();
+                onBackPressed();
+                break;
+
+            case R.id.publishSubmitText:
+                dialog = ProgressDialog.show(this, "", "正在提交，请稍后", true);
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.setCancelable(false);
+                getMediaPathList();
+                if(!checkFromOK()){
+                    if (dialog != null && dialog.isShowing()) {
+                        dialog.dismiss();
+                    }
+                    T.showToast(ReportAddActivity.this, "表单信息未填写完整，无法提交");
+                    return;
+                }
+                if(mediaPathList != null && mediaPathList.size() >0){
+                    uploadImage();
+                }
+                else {
+                    submit();
                 }
                 break;
         }
@@ -352,6 +405,116 @@ public class ReportAddActivity extends BaseActivity implements EasyPermissions.P
             bottomSheet.show();
         }
     }
+
+
+    private ProgressDialog dialog = null;
+
+    private void submit(){
+        Map<String,String> params = new HashMap<>();
+        params.put("business",mineReportContent.getText().toString());  //人数
+        if(mediaPathUrl!= null && mediaPathUrl.size() >0){
+            params.put("choosefile",StringUtil.join(mediaPathUrl,","));  //名称
+            params.put("ext",ext);  //队伍图片
+        }
+        params.put("port","3");  //人数
+        params.put("uid",UserService.getInstance().getUid());  //用户ID
+
+        OkGo.<JHResponse<String>>post(ReleaseConfig.baseUrl() + "Forum/forumAddLogic")
+                .tag(this)
+                .params(params)
+                .execute(new JHCallback<JHResponse<String>>() {
+                    @Override
+                    public void onSuccess(Response<JHResponse<String>> response) {
+                        if (dialog != null && dialog.isShowing()) {
+                            dialog.dismiss();
+                        }
+                        T.showToast(ReportAddActivity.this, "发布成功");
+                        ReportAddActivity.this.finish();
+
+                    }
+                    @Override
+                    public void onError(Response<JHResponse<String>> response) {
+
+                        if (dialog != null && dialog.isShowing()) {
+                            dialog.dismiss();
+                        }
+                        T.showToast(ReportAddActivity.this, response.getException().getMessage());
+                    }
+                });
+    }
+    //表单必填项校验
+    private boolean checkFromOK(){
+        if(StringUtil.isEmpty(mineReportContent.getText().toString()) )
+        {
+            return false;
+        }
+        return true;
+    }
+
+    private void getMediaPathList(){
+        mediaPathList = new ArrayList<>();
+        //选择的视频
+        if(videoAddLayout.getVisibility() == View.VISIBLE){
+
+            if(videoBaseBean != null){
+                mediaPathList.add(videoBaseBean.getUrl());
+            }
+            else {
+                mediaPathList = null;
+            }
+        }
+        else {
+
+            mediaPathList.addAll(mPhotosSnpl.getData());
+        }
+    }
+
+    /**
+     * 上传图片
+     */
+    private void uploadImage(){
+        Map<String,Object> params = new HashMap<>();
+        params.put("type","card");
+        for(int i = 0; i < mediaPathList.size(); i++){
+            File file = new File(mediaPathList.get(i));
+            params.put("file" + i,file);
+
+        }
+        DataRequestUtil.<FileResponse<String>>upLoadFile("Public/upload", params, new FileNetCallBack<FileResponse<String>>() {
+            @Override
+            public void done(FileResponse<String> result, Exception e) {
+                if(e == null){
+                    mediaPathUrl = new ArrayList<>();
+                    mediaPathUrl.add(result.getMsg());
+                    ext = result.getExt();
+                    Message message = new Message();
+                    message.what = 1;
+                    handler.sendMessage(message);
+                }
+                else {
+                    if (dialog != null && dialog.isShowing()) {
+                        dialog.dismiss();
+                    }
+                    T.showToast(ReportAddActivity.this, e.getMessage());
+                }
+            }
+        });
+    }
+
+
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            int msgWhat = msg.what;
+            switch (msgWhat){
+                case 1:
+                    submit();
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
 }
 

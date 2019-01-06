@@ -205,8 +205,8 @@ public class PhotoSelectActivity extends BaseActivity {
             return;
         }
         while (cursor.moveToNext()) {
-            long size = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.SIZE)); // 大小
-            if (size < 500 * 1024 * 1024) { //视频小于500M
+            long durationDate = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION)); // 时长
+            if (durationDate <= 30000) { //视频时长小于30秒
                 String path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA)); // 路径
                 long duration = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION)); // 时长
                 String createTimeStr = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_ADDED)); // 路径

@@ -5,64 +5,131 @@ import android.os.Parcelable;
 
 import com.xcompany.jhonline.model.base.Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
- * 作者:王浩 邮件:bingoogolapple@gmail.com
- * 创建时间:16/7/10 上午1:12
- * 描述:
+ * 汪正  爆料
  */
-public class Moment extends Model implements Parcelable {
-    public String content;
-    public String videoUrl;
-    public ArrayList<String> photos;
+public class Moment extends Model implements Serializable {
+    private static final long serialVersionUID = 7553074963902204865L;
 
-    @Override
-    public int describeContents() {
-        return 0;
+
+    /**
+     *  信息ID
+     */
+    private String id;
+
+    /**
+     *  说明
+     */
+    private String business;
+
+    /**
+     *  文件列表
+     */
+    private List<String> choosefile;
+
+    /**
+     *  文件格式
+     */
+    private String ext;
+
+    /**
+     *  点赞数
+     */
+    private String give;
+
+    /**
+     *  端口
+     */
+    private String port;
+
+    /**
+     *  发表时间
+     */
+    private String addtime;
+
+    /**
+     *  发表时间
+     */
+    private List<Comment> make;
+
+    /**
+     *  发表时间
+     */
+    private Fellow givelist;
+
+    public String getId() {
+        return id;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.content);
-        dest.writeStringList(this.photos);
-        dest.writeString(this.videoUrl);
-
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public Moment() {
+    public String getBusiness() {
+        return business;
     }
 
-    public Moment(String content, ArrayList<String> photos) {
-        this.content = content;
-        this.photos = photos;
+    public void setBusiness(String business) {
+        this.business = business;
     }
 
-    public Moment(String content,String videoUrl) {
-        this.content = content;
-        this.videoUrl = videoUrl;
-    }
-    public Moment(String content,String videoUrl, ArrayList<String> photos) {
-        this.content = content;
-        this.videoUrl = videoUrl;
-        this.photos = photos;
-    }
-    protected Moment(Parcel in) {
-        this.content = in.readString();
-        this.photos = in.createStringArrayList();
-        this.videoUrl = in.readString();
-
+    public List<String> getChoosefile() {
+        return choosefile;
     }
 
-    public static final Creator<Moment> CREATOR = new Creator<Moment>() {
-        @Override
-        public Moment createFromParcel(Parcel source) {
-            return new Moment(source);
-        }
+    public void setChoosefile(List<String> choosefile) {
+        this.choosefile = choosefile;
+    }
 
-        @Override
-        public Moment[] newArray(int size) {
-            return new Moment[size];
-        }
-    };
+    public String getExt() {
+        return ext;
+    }
+
+    public void setExt(String ext) {
+        this.ext = ext;
+    }
+
+    public String getGive() {
+        return give;
+    }
+
+    public void setGive(String give) {
+        this.give = give;
+    }
+
+    public String getPort() {
+        return port;
+    }
+
+    public void setPort(String port) {
+        this.port = port;
+    }
+
+    public String getAddtime() {
+        return addtime;
+    }
+
+    public void setAddtime(String addtime) {
+        this.addtime = addtime;
+    }
+
+    public List<Comment> getMake() {
+        return make;
+    }
+
+    public void setMake(List<Comment> make) {
+        this.make = make;
+    }
+
+    public Fellow getGivelist() {
+        return givelist;
+    }
+
+    public void setGivelist(Fellow givelist) {
+        this.givelist = givelist;
+    }
 }

@@ -28,13 +28,21 @@ public abstract class FileNetCallBack<T> implements Callback {
             Type type = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
             try {
                 T t = new Gson().fromJson(jsonString, type);
-                if (t instanceof JHResponse) {
+                if(t instanceof FileResponse){
+                    if (((FileResponse) t).getCode() == 555) {//请求成功
+                        done(t,null) ;
+                    } else {
+                        done(null,new IllegalStateException(((FileResponse) t).getMsg().toString())) ;
+                    }
+                }
+                else if (t instanceof JHResponse) {
                     if (((JHResponse) t).getCode() == 555) {//请求成功
                         done(t,null) ;
                     } else {
                         done(null,new IllegalStateException(((JHResponse) t).getMsg().toString())) ;
                         }
-                } else {
+                }
+                else {
                     done(null,new IllegalStateException("服务器返回数据格式异常!"));
                 }
             } catch (JsonSyntaxException e) {

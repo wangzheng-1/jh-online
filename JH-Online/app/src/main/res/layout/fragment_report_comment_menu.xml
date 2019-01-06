@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="170dp"
+    android:background="@color/back_light_gray"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:id="@+id/takePhotoLayout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp">
+        <TextView
+            android:id="@+id/cancelText"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:text="取消"
+            android:textColor="@color/text_blue"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_alignParentLeft="true"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="评论"
+            android:textColor="@color/text_black"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            />
+        <TextView
+            android:id="@+id/confirmText"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:text="确认"
+            android:textColor="@color/text_blue"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_alignParentRight="true"
+            />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/back_white"
+        >
+        <EditText
+            android:id="@+id/commentContent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:minLines="7"
+            android:gravity="start"
+            android:hint="请输入您的回复(500字以内)..."
+            android:textSize="14sp"
+            android:textColor="@color/text_black"/>
+    </LinearLayout>
+
+
+
+</LinearLayout>

@@ -141,7 +141,7 @@ public class DataRequestUtil {
                     builder.addFormDataPart(key, object.toString());
                 } else {
                     File file = (File) object;
-                    builder.addFormDataPart(key, file.getName(), RequestBody.create(null, file));
+                    builder.addFormDataPart("file", file.getName(), RequestBody.create(null, file));
                 }
             }
             //创建Request
