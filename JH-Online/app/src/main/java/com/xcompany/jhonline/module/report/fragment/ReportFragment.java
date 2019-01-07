@@ -12,6 +12,8 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +28,7 @@ import com.xcompany.jhonline.model.report.Moment;
 import com.xcompany.jhonline.module.publish.activity.PublishSkillRecruitingActivity;
 import com.xcompany.jhonline.module.report.activity.PhotoSelectActivity;
 import com.xcompany.jhonline.module.report.activity.ReportAddActivity;
+import com.xcompany.jhonline.module.report.adapter.CommentAdapter;
 import com.xcompany.jhonline.network.JHCallback;
 import com.xcompany.jhonline.network.JHResponse;
 import com.xcompany.jhonline.network.UserService;
@@ -99,10 +102,9 @@ public class ReportFragment extends ListBaseFragment implements EasyPermissions.
 
     @Override
     public void getDataItems(int page, Callback callback) {
-        OkGo.<JHResponse<List<Moment>>>post(ReleaseConfig.baseUrl() + "Forum/appList")
+        OkGo.<JHResponse<List<Moment>>>post(ReleaseConfig.baseUrl() + "Forum/appList?p=" + page)
                 .tag(this)
                 .params("uid",UserService.getInstance().getUid())
-                .params("p",page)
                 .execute(new JHCallback<JHResponse<List<Moment>>>() {
                     @Override
                     public void onSuccess(Response<JHResponse<List<Moment>>> response) {
@@ -113,6 +115,7 @@ public class ReportFragment extends ListBaseFragment implements EasyPermissions.
                     @Override
                     public void onError(Response<JHResponse<List<Moment>>> response) {
                         T.showToast(ReportFragment.this.getActivity(), response.getException().getMessage());
+                        xRecyclerView.refreshComplete();
                     }
                 });
 
@@ -215,8 +218,8 @@ public class ReportFragment extends ListBaseFragment implements EasyPermissions.
             MyBGANinePhotoLayout reportNineImage = helper.getView(R.id.reportNineImage);
 
             TextView thumbText = helper.getView(R.id.thumbText);
-            TextView commentText = helper.getView(R.id.commentText);
-            TextView commentListView = helper.getView(R.id.commentListView);
+            LinearLayout commentText = helper.getView(R.id.commentText);
+            ListView commentListView = helper.getView(R.id.commentListView);
 
             if (TextUtils.isEmpty(moment.getBusiness())) {
                 reportContentText.setVisibility(View.GONE);
@@ -313,20 +316,11 @@ public class ReportFragment extends ListBaseFragment implements EasyPermissions.
             //评论
             List<Comment> commentList = moment.getMake();
             if(commentList != null && commentList.size() > 0){
-
-                commentText.setBackground(getResources().getDrawable(R.drawable.background_frame_all_corner_blue));
-                commentText.setTextColor(getResources().getColor(R.color.text_blue));
-                Drawable commentDrawable = getResources().getDrawable(R.mipmap.click_commented);
-                commentDrawable.setBounds(0, 0, commentDrawable.getMinimumWidth(), commentDrawable.getMinimumHeight());  // left, top, right, bottom
-                commentText.setCompoundDrawables(commentDrawable,null,null,null);
-
+                CommentAdapter commentAdapter = new CommentAdapter(ReportFragment.this.getContext(),commentList);
+                commentListView.setAdapter(commentAdapter);
             }
             else{
-                commentText.setBackground(getResources().getDrawable(R.drawable.background_frame_all_corner_gray));
-                commentText.setTextColor(getResources().getColor(R.color.text_light_gray));
-                Drawable unCommentDrawable = getResources().getDrawable(R.mipmap.click_uncomment);
-                unCommentDrawable.setBounds(0, 0, unCommentDrawable.getMinimumWidth(), unCommentDrawable.getMinimumHeight());  // left, top, right, bottom
-                commentText.setCompoundDrawables(unCommentDrawable,null,null,null);
+                commentListView.setVisibility(View.GONE);
             }
 
             commentText.setOnClickListener(new View.OnClickListener() {

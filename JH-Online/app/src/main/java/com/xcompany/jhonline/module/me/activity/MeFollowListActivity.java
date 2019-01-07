@@ -1,8 +1,6 @@
 package com.xcompany.jhonline.module.me.activity;
 
 import android.Manifest;
-import android.app.Activity;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
@@ -14,11 +12,10 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.xcompany.jhonline.R;
@@ -27,8 +24,7 @@ import com.xcompany.jhonline.model.base.Model;
 import com.xcompany.jhonline.model.report.Comment;
 import com.xcompany.jhonline.model.report.Fellow;
 import com.xcompany.jhonline.model.report.Moment;
-import com.xcompany.jhonline.module.report.activity.PhotoSelectActivity;
-import com.xcompany.jhonline.module.report.activity.ReportAddActivity;
+import com.xcompany.jhonline.module.report.adapter.CommentAdapter;
 import com.xcompany.jhonline.network.JHCallback;
 import com.xcompany.jhonline.network.JHResponse;
 import com.xcompany.jhonline.network.UserService;
@@ -83,7 +79,7 @@ public class MeFollowListActivity extends XListViewActivity implements EasyPermi
 
     @Override
     public void getDataItems(int page, Callback callback) {
-        OkGo.<JHResponse<List<Moment>>>post(ReleaseConfig.baseUrl() + "User/appFollow")
+        OkGo.<JHResponse<List<Moment>>>post(ReleaseConfig.baseUrl() + "User/appFollow" + "?p=" + page)
                 .tag(this)
                 .params("uid", UserService.getInstance().getUid())
                 .params("p", page)
@@ -97,6 +93,8 @@ public class MeFollowListActivity extends XListViewActivity implements EasyPermi
                     @Override
                     public void onError(Response<JHResponse<List<Moment>>> response) {
                         T.showToast(MeFollowListActivity.this, response.getException().getMessage());
+                        xRecyclerView.refreshComplete();
+
                     }
                 });
 
@@ -195,8 +193,8 @@ public class MeFollowListActivity extends XListViewActivity implements EasyPermi
             MyBGANinePhotoLayout reportNineImage = helper.getView(R.id.reportNineImage);
 
             TextView thumbText = helper.getView(R.id.thumbText);
-            TextView commentText = helper.getView(R.id.commentText);
-            TextView commentListView = helper.getView(R.id.commentListView);
+            LinearLayout commentText = helper.getView(R.id.commentText);
+            ListView commentListView = helper.getView(R.id.commentListView);
 
             if (TextUtils.isEmpty(moment.getBusiness())) {
                 reportContentText.setVisibility(View.GONE);
@@ -285,23 +283,24 @@ public class MeFollowListActivity extends XListViewActivity implements EasyPermi
                     }
                 }
             });
-            //评论
-            List<Comment> commentList = moment.getMake();
-            if (commentList != null && commentList.size() > 0) {
 
-                commentText.setBackground(getResources().getDrawable(R.drawable.background_frame_all_corner_blue));
-                commentText.setTextColor(getResources().getColor(R.color.text_blue));
-                Drawable commentDrawable = getResources().getDrawable(R.mipmap.click_commented);
-                commentDrawable.setBounds(0, 0, commentDrawable.getMinimumWidth(), commentDrawable.getMinimumHeight());  // left, top, right, bottom
-                commentText.setCompoundDrawables(commentDrawable, null, null, null);
 
-            } else {
-                commentText.setBackground(getResources().getDrawable(R.drawable.background_frame_all_corner_gray));
-                commentText.setTextColor(getResources().getColor(R.color.text_light_gray));
-                Drawable unCommentDrawable = getResources().getDrawable(R.mipmap.click_uncomment);
-                unCommentDrawable.setBounds(0, 0, unCommentDrawable.getMinimumWidth(), unCommentDrawable.getMinimumHeight());  // left, top, right, bottom
-                commentText.setCompoundDrawables(unCommentDrawable, null, null, null);
-            }
+                //评论
+                List<Comment> commentList = moment.getMake();
+                if(commentList != null && commentList.size() > 0){
+                    CommentAdapter commentAdapter = new CommentAdapter(MeFollowListActivity.this,commentList);
+                    commentListView.setAdapter(commentAdapter);
+                }
+                else{
+                    commentListView.setVisibility(View.GONE);
+                }
+
+                commentText.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showBottomCommentSheetDialog(moment.getId());
+                    }
+                });
 
             commentText.setOnClickListener(new View.OnClickListener() {
                 @Override

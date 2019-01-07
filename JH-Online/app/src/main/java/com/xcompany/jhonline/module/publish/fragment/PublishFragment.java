@@ -7,13 +7,22 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.Response;
 import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.base.ListBaseFragment;
 import com.xcompany.jhonline.model.base.Model;
 import com.xcompany.jhonline.model.publish.PublishItemBean;
+import com.xcompany.jhonline.model.report.Moment;
 import com.xcompany.jhonline.module.publish.activity.PublishSelectTypeActivity;
 import com.xcompany.jhonline.module.publish.activity.PublishTypeActivity;
 import com.xcompany.jhonline.module.publish.adapter.PublishAdapter;
+import com.xcompany.jhonline.module.report.fragment.ReportFragment;
+import com.xcompany.jhonline.network.JHCallback;
+import com.xcompany.jhonline.network.JHResponse;
+import com.xcompany.jhonline.network.UserService;
+import com.xcompany.jhonline.utils.ReleaseConfig;
+import com.xcompany.jhonline.utils.T;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +55,22 @@ public class PublishFragment extends ListBaseFragment {
 
     @Override
     public void getDataItems(int page, Callback callback) {
+        OkGo.<JHResponse<List<Moment>>>post(ReleaseConfig.baseUrl() + "User/release?p=" + page)
+                .tag(this)
+                .params("uid",UserService.getInstance().getUid())
+                .execute(new JHCallback<JHResponse<List<Moment>>>() {
+                    @Override
+                    public void onSuccess(Response<JHResponse<List<Moment>>> response) {
+                        List<Moment> resultList = response.body().getMsg();
+                        callback.setDataItems(resultList);
+                    }
+
+                    @Override
+                    public void onError(Response<JHResponse<List<Moment>>> response) {
+                        T.showToast(PublishFragment.this.getActivity(), response.getException().getMessage());
+                        xRecyclerView.refreshComplete();
+                    }
+                });
         List<PublishItemBean> data = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
             data.add(new PublishItemBean("分包单位"));

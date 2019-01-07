@@ -84,6 +84,8 @@ public class PublishPurchasingActivity extends BaseActivity {
                 onBackPressed();
                 break;
             case R.id.selectTypeLayout:
+                Intent intent2 = new Intent(PublishPurchasingActivity.this,PublishTypeActivity.class);
+                startActivityForResult(intent2,5);
                 break;
             case R.id.selectDeliveryAddressLayout:
                 Intent intent = new Intent(PublishPurchasingActivity.this,CityListActivity.class);

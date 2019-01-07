@@ -117,7 +117,7 @@
                 android:textColor="@color/text_blue"
                 android:textSize="12sp" />
 
-            <TextView
+            <LinearLayout
                 android:id="@+id/commentText"
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
@@ -127,11 +127,16 @@
                 android:background="@drawable/background_frame_all_corner_blue"
                 android:drawableStart="@mipmap/click_commented"
                 android:gravity="center"
-                android:minWidth="60dp"
-                android:paddingStart="10dp"
-                android:text="7"
-                android:textColor="@color/text_blue"
-                android:textSize="12sp" />
+                android:minWidth="60dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/click_commented"
+                    android:textColor="@color/text_blue"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
         </RelativeLayout>
 
         <ListView
@@ -141,8 +146,8 @@
             android:layout_below="@id/commentThumbLayout"
             android:layout_gravity="center_vertical"
             android:layout_marginTop="10dp"
+            android:padding="10dp"
             android:background="@color/back_light_gray2">
-
         </ListView>
 
     </RelativeLayout>

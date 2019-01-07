@@ -176,6 +176,8 @@ public class PublishJobHuntingActivity extends BaseActivity {
                 onBackPressed();
                 break;
             case R.id.selectTypeLayout:
+                Intent intent = new Intent(PublishJobHuntingActivity.this,PublishTypeActivity.class);
+                startActivityForResult(intent,5);
                 break;
             case R.id.selectIntentAddressLayout:
                 showCityOptionsPickerView();

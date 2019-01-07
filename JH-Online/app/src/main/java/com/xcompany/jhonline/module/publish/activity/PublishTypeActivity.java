@@ -21,6 +21,8 @@ import butterknife.ButterKnife;
  * Created by xieliang on 2018/12/31 00:52
  */
 public class PublishTypeActivity extends AppCompatActivity {
+
+
     @BindView(R.id.type_button1)
     TypeButton typeButton1;
     @BindView(R.id.type_button2)
@@ -187,8 +189,8 @@ public class PublishTypeActivity extends AppCompatActivity {
     private void initBtn9() {
         typeButton9.setOnClickListener(v -> {
             T.showToast(this, "跳转黑名单表单");
-//            Intent intent = new Intent(this, PublishMajorLibraryActivity.class);
-//            startActivity(intent);
+            Intent intent = new Intent(this, PublishIndustryBlackListActivity.class);
+            startActivity(intent);
         });
     }
 }

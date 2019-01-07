@@ -1,6 +1,7 @@
 package com.xcompany.jhonline.module.publish.activity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -99,6 +100,8 @@ public class PublishMajorLibraryActivity extends BaseActivity {
                 this.finish();
                 break;
             case R.id.selectTypeLayout:
+                Intent intent = new Intent(PublishMajorLibraryActivity.this,PublishTypeActivity.class);
+                startActivityForResult(intent,5);
                 break;
             case R.id.selectServiceProvinceLayout:
                 showCityOptionsPickerView();

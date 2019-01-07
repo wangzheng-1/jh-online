@@ -128,6 +128,8 @@ public class PublishIndustryBlackListActivity extends BaseActivity {
                 this.finish();
                 break;
             case R.id.selectTypeLayout:
+                Intent intent = new Intent(PublishIndustryBlackListActivity.this,PublishTypeActivity.class);
+                startActivityForResult(intent,5);
                 break;
             case R.id.selectAddressLayout:
                 showCityOptionsPickerView();

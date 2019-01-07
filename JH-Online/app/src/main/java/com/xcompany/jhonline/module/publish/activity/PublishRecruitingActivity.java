@@ -1,6 +1,7 @@
 package com.xcompany.jhonline.module.publish.activity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -165,6 +166,8 @@ public class PublishRecruitingActivity extends BaseActivity {
                 onBackPressed();
                 break;
             case R.id.selectTypeLayout:
+                Intent intent = new Intent(PublishRecruitingActivity.this,PublishTypeActivity.class);
+                startActivityForResult(intent,5);
                 break;
             case R.id.selectProjectAddressLayout:
                 showCityOptionsPickerView();

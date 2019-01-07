@@ -1,6 +1,7 @@
 package com.xcompany.jhonline.module.publish.activity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -158,6 +159,8 @@ public class PublishSkillRecruitingActivity extends BaseActivity {
                 onBackPressed();
                 break;
             case R.id.selectTypeLayout:
+                Intent intent = new Intent(PublishSkillRecruitingActivity.this,PublishTypeActivity.class);
+                startActivityForResult(intent,5);
                 break;
             case R.id.companyRadio:
                 if(companyRadio.isChecked()){
