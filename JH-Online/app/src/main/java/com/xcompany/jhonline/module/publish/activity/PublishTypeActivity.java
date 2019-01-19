@@ -42,6 +42,9 @@ public class PublishTypeActivity extends AppCompatActivity {
     @BindView(R.id.type_button9)
     LinearLayout typeButton9;
 
+    public static final String SELECTED_TYPE_NAME = "SELECTED_TYPE_NAME";
+    public static final String SELECTED_TYPE_CID= "SELECTED_TYPE_CID";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -167,6 +170,8 @@ public class PublishTypeActivity extends AppCompatActivity {
         typeButton7.addChild(gridView.mView);
         gridView.setOnItemClickListener(category -> {
             Intent intent = new Intent(this, PublishConstructionMatchActivity.class);
+            intent.putExtra(SELECTED_TYPE_NAME, category.getName());
+            intent.putExtra(SELECTED_TYPE_CID, category.getId());
             startActivity(intent);
         });
     }
@@ -179,6 +184,8 @@ public class PublishTypeActivity extends AppCompatActivity {
         typeButton8.addChild(gridView.mView);
         gridView.setOnItemClickListener(category -> {
             Intent intent = new Intent(this, PublishMajorLibraryActivity.class);
+            intent.putExtra(SELECTED_TYPE_NAME, category.getName());
+            intent.putExtra(SELECTED_TYPE_CID, category.getId());
             startActivity(intent);
         });
     }
