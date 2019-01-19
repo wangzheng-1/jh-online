@@ -28,13 +28,13 @@
                 android:layout_gravity="center"
                 android:gravity="end"
                 >
-                <ImageView
-                    android:id="@+id/collectBtn"
-                    android:gravity="center_vertical"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:scaleType="center"
-                    android:src="@mipmap/mine_share_icon" />
+                <!--<ImageView-->
+                    <!--android:id="@+id/collectBtn"-->
+                    <!--android:gravity="center_vertical"-->
+                    <!--android:layout_width="50dp"-->
+                    <!--android:layout_height="50dp"-->
+                    <!--android:scaleType="center"-->
+                    <!--android:src="@mipmap/mine_share_icon" />-->
             </RelativeLayout>
         </LinearLayout>
 

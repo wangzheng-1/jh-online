@@ -31,28 +31,28 @@ import butterknife.Unbinder;
 public class MeFragment extends BaseFragment {
     @BindView(R.id.homeMeText)
     TextView homeMeText;
-    @BindView(R.id.collectBtn)
-    ImageView collectBtn;
+//    @BindView(R.id.collectBtn)
+//    ImageView collectBtn;
     @BindView(R.id.meHeadIcon)
     ImageView meHeadIcon;
-    @BindView(R.id.nickNameText)
-    TextView nickNameText;
+//    @BindView(R.id.nickNameText)
+//    TextView nickNameText;
     @BindView(R.id.contactText)
     TextView contactText;
-    @BindView(R.id.signBtn)
-    TextView signBtn;
+//    @BindView(R.id.signBtn)
+//    TextView signBtn;
     @BindView(R.id.mineIntegralLayout)
     LinearLayout mineIntegralLayout;
-    @BindView(R.id.mineIntegralText)
-    TextView mineIntegralText;
+//    @BindView(R.id.mineIntegralText)
+//    TextView mineIntegralText;
     @BindView(R.id.mineCollectLayout)
     LinearLayout mineCollectLayout;
-    @BindView(R.id.mineCollectText)
-    TextView mineCollectText;
+//    @BindView(R.id.mineCollectText)
+//    TextView mineCollectText;
     @BindView(R.id.mineFellowLayout)
     LinearLayout mineFellowLayout;
-    @BindView(R.id.mineFellowText)
-    TextView mineFellowText;
+//    @BindView(R.id.mineFellowText)
+//    TextView mineFellowText;
     @BindView(R.id.meWantEnterBtn)
     LinearLayout meWantEnterBtn;
     @BindView(R.id.bussinessCoporLayout)
@@ -73,12 +73,15 @@ public class MeFragment extends BaseFragment {
     @Override
     protected void initEventAndData() {
         unbinder = ButterKnife.bind(this, mView);
-        collectBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showBottomSheetDialog();
-            }
-        });
+
+        contactText.setText(UserService.getInstance().getMobile());
+
+//        collectBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                showBottomSheetDialog();
+//            }
+//        });
         initListener();
 
 
@@ -87,15 +90,15 @@ public class MeFragment extends BaseFragment {
         mineIntegralLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MeFragment.this.getContext(),MeCreditActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(MeFragment.this.getContext(),MeCreditActivity.class);
+//                startActivity(intent);
             }
         });
         mineCollectLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MeFragment.this.getContext(),MeCollectListActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(MeFragment.this.getContext(),MeCollectListActivity.class);
+//                startActivity(intent);
             }
         });
         mineFellowLayout.setOnClickListener(new View.OnClickListener() {
