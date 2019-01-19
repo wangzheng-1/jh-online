@@ -34,6 +34,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.xcompany.jhonline.module.publish.activity.PublishTypeActivity.SELECTED_TYPE_CID;
+import static com.xcompany.jhonline.module.publish.activity.PublishTypeActivity.SELECTED_TYPE_NAME;
+
 /**
  * 发布专业技能库信息
  */
@@ -79,11 +82,18 @@ public class PublishMajorLibraryActivity extends BaseActivity {
     City city;
     City district;
 
+    private String selectTypeCID;
+    private String selectTypeName;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_major_library_publish);
         ButterKnife.bind(this);
+
+        selectTypeName = getIntent().getStringExtra(SELECTED_TYPE_NAME);
+        selectTypeCID = getIntent().getStringExtra(SELECTED_TYPE_CID);
+        levelTwoTitleText.setText(selectTypeName);
 
         provinceList = CityUtil.getProvinceList();
         provinceAndCityList = CityUtil.getCityList();
@@ -147,7 +157,7 @@ public class PublishMajorLibraryActivity extends BaseActivity {
         dialog.setCancelable(false);
 
         Map<String,String> params = new HashMap<>();
-        params.put("cid","655");  //名称
+        params.put("cid",selectTypeCID);  //名称
         params.put("name",titleNameEdit.getText().toString());  //名称
         params.put("explain",addExplanationEdit.getText().toString());  //其他说明
         params.put("linkman",linkmanEdit.getText().toString());  // 联系人

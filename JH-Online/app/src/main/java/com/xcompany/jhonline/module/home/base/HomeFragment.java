@@ -71,6 +71,8 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     protected void initEventAndData() {
+        listView = mView.findViewById(R.id.list_view);
+        tvCity =  mView.findViewById(R.id.tv_city);
         mAdapter = new HomeListAdapter(mContext, mdatas);
         listView.setAdapter(mAdapter);
         headView = View.inflate(mContext, R.layout.view_home_head, null);

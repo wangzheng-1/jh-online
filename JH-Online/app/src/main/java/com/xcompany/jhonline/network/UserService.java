@@ -38,6 +38,7 @@ public class UserService {
 	public void clear() {
 		uid = null;
 		code = null;
+		mobile = null;
 
 		SharedPreferences preference = JhApplication.getInstance().getSharedPreferences("user_config", Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = preference.edit();
