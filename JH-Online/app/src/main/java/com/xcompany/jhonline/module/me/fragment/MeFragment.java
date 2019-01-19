@@ -1,7 +1,10 @@
 package com.xcompany.jhonline.module.me.fragment;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.support.design.widget.BottomSheetDialog;
+import android.view.ContextThemeWrapper;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -9,9 +12,14 @@ import android.widget.TextView;
 
 import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.base.BaseFragment;
+import com.xcompany.jhonline.module.login.LoginActivity;
+import com.xcompany.jhonline.module.me.activity.AboutUsActivity;
+import com.xcompany.jhonline.module.me.activity.BuinessCooperateActivity;
 import com.xcompany.jhonline.module.me.activity.MeCollectListActivity;
 import com.xcompany.jhonline.module.me.activity.MeCreditActivity;
 import com.xcompany.jhonline.module.me.activity.MeFollowListActivity;
+import com.xcompany.jhonline.module.me.activity.UserGuideActivity;
+import com.xcompany.jhonline.network.UserService;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -97,6 +105,33 @@ public class MeFragment extends BaseFragment {
                 startActivity(intent);
             }
         });
+        bussinessCoporLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MeFragment.this.getContext(),BuinessCooperateActivity.class);
+                startActivity(intent);
+            }
+        });
+        aboutUsLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MeFragment.this.getContext(),AboutUsActivity.class);
+                startActivity(intent);
+            }
+        });
+        userGuideLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MeFragment.this.getContext(),UserGuideActivity.class);
+                startActivity(intent);
+            }
+        });
+        meLoginOutLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showExitDialog();
+            }
+        });
     }
 
 
@@ -146,6 +181,41 @@ public class MeFragment extends BaseFragment {
         else {
             bottomSheet.show();
         }
+    }
+
+    AlertDialog exitDialog;
+    private void showExitDialog(){
+        if(exitDialog == null){
+            AlertDialog.Builder builder = new AlertDialog.Builder(MeFragment.this.getContext());
+            View view = LayoutInflater.from(MeFragment.this.getContext()).inflate(R.layout.fragment_me_exit_layout,null);  //关键语句1，你自定义的layout，所有layout哟
+            view.findViewById(R.id.cancelText).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(exitDialog != null && exitDialog.isShowing()){
+                        exitDialog.dismiss();
+                    }
+                }
+            });
+            view.findViewById(R.id.confirmText).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(exitDialog != null && exitDialog.isShowing()){
+                        exitDialog.dismiss();
+                    }
+                    exit();
+                }
+            });
+            builder.setView(view);
+            exitDialog = builder.create();
+            exitDialog.setCancelable(false);
+        }
+        exitDialog.show();
+    }
+    private void exit(){
+        UserService.getInstance().clear();
+        Intent intent = new Intent(MeFragment.this.getContext(),LoginActivity.class);
+        startActivity(intent);
+        MeFragment.this.getActivity().finish();
     }
 
 

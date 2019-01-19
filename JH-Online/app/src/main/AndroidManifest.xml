@@ -98,6 +98,11 @@
         <activity android:name=".module.publish.activity.RentSeekingActivity" />
         <activity android:name=".module.publish.activity.SupplierProductActivity" />
         <activity android:name=".module.publish.activity.QualitySupplierFormActivity" />
+        <activity android:name=".module.me.activity.BuinessCooperateActivity" />
+        <activity android:name=".module.me.activity.AboutUsActivity" />
+        <activity android:name=".module.me.activity.UserGuideActivity" />
+
+
     </application>
 
 </manifest>

@@ -255,12 +255,14 @@ public class LoginActivity extends BaseActivity {
                 if(e != null){
                     T.showToast(LoginActivity.this,e.getMessage());
                     getIdentifyCodeTime = null;
+                    timer.cancel();
+                    sendIdentifyText.setTextColor(getResources().getColor(R.color.text_blue));
+                    sendIdentifyText.setText("发送");
+                    sendIdentifyText.setEnabled(true);
                 }
-                timer.cancel();
-                sendIdentifyText.setTextColor(getResources().getColor(R.color.text_blue));
-                sendIdentifyText.setText("发送");
-                sendIdentifyText.setEnabled(true);
-                loginResponse = list.get(0);
+                else{
+                    loginResponse = list.get(0);
+                }
             }
         });
     }
