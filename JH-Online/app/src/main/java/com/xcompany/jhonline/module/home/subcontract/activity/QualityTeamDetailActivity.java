@@ -1,5 +1,7 @@
 package com.xcompany.jhonline.module.home.subcontract.activity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -12,13 +14,15 @@ import android.widget.TextView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.xcompany.jhonline.R;
-import com.xcompany.jhonline.app.GlideApp;
 import com.xcompany.jhonline.model.home.QualityTeamDetail;
 import com.xcompany.jhonline.network.JHCallback;
 import com.xcompany.jhonline.network.JHResponse;
+import com.xcompany.jhonline.utils.DetailCommonUtils;
+import com.xcompany.jhonline.utils.GlideUtil;
 import com.xcompany.jhonline.utils.NullCheck;
 import com.xcompany.jhonline.utils.ReleaseConfig;
 import com.xcompany.jhonline.utils.T;
+import com.xcompany.jhonline.widget.ProjectToolbar;
 
 import java.util.List;
 
@@ -80,7 +84,10 @@ public class QualityTeamDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_quality_team_detail);
         ButterKnife.bind(this);
         id = getIntent().getStringExtra("id");
+        DetailCommonUtils.checkStatus(this);
+        DetailCommonUtils.saveAndUnSave(this, id, "0");
         getData();
+
     }
 
     public void getData() {
@@ -125,9 +132,7 @@ public class QualityTeamDetailActivity extends AppCompatActivity {
             llImage1.setVisibility(View.VISIBLE);
             llImage2.setVisibility(View.INVISIBLE);
             llImage3.setVisibility(View.INVISIBLE);
-            GlideApp.with(this).load(list.get(0).getImager())
-                    .centerCrop()
-                    .into(image1);
+            GlideUtil.LoaderImage(this, list.get(0).getImager(), image1, true);
             tvImage1.setText(NullCheck.check(list.get(0).getEntry()));
             llImage1.setOnClickListener(v -> tvImageRemark.setText(NullCheck.check(list.get(0).getEntry())));
             tvImageRemark.setText(NullCheck.check(list.get(0).getEntry()));
@@ -135,12 +140,8 @@ public class QualityTeamDetailActivity extends AppCompatActivity {
             llImage1.setVisibility(View.VISIBLE);
             llImage2.setVisibility(View.VISIBLE);
             llImage3.setVisibility(View.INVISIBLE);
-            GlideApp.with(this).load(list.get(0).getImager())
-                    .centerCrop()
-                    .into(image1);
-            GlideApp.with(this).load(list.get(1).getImager())
-                    .centerCrop()
-                    .into(image2);
+            GlideUtil.LoaderImage(this, list.get(0).getImager(), image1, true);
+            GlideUtil.LoaderImage(this, list.get(1).getImager(), image2, true);
             tvImage1.setText(NullCheck.check(list.get(0).getEntry()));
             tvImage2.setText(NullCheck.check(list.get(1).getEntry()));
             llImage1.setOnClickListener(v -> tvImageRemark.setText(NullCheck.check(list.get(0).getEntry())));
@@ -150,15 +151,9 @@ public class QualityTeamDetailActivity extends AppCompatActivity {
             llImage1.setVisibility(View.VISIBLE);
             llImage2.setVisibility(View.VISIBLE);
             llImage3.setVisibility(View.VISIBLE);
-            GlideApp.with(this).load(list.get(0).getImager())
-                    .centerCrop()
-                    .into(image1);
-            GlideApp.with(this).load(list.get(1).getImager())
-                    .centerCrop()
-                    .into(image2);
-            GlideApp.with(this).load(list.get(2).getImager())
-                    .centerCrop()
-                    .into(image3);
+            GlideUtil.LoaderImage(this, list.get(0).getImager(), image1, true);
+            GlideUtil.LoaderImage(this, list.get(1).getImager(), image2, true);
+            GlideUtil.LoaderImage(this, list.get(2).getImager(), image3, true);
             tvImage1.setText(NullCheck.check(list.get(0).getEntry()));
             tvImage2.setText(NullCheck.check(list.get(1).getEntry()));
             tvImage3.setText(NullCheck.check(list.get(2).getEntry()));
@@ -173,6 +168,12 @@ public class QualityTeamDetailActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_telephone:
+                String telephone = qualityTeamDetail.getTelephone();
+                if (!TextUtils.isEmpty(telephone)) {
+                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + telephone));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
                 break;
         }
     }

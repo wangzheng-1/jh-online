@@ -95,6 +95,7 @@
                     android:textSize="14sp" />
 
                 <com.xcompany.jhonline.widget.CleanEditText
+                    android:id="@+id/et_company"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
@@ -140,6 +141,7 @@
                     android:textSize="14sp" />
 
                 <com.xcompany.jhonline.widget.CleanEditText
+                    android:id="@+id/et_phone"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
@@ -159,6 +161,7 @@
                 android:background="@color/colorEFEFEF" />
 
             <LinearLayout
+                android:id="@+id/ll_address"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:background="@color/white"
@@ -184,13 +187,12 @@
                     android:textColor="@color/color333333"
                     android:textSize="14sp" />
 
-                <com.xcompany.jhonline.widget.CleanEditText
+                <TextView
+                    android:id="@+id/tv_address"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginBottom="10dp"
                     android:layout_weight="1"
+                    android:gravity="center_vertical"
                     android:background="@null"
                     android:hint="请输入您的常住地址"
                     android:singleLine="true"
@@ -230,6 +232,7 @@
                     android:textSize="14sp" />
 
                 <com.xcompany.jhonline.widget.CleanEditText
+                    android:id="@+id/et_email"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
@@ -275,6 +278,7 @@
                     android:textSize="14sp" />
 
                 <com.xcompany.jhonline.widget.CleanEditText
+                    android:id="@+id/et_business"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
@@ -295,7 +299,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginRight="15dp"
-                android:background="@drawable/bg_btn_gray"
+                android:background="@drawable/bg_btn_blue"
                 android:gravity="center"
                 android:text="生成名片"
                 android:textColor="@color/white"
