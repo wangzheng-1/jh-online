@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.model.base.Model;
 import com.xcompany.jhonline.model.publish.PublishItemBean;
+import com.xcompany.jhonline.model.publish.PublishTypeEnum;
+import com.xcompany.jhonline.model.publish.PublishTypeItemBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,22 +59,45 @@ public class PublishAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
-        final PublishItemBean bean = (PublishItemBean) mDatas.get(position);
+        final PublishTypeItemBean publishTypeItemBean = (PublishTypeItemBean) mDatas.get(position);
         final ViewHolder holder = (ViewHolder) viewHolder;
 
-        Random random = new Random();
-        int i = random.nextInt(2);
-        if (i == 0) {
-            holder.image.setImageResource(R.mipmap.publish_check_pass);
-        } else {
-            holder.image.setImageResource(R.mipmap.publish_check_no_pass);
+        PublishTypeEnum publishTypeEnum = PublishTypeEnum.getPublishTypeEnum(publishTypeItemBean.getType());
+        if(publishTypeEnum == null){
+            holder.publishTypeText.setText("");
         }
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onItemClick(position, bean, holder);
+        else {
+            holder.publishTypeText.setText(publishTypeEnum.getName());
+        }
+
+        holder.publishTitleText.setText(publishTypeItemBean.getList().getName());
+        holder.linkmanText.setText(publishTypeItemBean.getList().getLinkman());
+        holder.linkmanText.setText(publishTypeItemBean.getList().getLinkman());
+        holder.publishTimeText.setText(publishTypeItemBean.getList().getAddtime());
+        holder.isTakeTopImage.setVisibility(View.GONE);
+        holder.takeTopText.setVisibility(View.GONE);
+        holder.image.setImageResource(R.mipmap.publish_check_in);
+
+        Integer status = publishTypeItemBean.getList().getStatus();
+        if(status != null){
+            if(status == 0){
+                holder.image.setImageResource(R.mipmap.publish_check_pass);
             }
-        });
+            else if(status == 1){
+                holder.image.setImageResource(R.mipmap.publish_check_no_pass);
+            }
+        }
+//        if(publishTypeEnum.getType() == 11 || publishTypeEnum.getType() == 9 || publishTypeEnum.getType() == 10){
+//            holder.takeDetailText.setVisibility(View.GONE);
+//        }
+//        else{
+            holder.takeDetailText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListener.onItemClick(position, publishTypeItemBean, holder);
+                }
+            });
+//        }
     }
 
     @Override
