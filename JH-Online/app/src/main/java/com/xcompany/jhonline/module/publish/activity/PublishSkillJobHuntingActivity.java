@@ -239,10 +239,6 @@ public class PublishSkillJobHuntingActivity extends BaseActivity {
                     T.showToast(PublishSkillJobHuntingActivity.this, "表单信息未填写完整，无法提交");
                     return;
                 }
-
-                dialog = ProgressDialog.show(this, "", "正在提交，请稍后", true);
-                dialog.setCanceledOnTouchOutside(false);
-                dialog.setCancelable(false);
                 uploadImage();
                 break;
         }

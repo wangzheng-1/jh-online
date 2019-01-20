@@ -93,8 +93,7 @@ public class MeFollowListActivity extends XListViewActivity implements EasyPermi
                     @Override
                     public void onError(Response<JHResponse<List<Moment>>> response) {
                         T.showToast(MeFollowListActivity.this, response.getException().getMessage());
-                        xRecyclerView.refreshComplete();
-
+                        callback.setDataItems(null);
                     }
                 });
 

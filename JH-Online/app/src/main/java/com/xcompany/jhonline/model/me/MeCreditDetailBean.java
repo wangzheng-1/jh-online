@@ -7,32 +7,44 @@ import java.io.Serializable;
 public class MeCreditDetailBean extends Model implements Serializable {
     private static final long serialVersionUID = 7553074963902204865L;
 
-    private String detailName;
-    private Integer detailNum;
 
-    public String getDetailName() {
-        return detailName;
+    private Integer id;
+
+    private Integer optxt;
+
+    private Integer sign;
+
+    private String uid;
+
+    public Integer getId() {
+        return id;
     }
 
-    public void setDetailName(String detailName) {
-        this.detailName = detailName;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public Integer getDetailNum() {
-        return detailNum;
+    public Integer getOptxt() {
+        return optxt;
     }
 
-    public void setDetailNum(Integer detailNum) {
-        this.detailNum = detailNum;
+    public void setOptxt(Integer optxt) {
+        this.optxt = optxt;
     }
 
-    public MeCreditDetailBean() {
-
+    public Integer getSign() {
+        return sign;
     }
 
+    public void setSign(Integer sign) {
+        this.sign = sign;
+    }
 
-    public MeCreditDetailBean(String detailName, Integer detailNum) {
-        this.detailName = detailName;
-        this.detailNum = detailNum;
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 }

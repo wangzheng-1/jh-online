@@ -45,7 +45,9 @@ public abstract class XListViewActivity extends AbstractActivity implements XRec
 			List<Model> items = (List<Model>) msg.obj;
 			// 判断是否是上拉更多，上拉更多时保持当前操作的显示位置
 			if (msg.what == 2) {
-				SourceDateList.addAll(items);
+				if(items != null){
+					SourceDateList.addAll(items);
+				}
 				xRecyclerView.getAdapter().notifyDataSetChanged();
 				// 完毕后去掉header、footer
 				xRecyclerView.refreshComplete();
@@ -53,7 +55,10 @@ public abstract class XListViewActivity extends AbstractActivity implements XRec
 			}
 			//下拉刷新
 			if (msg.what == 3) {
-				SourceDateList = items;
+				SourceDateList.clear();
+				if(items != null){
+					SourceDateList.addAll(items);
+				}
 				initAdapter();
 				xRecyclerView.refreshComplete();
 				return;
@@ -61,7 +66,9 @@ public abstract class XListViewActivity extends AbstractActivity implements XRec
 			}
 			//首次加载
 			if(msg.what == 1) {
-				SourceDateList = items;
+				if(items != null){
+					SourceDateList.addAll(items);
+				}
 				initAdapter();
 				xRecyclerView.refreshComplete();
 				return;
@@ -82,7 +89,7 @@ public abstract class XListViewActivity extends AbstractActivity implements XRec
 		getDataItems(page, new Callback<Model>() {
 			@Override
 			public void setDataItems(List<Model> items) {
-				if (items.size() == 0) {
+				if (items == null || items.size() == 0) {
 					T.showToast(XListViewActivity.this,"暂无数据，请刷新尝试...");
 				}
 				else{
@@ -105,7 +112,7 @@ public abstract class XListViewActivity extends AbstractActivity implements XRec
 
 			@Override
 			public void setDataItems(List<Model> items) {
-				if (items.size() == 0) {
+				if (items == null || items.size() == 0) {
 					T.showToast(XListViewActivity.this,"暂无数据，请刷新尝试...");
 				}
 				else {

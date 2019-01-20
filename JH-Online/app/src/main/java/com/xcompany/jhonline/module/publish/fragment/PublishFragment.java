@@ -13,7 +13,19 @@ import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.base.ListBaseFragment;
 import com.xcompany.jhonline.model.base.Model;
 import com.xcompany.jhonline.model.publish.PublishItemBean;
+import com.xcompany.jhonline.model.publish.PublishTypeItemBean;
 import com.xcompany.jhonline.model.report.Moment;
+import com.xcompany.jhonline.module.home.blacklist.activity.BlackListDetailActivity;
+import com.xcompany.jhonline.module.home.buildMaterial.activity.PurchaseDetailActivity;
+import com.xcompany.jhonline.module.home.buildMaterial.activity.QualitySupplierDetailActivity;
+import com.xcompany.jhonline.module.home.certificate.acitivity.QualificationHandleDetailActivity;
+import com.xcompany.jhonline.module.home.certificate.acitivity.RegistrationDetailActivity;
+import com.xcompany.jhonline.module.home.equipment.activity.RentSeekingDetailActivity;
+import com.xcompany.jhonline.module.home.equipment.activity.RentingDetailActivity;
+import com.xcompany.jhonline.module.home.labourWorker.activity.HiringDetailActivity;
+import com.xcompany.jhonline.module.home.siteMatching.activity.SiteMatchingDetailActivity;
+import com.xcompany.jhonline.module.home.subcontract.activity.QualityTeamDetailActivity;
+import com.xcompany.jhonline.module.home.subcontract.activity.TenderDetailActivity;
 import com.xcompany.jhonline.module.publish.activity.PublishSelectTypeActivity;
 import com.xcompany.jhonline.module.publish.activity.PublishTypeActivity;
 import com.xcompany.jhonline.module.publish.adapter.PublishAdapter;
@@ -55,27 +67,23 @@ public class PublishFragment extends ListBaseFragment {
 
     @Override
     public void getDataItems(int page, Callback callback) {
-        OkGo.<JHResponse<List<Moment>>>post(ReleaseConfig.baseUrl() + "User/release?p=" + page)
+        OkGo.<JHResponse<List<PublishTypeItemBean>>>post(ReleaseConfig.baseUrl() + "User/release?p=" + page)
                 .tag(this)
                 .params("uid",UserService.getInstance().getUid())
-                .execute(new JHCallback<JHResponse<List<Moment>>>() {
+//                .params("uid","28")
+                .execute(new JHCallback<JHResponse<List<PublishTypeItemBean>>>() {
                     @Override
-                    public void onSuccess(Response<JHResponse<List<Moment>>> response) {
-                        List<Moment> resultList = response.body().getMsg();
+                    public void onSuccess(Response<JHResponse<List<PublishTypeItemBean>>> response) {
+                        List<PublishTypeItemBean> resultList = response.body().getMsg();
                         callback.setDataItems(resultList);
                     }
 
                     @Override
-                    public void onError(Response<JHResponse<List<Moment>>> response) {
+                    public void onError(Response<JHResponse<List<PublishTypeItemBean>>> response) {
                         T.showToast(PublishFragment.this.getActivity(), response.getException().getMessage());
-                        xRecyclerView.refreshComplete();
+                        callback.setDataItems(null);
                     }
                 });
-        List<PublishItemBean> data = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            data.add(new PublishItemBean("分包单位"));
-        }
-        callback.setDataItems(data);
     }
 
     @Override
@@ -92,7 +100,60 @@ public class PublishFragment extends ListBaseFragment {
         publishAdapter.setOnItemClickListener(new PublishAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position, Model bean, RecyclerView.ViewHolder holder) {
+                PublishTypeItemBean publishTypeItemBean = (PublishTypeItemBean)bean;
+                Intent intent = new Intent();
+                Integer type = publishTypeItemBean.getType();
+                if(type != null){
+                    if(type == 0){
+                        intent.setClass(PublishFragment.this.getContext(),QualityTeamDetailActivity.class);
+                    }
+                    else if(type == 1){
+                        intent.setClass(PublishFragment.this.getContext(),TenderDetailActivity.class);
+                    }
+                    else if(type == 2){
+                        intent.setClass(PublishFragment.this.getContext(),RentingDetailActivity.class);
 
+                    } else if(type == 3){
+                        intent.setClass(PublishFragment.this.getContext(),RentSeekingDetailActivity.class);
+
+                    } else if(type == 4){
+                        intent.setClass(PublishFragment.this.getContext(),QualitySupplierDetailActivity.class);
+
+                    } else if(type == 5){
+                        intent.setClass(PublishFragment.this.getContext(),PurchaseDetailActivity.class);
+
+                    } else if(type == 6){
+                        intent.setClass(PublishFragment.this.getContext(),RegistrationDetailActivity.class);
+
+                    } else if(type == 7){
+                        intent.setClass(PublishFragment.this.getContext(),QualificationHandleDetailActivity.class);
+
+                    } else if(type == 8){
+                        intent.setClass(PublishFragment.this.getContext(),HiringDetailActivity.class);
+
+                    } else if(type == 9){
+                        T.showToast(PublishFragment.this.getContext(),"无详情页面");
+                        return;
+
+                    } else if(type == 10){
+                        T.showToast(PublishFragment.this.getContext(),"无详情页面");
+                        return;
+
+
+                    } else if(type == 11){
+                        T.showToast(PublishFragment.this.getContext(),"无详情页面");
+                        return;
+
+                    } else if(type == 12){
+                        intent.setClass(PublishFragment.this.getContext(),SiteMatchingDetailActivity.class);
+
+                    } else if(type == 13){
+                        intent.setClass(PublishFragment.this.getContext(),BlackListDetailActivity.class);
+                    }
+                }
+                intent.putExtra("id", publishTypeItemBean.getList().getId());
+                intent.putExtra("status", publishTypeItemBean.getList().getStatus());
+                startActivity(intent);
             }
         });
     }

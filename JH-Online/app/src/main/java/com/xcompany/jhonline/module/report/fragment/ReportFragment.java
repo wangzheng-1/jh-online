@@ -109,7 +109,7 @@ public class ReportFragment extends ListBaseFragment implements EasyPermissions.
                     @Override
                     public void onError(Response<JHResponse<List<Moment>>> response) {
                         T.showToast(ReportFragment.this.getActivity(), response.getException().getMessage());
-                        xRecyclerView.refreshComplete();
+                        callback.setDataItems(null);
                     }
                 });
 

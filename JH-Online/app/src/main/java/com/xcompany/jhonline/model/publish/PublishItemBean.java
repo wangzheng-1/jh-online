@@ -7,35 +7,54 @@ import java.io.Serializable;
 public class PublishItemBean extends Model implements Serializable {
     private static final long serialVersionUID = 7553074963902204865L;
 
-    private String detailName;
-    private Integer detailNum;
+    private String  id;
 
-    public String getDetailName() {
-        return detailName;
+    private String name;
+
+    private String linkman;
+
+    private Integer status;
+
+    private String addtime;
+
+
+    public String getId() {
+        return id;
     }
 
-    public void setDetailName(String detailName) {
-        this.detailName = detailName;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public Integer getDetailNum() {
-        return detailNum;
+    public String getName() {
+        return name;
     }
 
-    public void setDetailNum(Integer detailNum) {
-        this.detailNum = detailNum;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public PublishItemBean() {
-
-    }
-    public PublishItemBean(String detailName) {
-        this.detailName = detailName;
-
+    public String getLinkman() {
+        return linkman;
     }
 
-    public PublishItemBean(String detailName, Integer detailNum) {
-        this.detailName = detailName;
-        this.detailNum = detailNum;
+    public void setLinkman(String linkman) {
+        this.linkman = linkman;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public String getAddtime() {
+        return addtime;
+    }
+
+    public void setAddtime(String addtime) {
+        this.addtime = addtime;
     }
 }

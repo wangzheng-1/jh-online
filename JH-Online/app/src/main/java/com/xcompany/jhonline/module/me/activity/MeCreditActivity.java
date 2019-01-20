@@ -12,10 +12,19 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.Response;
 import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.base.BaseActivity;
 import com.xcompany.jhonline.model.base.Model;
+import com.xcompany.jhonline.model.me.IntegralEnum;
 import com.xcompany.jhonline.model.me.MeCreditDetailBean;
+import com.xcompany.jhonline.module.me.fragment.MeFragment;
+import com.xcompany.jhonline.network.JHCallback;
+import com.xcompany.jhonline.network.JHResponse;
+import com.xcompany.jhonline.network.UserService;
+import com.xcompany.jhonline.utils.ReleaseConfig;
+import com.xcompany.jhonline.utils.T;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,21 +49,53 @@ public class MeCreditActivity extends BaseActivity {
     @BindView(R.id.creditDetailList)
     ListView creditDetailList;
 
+    List<MeCreditDetailBean> meCreditDetailBeans;
+
+    private Integer totalIntegral = 0;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_me_credit);
         ButterKnife.bind(this);
         initAdapter();
+        getCreditData();
+
     }
 
     private void initAdapter() {
-        List<MeCreditDetailBean> meCreditDetailBeans = new ArrayList<>();
-        meCreditDetailBeans.add(new MeCreditDetailBean("签到",12));
-        meCreditDetailBeans.add(new MeCreditDetailBean("赠送",12));
-        meCreditDetailBeans.add(new MeCreditDetailBean("查看手机号",26));
+        meCreditDetailBeans = new ArrayList<>();
         adapter = new MyAdapter(this, meCreditDetailBeans);
         creditDetailList.setAdapter(adapter);
+    }
+    private void getCreditData(){
+        OkGo.<JHResponse<List<MeCreditDetailBean>>>post(ReleaseConfig.baseUrl() + "User/signList")
+                .tag(this)
+                .params("uid",UserService.getInstance().getUid())
+                .execute(new JHCallback<JHResponse<List<MeCreditDetailBean>>>() {
+                    @Override
+                    public void onSuccess(Response<JHResponse<List<MeCreditDetailBean>>> response) {
+
+                        List<MeCreditDetailBean> meCreditDetailBeanList = response.body().getMsg();
+                        meCreditDetailBeans.addAll(meCreditDetailBeanList);
+                        adapter.notifyDataSetChanged();
+
+                        if(meCreditDetailBeanList != null && meCreditDetailBeanList.size() > 0){
+                            for(MeCreditDetailBean meCreditDetailBean : meCreditDetailBeanList){
+                                totalIntegral += meCreditDetailBean.getSign();
+
+                            }
+                        }
+                        creditText.setText("" + totalIntegral);
+
+                    }
+
+                    @Override
+                    public void onError(Response<JHResponse<List<MeCreditDetailBean>>> response) {
+                        T.showToast(MeCreditActivity.this, response.getException().getMessage());
+
+                    }
+                });
     }
 
     @OnClick({R.id.backHomeLayout})
@@ -114,8 +155,8 @@ public class MeCreditActivity extends BaseActivity {
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
-            viewHolder.creditDetailTitle.setText(meCreditDetailBean.getDetailName());
-            viewHolder.creditDetailNum.setText(meCreditDetailBean.getDetailNum() + "");
+            viewHolder.creditDetailTitle.setText(IntegralEnum.getIntegralEnum(meCreditDetailBean.getOptxt()).getName());
+            viewHolder.creditDetailNum.setText(meCreditDetailBean.getSign() + "");
             return convertView;
 
         }

@@ -63,7 +63,6 @@
             android:layout_below="@id/reportHeadLine"
             android:layout_marginTop="4dp"
             android:ellipsize="end"
-            android:maxLines="4"
             android:textColor="#474747"
             android:textSize="14sp"
             tools:text="321312" />
