@@ -26,16 +26,16 @@ public class DetailCommonUtils {
         ImageView topImage = activity.findViewById(R.id.top_image);
         TextView topFix = activity.findViewById(R.id.top_fix);
 
-        String status = activity.getIntent().getExtras().getString("status");
+        String status = activity.getIntent().getStringExtra("status");
         if(status==null){
             llTop.setVisibility(View.GONE);
-        }else if(TextUtils.equals("status","0")){
+        }else if(TextUtils.equals(status,"0")){
             //审核通过
             llTop.setVisibility(View.VISIBLE);
             llTop.setBackgroundColor(Color.parseColor("#00BD24"));
             topImage.setImageResource(R.drawable.shtg);
             topFix.setVisibility(View.VISIBLE);
-        }else if(TextUtils.equals("status","2")){
+        }else if(TextUtils.equals(status,"2")){
             //审核中
             llTop.setVisibility(View.VISIBLE);
             llTop.setBackgroundColor(Color.parseColor("#FFB400"));

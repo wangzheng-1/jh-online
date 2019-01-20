@@ -136,7 +136,7 @@ public class MeCollectListActivity extends XListViewActivity {
                     }
                 }
                 intent.putExtra("id", publishTypeItemBean.getList().getId());
-                intent.putExtra("status", publishTypeItemBean.getList().getStatus());
+                intent.putExtra("status", publishTypeItemBean.getList().getStatus()+"");
                 startActivity(intent);
             }
         });
