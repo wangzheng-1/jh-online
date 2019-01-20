@@ -1,7 +1,6 @@
 package com.xcompany.jhonline.utils;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.View;
@@ -17,8 +16,6 @@ import com.xcompany.jhonline.network.JHResponse;
 import com.xcompany.jhonline.network.UserService;
 import com.xcompany.jhonline.widget.ProjectToolbar;
 
-import java.util.Random;
-
 /**
  * Created by xieliang on 2019/1/19 22:11
  */
@@ -29,30 +26,27 @@ public class DetailCommonUtils {
         ImageView topImage = activity.findViewById(R.id.top_image);
         TextView topFix = activity.findViewById(R.id.top_fix);
 
-        //        String status = getIntent().getExtras().getString("status");
-
-        Random random = new Random();
-        int i = random.nextInt(4);
-        if (i == 0) {
+        String status = activity.getIntent().getExtras().getString("status");
+        if(status==null){
+            llTop.setVisibility(View.GONE);
+        }else if(TextUtils.equals("status","0")){
             //审核通过
             llTop.setVisibility(View.VISIBLE);
             llTop.setBackgroundColor(Color.parseColor("#00BD24"));
             topImage.setImageResource(R.drawable.shtg);
             topFix.setVisibility(View.VISIBLE);
-        } else if (i == 1) {
+        }else if(TextUtils.equals("status","2")){
             //审核中
             llTop.setVisibility(View.VISIBLE);
             llTop.setBackgroundColor(Color.parseColor("#FFB400"));
             topImage.setImageResource(R.drawable.shz);
             topFix.setVisibility(View.GONE);
-        } else if (i == 2) {
+        }else {
             //审核不通过
             llTop.setVisibility(View.VISIBLE);
             llTop.setBackgroundColor(Color.parseColor("#FF4500"));
             topImage.setImageResource(R.drawable.shbtg);
             topFix.setVisibility(View.GONE);
-        } else {
-            llTop.setVisibility(View.GONE);
         }
     }
 
