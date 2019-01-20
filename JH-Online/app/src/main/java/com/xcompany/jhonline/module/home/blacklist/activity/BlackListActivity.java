@@ -14,10 +14,10 @@ import com.lzy.okgo.model.Response;
 import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.model.home.Black;
 import com.xcompany.jhonline.module.home.blacklist.adapter.BlackListAapter;
+import com.xcompany.jhonline.module.publish.activity.PublishIndustryBlackListActivity;
 import com.xcompany.jhonline.network.JHCallback;
 import com.xcompany.jhonline.network.JHResponse;
 import com.xcompany.jhonline.utils.ReleaseConfig;
-import com.xcompany.jhonline.utils.SharedPreferenceUtil;
 import com.xcompany.jhonline.utils.T;
 
 import java.util.ArrayList;
@@ -25,6 +25,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by xieliang on 2018/12/12 23:36
@@ -83,5 +84,15 @@ public class BlackListActivity extends AppCompatActivity {
                         T.showToast(BlackListActivity.this, response.getException().getMessage());
                     }
                 });
+    }
+
+    @OnClick({R.id.tv_add})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.tv_add:
+                Intent intent = new Intent(this, PublishIndustryBlackListActivity.class);
+                startActivity(intent);
+                break;
+        }
     }
 }

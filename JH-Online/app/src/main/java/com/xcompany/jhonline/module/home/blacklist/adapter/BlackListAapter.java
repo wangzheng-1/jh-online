@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.app.GlideApp;
 import com.xcompany.jhonline.model.home.Black;
+import com.xcompany.jhonline.utils.GlideUtil;
 import com.xcompany.jhonline.widget.MultipleTextView;
 
 import java.util.ArrayList;
@@ -59,9 +60,7 @@ public class BlackListAapter extends RecyclerView.Adapter {
         holder.tvName.setContentText(bean.getName());
         holder.tvExplain.setContentText(bean.getExplain());
         holder.tvNumber.setContentText(bean.getNumber());
-        GlideApp.with(context).load(bean.getImage())
-                .centerCrop()
-                .into(holder.image);
+        GlideUtil.LoaderImage(context,bean.getImage(),holder.image,true);
         if (mListener != null)
             holder.itemView.setOnClickListener(v -> mListener.onItemClick(position, bean, holder));
     }

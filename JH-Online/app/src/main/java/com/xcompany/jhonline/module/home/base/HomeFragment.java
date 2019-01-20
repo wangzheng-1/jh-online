@@ -1,15 +1,20 @@
 package com.xcompany.jhonline.module.home.base;
 
 import android.content.Intent;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.app.GlideImageLoader;
 import com.xcompany.jhonline.base.BaseFragment;
+import com.xcompany.jhonline.model.base.Address;
 import com.xcompany.jhonline.model.home.BannerImages;
 import com.xcompany.jhonline.model.home.City;
 import com.xcompany.jhonline.model.home.Hiring;
@@ -26,13 +31,20 @@ import com.xcompany.jhonline.module.home.subcontract.activity.SubcontractList;
 import com.xcompany.jhonline.module.home.technical.activity.TechnicalList;
 import com.xcompany.jhonline.network.JHCallback;
 import com.xcompany.jhonline.network.JHResponse;
+import com.xcompany.jhonline.network.JsonCallback;
 import com.xcompany.jhonline.utils.ReleaseConfig;
 import com.xcompany.jhonline.utils.SharedPreferenceUtil;
+import com.xcompany.jhonline.utils.SnCalUtils;
 import com.xcompany.jhonline.utils.T;
 import com.youth.banner.Banner;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -74,14 +86,68 @@ public class HomeFragment extends BaseFragment {
         listView.addFooterView(footView);
         listView.setOnItemClickListener(((parent, view, position, id) -> {
             Intent intent = new Intent(mContext, HiringDetailActivity.class);
-            intent.putExtra("id", mdatas.get(position-1).getId());
+            intent.putExtra("id", mdatas.get(position - 1).getId());
             startActivity(intent);
         }));
-        getCiry();
+        getCiry("惠州市");
+        OkGo.<String>post("http://pv.sohu.com/cityjson?ie=utf-8")
+                .tag(this)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        String body = response.body();
+                        try {
+                            if (!TextUtils.isEmpty(body)) {
+                                int n = body.indexOf("{");
+                                int m = body.indexOf("}");
+                                if (n > -1 && m > n) {
+                                    String substring = body.substring(n, m + 1);
+                                    JSONObject jsonObject = new JSONObject(substring);
+                                    String cip = jsonObject.getString("cip");
+                                    if (!TextUtils.isEmpty(cip)) {
+                                        String snkey = SnCalUtils.getSnkey(cip);
+                                        Map paramsMap = new LinkedHashMap<String, String>();
+                                        paramsMap.put("ip", cip);
+                                        paramsMap.put("ak", "tKlirU8a30iVYnGyGh4ah9esteZRBkZy");
+                                        paramsMap.put("sn", snkey);
+                                        OkGo.<String>get("https://api.map.baidu.com/location/ip")
+                                                .tag(this)
+                                                .params(paramsMap)
+                                                .execute(new StringCallback() {
+                                                    @Override
+                                                    public void onSuccess(Response response) {
+                                                        String s = response.body().toString();
+                                                        Gson gson = new Gson();
+                                                        Address address = gson.fromJson(s, Address.class);
+                                                        String city = address.getContent().getAddress_detail().getCity();
+                                                        getCiry(city);
+                                                    }
+
+                                                    @Override
+                                                    public void onError(Response response) {
+                                                        super.onError(response);
+                                                        T.showToast(mContext, "定位失败，无法通过外网IP定位当前城市");
+                                                        Log.i("定位失败", response.getException().getMessage());
+                                                    }
+                                                });
+                                    }
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        T.showToast(mContext, "定位失败，无法获取外网IP");
+                        Log.i("定位失败", response.getException().getMessage());
+                    }
+                });
     }
 
-    public void getCiry() {
-        String cityName = "杭州市";
+    public void getCiry(String cityName) {
         tvCity.setText(cityName);
         OkGo.<JHResponse<City>>post(ReleaseConfig.baseUrl() + "index/getCity")
                 .tag(this)

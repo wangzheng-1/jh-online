@@ -6,11 +6,50 @@
     android:orientation="vertical">
 
     <com.xcompany.jhonline.widget.ProjectToolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:toolbar_right="收藏"
         app:toolbar_right_mode="black"
         app:toolbar_title="信息详情" />
+    <LinearLayout
+        android:id="@+id/ll_top"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#00BD24"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="状态"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/top_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="60dp"
+            android:scaleType="center"
+            android:src="@drawable/shtg" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/top_fix"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="已顶置"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"

@@ -1,8 +1,11 @@
 package com.xcompany.jhonline.module.home.siteMatching.activity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -17,6 +20,7 @@ import com.xcompany.jhonline.model.home.SiteMatchingDetail;
 import com.xcompany.jhonline.network.JHCallback;
 import com.xcompany.jhonline.network.JHResponse;
 import com.xcompany.jhonline.utils.DensityUtils;
+import com.xcompany.jhonline.utils.DetailCommonUtils;
 import com.xcompany.jhonline.utils.NullCheck;
 import com.xcompany.jhonline.utils.ReleaseConfig;
 import com.xcompany.jhonline.utils.T;
@@ -25,6 +29,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by xieliang on 2018/12/8 10:15
@@ -53,6 +58,8 @@ public class SiteMatchingDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_site_matching_detail);
         ButterKnife.bind(this);
         id = getIntent().getStringExtra("id");
+        DetailCommonUtils.checkStatus(this);
+        DetailCommonUtils.saveAndUnSave(this, id, "12");
         getData();
     }
 
@@ -116,5 +123,17 @@ public class SiteMatchingDetailActivity extends AppCompatActivity {
                     .into(image2);
         }
     }
-
+    @OnClick({R.id.tv_telephone})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.tv_telephone:
+                String telephone = siteMatchingDetail.getTelephone();
+                if (!TextUtils.isEmpty(telephone)) {
+                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + telephone));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+                break;
+        }
+    }
 }

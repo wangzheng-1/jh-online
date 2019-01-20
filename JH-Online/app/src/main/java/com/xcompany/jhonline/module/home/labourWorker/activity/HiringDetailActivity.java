@@ -1,10 +1,13 @@
 package com.xcompany.jhonline.module.home.labourWorker.activity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -15,6 +18,7 @@ import com.xcompany.jhonline.model.home.Hiring;
 import com.xcompany.jhonline.model.home.HiringDetail;
 import com.xcompany.jhonline.network.JHCallback;
 import com.xcompany.jhonline.network.JHResponse;
+import com.xcompany.jhonline.utils.DetailCommonUtils;
 import com.xcompany.jhonline.utils.NullCheck;
 import com.xcompany.jhonline.utils.ReleaseConfig;
 import com.xcompany.jhonline.utils.T;
@@ -56,6 +60,8 @@ public class HiringDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_hiring_detail);
         ButterKnife.bind(this);
         id = getIntent().getStringExtra("id");
+        DetailCommonUtils.checkStatus(this);
+        DetailCommonUtils.saveAndUnSave(this, id, "8");
         Spanned str1 = Html.fromHtml("<strong><font color=#FF4500>" + "温馨提示:" + "</font></strong>进场请先核实对方身份，过往工程，拒绝先打路费现象，谨防受骗");
         tvNotice.setText(str1);
         getData();
@@ -98,11 +104,16 @@ public class HiringDetailActivity extends AppCompatActivity {
         telephone.setText(NullCheck.check(hiringDetail.getTelephone()));
         explain.setText(NullCheck.check(hiringDetail.getExplain()));
     }
-
     @OnClick({R.id.telephone})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.telephone:
+                String telephone = hiringDetail.getTelephone();
+                if (!TextUtils.isEmpty(telephone)) {
+                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + telephone));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
                 break;
         }
     }
