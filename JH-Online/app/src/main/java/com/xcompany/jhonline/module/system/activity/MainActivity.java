@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         fragments.add(new MeFragment());
         pageAdapter = new MainPagerAdapter(getSupportFragmentManager(), fragments);
         mViewPager.setAdapter(pageAdapter);
-//        mViewPager.setOffscreenPageLimit(4);
+        mViewPager.setOffscreenPageLimit(4);
     }
 
     private void changeBtn(int index) {
