@@ -12,10 +12,11 @@ android {
     dataBinding {
         enabled = true
     }
-
     lintOptions {
-        abortOnError true
+        abortOnError false
     }
+
+
 }
 
 dependencies {
