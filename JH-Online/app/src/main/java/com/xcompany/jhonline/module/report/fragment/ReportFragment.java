@@ -38,7 +38,6 @@ import com.xcompany.jhonline.network.UserService;
 import com.xcompany.jhonline.utils.ReleaseConfig;
 import com.xcompany.jhonline.utils.StringUtil;
 import com.xcompany.jhonline.utils.T;
-import com.xcompany.jhonline.widget.MyBGANinePhotoLayout;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -53,6 +52,7 @@ import cn.bingoogolapple.baseadapter.BGAViewHolderHelper;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPreviewActivity;
 import cn.bingoogolapple.photopicker.imageloader.BGARVOnScrollListener;
 import cn.bingoogolapple.photopicker.widget.BGAImageView;
+import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout;
 import cn.jzvd.JZVideoPlayerStandard;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -60,7 +60,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 /**
  * Created by xieliang on 2018/11/21 11:47
  */
-public class ReportFragment extends ListBaseFragment implements EasyPermissions.PermissionCallbacks, MyBGANinePhotoLayout.Delegate {
+public class ReportFragment extends ListBaseFragment implements EasyPermissions.PermissionCallbacks, BGANinePhotoLayout.Delegate {
 
 
     private static final int PRC_PHOTO_PREVIEW = 1;
@@ -79,7 +79,7 @@ public class ReportFragment extends ListBaseFragment implements EasyPermissions.
     @BindView(R.id.meReportTitleText)
     TextView meReportTitleText;
 
-    private MyBGANinePhotoLayout mCurrentClickNpl;
+    private BGANinePhotoLayout mCurrentClickNpl;
     private MomentAdapter mMomentAdapter;
     private static final String EXTRA_MOMENT = "EXTRA_MOMENT";
 
@@ -189,7 +189,7 @@ public class ReportFragment extends ListBaseFragment implements EasyPermissions.
     }
 
     @Override
-    public void onClickNinePhotoItem(MyBGANinePhotoLayout ninePhotoLayout, View view, int position, String model, List<String> models) {
+    public void onClickNinePhotoItem(BGANinePhotoLayout ninePhotoLayout, View view, int position, String model, List<String> models) {
         mCurrentClickNpl = ninePhotoLayout;
         photoPreviewWrapper();
     }
@@ -218,7 +218,7 @@ public class ReportFragment extends ListBaseFragment implements EasyPermissions.
             TextView userNameText = helper.getView(R.id.userNameText);
             TextView mineFellowText = helper.getView(R.id.mineFellowText);
             TextView reportContentText = helper.getView(R.id.reportContentText);
-            MyBGANinePhotoLayout reportNineImage = helper.getView(R.id.reportNineImage);
+            BGANinePhotoLayout reportNineImage = helper.getView(R.id.reportNineImage);
 
             TextView thumbText = helper.getView(R.id.thumbText);
             LinearLayout commentText = helper.getView(R.id.commentText);

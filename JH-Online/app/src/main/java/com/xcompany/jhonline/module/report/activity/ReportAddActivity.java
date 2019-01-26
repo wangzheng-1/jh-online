@@ -117,7 +117,7 @@ public class ReportAddActivity extends BaseActivity implements EasyPermissions.P
 
     List<String> mediaPathList = null; //已经选择的视频或者图片Path
 
-    List<String> mediaPathUrl = null; //已经选择的视频或者图片url
+    List<String> mediaPathUrl = new ArrayList<>(); //已经选择的视频或者图片url
 
 
     private String ext;  //文件格式
@@ -473,32 +473,37 @@ public class ReportAddActivity extends BaseActivity implements EasyPermissions.P
      * 上传图片
      */
     private void uploadImage(){
-        Map<String,Object> params = new HashMap<>();
-        params.put("type","card");
+
+        mediaPathList.clear();
         for(int i = 0; i < mediaPathList.size(); i++){
+            Map<String,Object> params = new HashMap<>();
+            params.put("type","card");
             File file = new File(mediaPathList.get(i));
             params.put("file" + i,file);
+            DataRequestUtil.<FileResponse<String>>upLoadFile("Public/upload", params, new FileNetCallBack<FileResponse<String>>() {
+                @Override
+                public void done(FileResponse<String> result, Exception e) {
+                    if(e == null){
+                        mediaPathUrl.add(result.getMsg());
+                        ext = result.getExt();
+                        if(mediaPathUrl!= null && mediaPathUrl.size() == mediaPathList.size()){
+                            Message message = new Message();
+                            message.what = 1;
+                            handler.sendMessage(message);
+                        }
+                    }
+                    else {
+                        if (dialog != null && dialog.isShowing()) {
+                            dialog.dismiss();
+                        }
+                        mediaPathList.clear();
+                        T.showToast(ReportAddActivity.this, e.getMessage());
+                    }
+                }
+            });
 
         }
-        DataRequestUtil.<FileResponse<String>>upLoadFile("Public/upload", params, new FileNetCallBack<FileResponse<String>>() {
-            @Override
-            public void done(FileResponse<String> result, Exception e) {
-                if(e == null){
-                    mediaPathUrl = new ArrayList<>();
-                    mediaPathUrl.add(result.getMsg());
-                    ext = result.getExt();
-                    Message message = new Message();
-                    message.what = 1;
-                    handler.sendMessage(message);
-                }
-                else {
-                    if (dialog != null && dialog.isShowing()) {
-                        dialog.dismiss();
-                    }
-                    T.showToast(ReportAddActivity.this, e.getMessage());
-                }
-            }
-        });
+
     }
 
 

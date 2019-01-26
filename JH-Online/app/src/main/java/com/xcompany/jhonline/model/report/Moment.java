@@ -52,12 +52,12 @@ public class Moment extends Model implements Serializable {
     private String addtime;
 
     /**
-     *  发表时间
+     *  评论
      */
     private List<Comment> make;
 
     /**
-     *  发表时间
+     *  关注
      */
     private Fellow givelist;
 

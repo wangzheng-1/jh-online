@@ -11,9 +11,7 @@ import com.lzy.okgo.model.Response;
 import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.base.XListViewActivity;
 import com.xcompany.jhonline.model.base.Model;
-import com.xcompany.jhonline.model.me.MeCollectBean;
 import com.xcompany.jhonline.model.publish.PublishTypeItemBean;
-import com.xcompany.jhonline.model.report.Moment;
 import com.xcompany.jhonline.module.home.blacklist.activity.BlackListDetailActivity;
 import com.xcompany.jhonline.module.home.buildMaterial.activity.PurchaseDetailActivity;
 import com.xcompany.jhonline.module.home.buildMaterial.activity.QualitySupplierDetailActivity;
@@ -25,17 +23,13 @@ import com.xcompany.jhonline.module.home.labourWorker.activity.HiringDetailActiv
 import com.xcompany.jhonline.module.home.siteMatching.activity.SiteMatchingDetailActivity;
 import com.xcompany.jhonline.module.home.subcontract.activity.QualityTeamDetailActivity;
 import com.xcompany.jhonline.module.home.subcontract.activity.TenderDetailActivity;
-import com.xcompany.jhonline.module.me.adapter.MeCollectAdapter;
 import com.xcompany.jhonline.module.publish.adapter.PublishAdapter;
-import com.xcompany.jhonline.module.publish.fragment.PublishFragment;
-import com.xcompany.jhonline.module.report.fragment.ReportFragment;
 import com.xcompany.jhonline.network.JHCallback;
 import com.xcompany.jhonline.network.JHResponse;
 import com.xcompany.jhonline.network.UserService;
 import com.xcompany.jhonline.utils.ReleaseConfig;
 import com.xcompany.jhonline.utils.T;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MeCollectListActivity extends XListViewActivity {
