@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -15,11 +16,13 @@ import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.model.home.TenderDetail;
 import com.xcompany.jhonline.network.JHCallback;
 import com.xcompany.jhonline.network.JHResponse;
+import com.xcompany.jhonline.network.UserService;
 import com.xcompany.jhonline.utils.DetailCommonUtils;
 import com.xcompany.jhonline.utils.NullCheck;
 import com.xcompany.jhonline.utils.ReleaseConfig;
 import com.xcompany.jhonline.utils.T;
 import com.xcompany.jhonline.widget.MultipleTextView;
+import com.xcompany.jhonline.widget.ProjectToolbar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,6 +52,8 @@ public class TenderDetailActivity extends AppCompatActivity {
     MultipleTextView tvEmail;
     @BindView(R.id.tv_explain)
     TextView tvExplain;
+    @BindView(R.id.toolbar)
+    ProjectToolbar toolbar;
     private String id;
     private TenderDetail detail;
 
@@ -82,6 +87,11 @@ public class TenderDetailActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        if(TextUtils.equals(detail.getIssue(),"0")){
+            toolbar.setToolbar_right("取消收藏");
+        }else {
+            toolbar.setToolbar_right("收藏");
+        }
         tvName.setContentText(detail.getName());
         tvCompany.setContentText(detail.getCompany());
         tvAcreage.setContentText(detail.getAcreage());
@@ -89,20 +99,55 @@ public class TenderDetailActivity extends AppCompatActivity {
         tvInventory.setContentText(detail.getInventory());
         tvEntryTime.setContentText(detail.getEntryTime());
         tvLinkman.setContentText(detail.getLinkman());
-        tvTelephone.setText(NullCheck.check(detail.getTelephone()));
+        if(TextUtils.equals(detail.getSign(),"0")){
+            tvTelephone.setText(NullCheck.check(detail.getTelephone()));
+        }else {
+            tvTelephone.setText("查看电话");
+        }
         tvEmail.setContentText(detail.getEmail());
         tvExplain.setText(detail.getExplain());
     }
-
     @OnClick({R.id.tv_telephone})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_telephone:
-                String telephone = detail.getTelephone();
-                if (!TextUtils.isEmpty(telephone)) {
-                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + telephone));
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
+                if(TextUtils.equals(detail.getSign(),"0")){
+                    String telephone = detail.getTelephone();
+                    if (!TextUtils.isEmpty(telephone)) {
+                        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + telephone));
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
+                }else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("提示");
+                    builder.setMessage("查看电话需要消耗30积分");
+                    builder.setNegativeButton("取消", null);
+                    builder.setPositiveButton("确定", ((dialog, which) -> {
+                        OkGo.<JHResponse<String>>post(ReleaseConfig.baseUrl() + "User/consume")
+                                .params("uid", UserService.getInstance().getUid())
+                                .params("fid", id)
+                                .params("type", "1")
+                                .execute(new JHCallback<JHResponse<String>>() {
+                                    @Override
+                                    public void onSuccess(Response<JHResponse<String>> response) {
+                                        detail.setSign("0");
+                                        tvTelephone.setText(NullCheck.check(detail.getTelephone()));
+                                        String telephone = detail.getTelephone();
+                                        if (!TextUtils.isEmpty(telephone)) {
+                                            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + telephone));
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            startActivity(intent);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onError(Response<JHResponse<String>> response) {
+                                        T.showToast(TenderDetailActivity.this, response.getException().getMessage());
+                                    }
+                                });
+                    }));
+                    builder.show();
                 }
                 break;
         }

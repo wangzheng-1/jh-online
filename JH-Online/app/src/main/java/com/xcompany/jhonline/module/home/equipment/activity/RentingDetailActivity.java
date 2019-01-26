@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -18,10 +19,12 @@ import com.xcompany.jhonline.app.GlideApp;
 import com.xcompany.jhonline.model.home.RentingDetail;
 import com.xcompany.jhonline.network.JHCallback;
 import com.xcompany.jhonline.network.JHResponse;
+import com.xcompany.jhonline.network.UserService;
 import com.xcompany.jhonline.utils.DetailCommonUtils;
 import com.xcompany.jhonline.utils.NullCheck;
 import com.xcompany.jhonline.utils.ReleaseConfig;
 import com.xcompany.jhonline.utils.T;
+import com.xcompany.jhonline.widget.ProjectToolbar;
 
 import java.util.List;
 
@@ -63,6 +66,8 @@ public class RentingDetailActivity extends AppCompatActivity {
     TextView tvImage3;
     @BindView(R.id.ll_image3)
     LinearLayout llImage3;
+    @BindView(R.id.toolbar)
+    ProjectToolbar toolbar;
     private String id;
     private RentingDetail rentingDetail;
 
@@ -96,11 +101,20 @@ public class RentingDetailActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        if(TextUtils.equals(rentingDetail.getIssue(),"0")){
+            toolbar.setToolbar_right("取消收藏");
+        }else {
+            toolbar.setToolbar_right("收藏");
+        }
         tvClassname.setText(NullCheck.check("商户出租产品：", rentingDetail.getClassname()));
         tvEntryTime.setText(NullCheck.check("商户入驻时间：", rentingDetail.getEntryTime()));
         tvContacts.setText(NullCheck.check("地址：", rentingDetail.getContacts()));
         tvLinkman.setText(NullCheck.check("联系人：", rentingDetail.getLinkman()));
-        tvTelephone.setText(NullCheck.check(rentingDetail.getTelephone()));
+        if(TextUtils.equals(rentingDetail.getSign(),"0")){
+            tvTelephone.setText(NullCheck.check(rentingDetail.getTelephone()));
+        }else {
+            tvTelephone.setText("查看电话");
+        }
         tvExplain.setText(NullCheck.check(rentingDetail.getExplain()));
         List<RentingDetail.CaseBean> caseX = rentingDetail.getCaseX();
         if (caseX.size() == 0) {
@@ -149,11 +163,43 @@ public class RentingDetailActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_telephone:
-                String telephone = rentingDetail.getTelephone();
-                if (!TextUtils.isEmpty(telephone)) {
-                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + telephone));
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
+                if(TextUtils.equals(rentingDetail.getSign(),"0")){
+                    String telephone = rentingDetail.getTelephone();
+                    if (!TextUtils.isEmpty(telephone)) {
+                        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + telephone));
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
+                }else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("提示");
+                    builder.setMessage("查看电话需要消耗30积分");
+                    builder.setNegativeButton("取消", null);
+                    builder.setPositiveButton("确定", ((dialog, which) -> {
+                        OkGo.<JHResponse<String>>post(ReleaseConfig.baseUrl() + "User/consume")
+                                .params("uid", UserService.getInstance().getUid())
+                                .params("fid", id)
+                                .params("type", "2")
+                                .execute(new JHCallback<JHResponse<String>>() {
+                                    @Override
+                                    public void onSuccess(Response<JHResponse<String>> response) {
+                                        rentingDetail.setSign("0");
+                                        tvTelephone.setText(NullCheck.check(rentingDetail.getTelephone()));
+                                        String telephone = rentingDetail.getTelephone();
+                                        if (!TextUtils.isEmpty(telephone)) {
+                                            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + telephone));
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            startActivity(intent);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onError(Response<JHResponse<String>> response) {
+                                        T.showToast(RentingDetailActivity.this, response.getException().getMessage());
+                                    }
+                                });
+                    }));
+                    builder.show();
                 }
                 break;
         }

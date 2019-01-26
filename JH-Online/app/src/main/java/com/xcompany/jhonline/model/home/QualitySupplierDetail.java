@@ -50,6 +50,24 @@ public class QualitySupplierDetail implements Serializable {
     private List<String> imager;
     @SerializedName("case")
     private List<CaseBean> caseX;
+    private String sign;
+    private String issue;
+
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
+    }
+
+    public String getIssue() {
+        return issue;
+    }
+
+    public void setIssue(String issue) {
+        this.issue = issue;
+    }
 
     public String getId() {
         return id;

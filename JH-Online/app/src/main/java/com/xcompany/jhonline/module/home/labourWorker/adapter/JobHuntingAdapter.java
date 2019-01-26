@@ -2,6 +2,7 @@ package com.xcompany.jhonline.module.home.labourWorker.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.app.GlideApp;
 import com.xcompany.jhonline.model.home.JobHunting;
+import com.xcompany.jhonline.utils.GlideUtil;
 import com.xcompany.jhonline.utils.NullCheck;
 
 import java.util.ArrayList;
@@ -63,10 +65,16 @@ public class JobHuntingAdapter extends RecyclerView.Adapter {
         holder.tvEntryTime.setText(NullCheck.check("发布时间：", bean.getEntryTime()));
         holder.tvNumber.setText(NullCheck.check("队伍人数：", bean.getNumber()));
         holder.tvContacts.setText(NullCheck.check("地址：", bean.getContacts()));
-        holder.tvTelephone.setText(NullCheck.check(bean.getTelephone()));
-        GlideApp.with(context).load(bean.getImage())
-                .centerCrop()
-                .into(holder.image);
+        if(TextUtils.equals(bean.getSign(),"0")){
+            holder.tvTelephone.setText(NullCheck.check(bean.getTelephone()));
+        }else {
+            holder.tvTelephone.setText("查看电话");
+        }
+        holder.tvTelephone.setOnClickListener(v -> {
+            if (onPhoneClickListener != null)
+                onPhoneClickListener.onPhoneClick(position, bean, holder);
+        });
+        GlideUtil.LoaderImage(context, bean.getImage(), holder.image, true);
     }
 
     @Override
@@ -101,10 +109,18 @@ public class JobHuntingAdapter extends RecyclerView.Adapter {
         this.mListener = mListener;
     }
 
+    public void setOnPhoneClickListener(OnPhoneClickListener onPhoneClickListener) {
+        this.onPhoneClickListener = onPhoneClickListener;
+    }
+
     private OnItemClickListener mListener;
+    private OnPhoneClickListener onPhoneClickListener;
 
     public interface OnItemClickListener {
         void onItemClick(int position, JobHunting bean, RecyclerView.ViewHolder holder);
     }
 
+    public interface OnPhoneClickListener {
+        void onPhoneClick(int position, JobHunting bean, RecyclerView.ViewHolder holder);
+    }
 }

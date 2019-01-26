@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class TenderDetail implements Serializable {
 
-    private static final long serialVersionUID = 8374481600804225874L;
+    private static final long serialVersionUID = 2155370854941028799L;
 
     /**
      * id : 2
@@ -44,6 +44,8 @@ public class TenderDetail implements Serializable {
     private String classname;
     private String contacts;
     private String entryTime;
+    private String sign;
+    private String issue;
 
     public String getId() {
         return id;
@@ -171,5 +173,21 @@ public class TenderDetail implements Serializable {
 
     public void setEntryTime(String entryTime) {
         this.entryTime = entryTime;
+    }
+
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
+    }
+
+    public String getIssue() {
+        return issue;
+    }
+
+    public void setIssue(String issue) {
+        this.issue = issue;
     }
 }

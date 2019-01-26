@@ -1,6 +1,10 @@
 package com.xcompany.jhonline.module.home.labourWorker.fragment;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
@@ -10,9 +14,12 @@ import com.lzy.okgo.model.Response;
 import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.base.BaseFragment;
 import com.xcompany.jhonline.model.home.JobHunting;
+import com.xcompany.jhonline.module.home.buildMaterial.activity.PurchaseDetailActivity;
 import com.xcompany.jhonline.module.home.labourWorker.adapter.JobHuntingAdapter;
 import com.xcompany.jhonline.network.JHCallback;
 import com.xcompany.jhonline.network.JHResponse;
+import com.xcompany.jhonline.network.UserService;
+import com.xcompany.jhonline.utils.NullCheck;
 import com.xcompany.jhonline.utils.ReleaseConfig;
 import com.xcompany.jhonline.utils.SharedPreferenceUtil;
 import com.xcompany.jhonline.utils.T;
@@ -60,6 +67,46 @@ public class JobHuntingFragment extends BaseFragment {
             }
         });
         mAdapter.setOnItemClickListener(((position, bean, holder) -> {
+        }));
+        mAdapter.setOnPhoneClickListener(((position, bean, holder) -> {
+            if (TextUtils.equals(bean.getSign(), "0")) {
+                String telephone = bean.getTelephone();
+                if (!TextUtils.isEmpty(telephone)) {
+                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + telephone));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+            } else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                builder.setTitle("提示");
+                builder.setMessage("查看电话需要消耗30积分");
+                builder.setNegativeButton("取消", null);
+                builder.setPositiveButton("确定", ((dialog, which) -> {
+                    OkGo.<JHResponse<String>>post(ReleaseConfig.baseUrl() + "User/consume")
+                            .params("uid", UserService.getInstance().getUid())
+                            .params("fid", bean.getId())
+                            .params("type", "9")
+                            .execute(new JHCallback<JHResponse<String>>() {
+                                @Override
+                                public void onSuccess(Response<JHResponse<String>> response) {
+                                    mdatas.get(position).setSign("0");
+                                    mAdapter.setDatas(mdatas);
+                                    String telephone = bean.getTelephone();
+                                    if (!TextUtils.isEmpty(telephone)) {
+                                        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + telephone));
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        startActivity(intent);
+                                    }
+                                }
+
+                                @Override
+                                public void onError(Response<JHResponse<String>> response) {
+                                    T.showToast(mContext, response.getException().getMessage());
+                                }
+                            });
+                }));
+                builder.show();
+            }
         }));
         getData();
     }
