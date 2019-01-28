@@ -25,6 +25,7 @@ import com.xcompany.jhonline.model.report.Comment;
 import com.xcompany.jhonline.model.report.Fellow;
 import com.xcompany.jhonline.model.report.Moment;
 import com.xcompany.jhonline.module.report.adapter.CommentAdapter;
+import com.xcompany.jhonline.module.report.fragment.ReportFragment;
 import com.xcompany.jhonline.network.JHCallback;
 import com.xcompany.jhonline.network.JHResponse;
 import com.xcompany.jhonline.network.UserService;
@@ -297,16 +298,9 @@ public class MeFollowListActivity extends XListViewActivity implements EasyPermi
                 commentText.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        showBottomCommentSheetDialog(moment.getId());
+                        showBottomCommentSheetDialog(moment);
                     }
                 });
-
-            commentText.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showBottomCommentSheetDialog(moment.getId());
-                }
-            });
         }
     }
 
@@ -411,7 +405,7 @@ public class MeFollowListActivity extends XListViewActivity implements EasyPermi
 
     BottomSheetDialog bottomCommentSheet;
 
-    private void showBottomCommentSheetDialog(String id) {
+    private void showBottomCommentSheetDialog(Moment moment) {
         if (bottomCommentSheet == null) {
             bottomCommentSheet = new BottomSheetDialog(MeFollowListActivity.this);//实例化BottomSheetDialog
             bottomCommentSheet.setCancelable(true);//设置点击外部是否可以取消
@@ -427,7 +421,7 @@ public class MeFollowListActivity extends XListViewActivity implements EasyPermi
             bottomReportMenu.findViewById(R.id.confirmText).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    comment(((EditText) bottomReportMenu.findViewById(R.id.commentContent)).getText().toString(), id);
+                    comment(((EditText) bottomReportMenu.findViewById(R.id.commentContent)).getText().toString(), moment);
                 }
             });
             bottomCommentSheet.setContentView(bottomReportMenu);
@@ -436,12 +430,33 @@ public class MeFollowListActivity extends XListViewActivity implements EasyPermi
 
     }
 
-    private void comment(String content, String id) {
+    private void comment(String content, Moment moment) {
         if (StringUtil.isEmpty(content)) {
             T.showToast(MeFollowListActivity.this, "请输入评论内容");
             return;
         }
-        T.showToast(MeFollowListActivity.this, content + "::::::::" + id);
+
+        OkGo.<JHResponse<String>>post(ReleaseConfig.baseUrl() + "Forum/makeList")
+                .tag(this)
+                .params("fid", moment.getId())
+                .params("business", content)
+                .params("uid", UserService.getInstance().getUid())
+                .params("port", "3")
+                .execute(new JHCallback<JHResponse<String>>() {
+                    @Override
+                    public void onSuccess(Response<JHResponse<String>> response) {
+                        T.showToast(MeFollowListActivity.this, "评论成功");
+                        Comment comment = new Comment();
+                        comment.setBusiness(content);
+                        moment.getMake().add(comment);
+                        mMomentAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onError(Response<JHResponse<String>> response) {
+                        T.showToast(MeFollowListActivity.this, response.getException().getMessage());
+                    }
+                });
         if (bottomCommentSheet != null && bottomCommentSheet.isShowing()) {
             bottomCommentSheet.dismiss();
         }

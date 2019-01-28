@@ -33,8 +33,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class LoginActivity extends BaseActivity {
-    @BindView(R.id.titleLayout)
-    LinearLayout titleLayout;
+//    @BindView(R.id.titleLayout)
+//    LinearLayout titleLayout;
     @BindView(R.id.logoLayout)
     LinearLayout logoLayout;
     @BindView(R.id.mobileEdit)

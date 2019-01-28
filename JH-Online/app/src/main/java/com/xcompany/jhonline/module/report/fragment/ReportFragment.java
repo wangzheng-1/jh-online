@@ -4,23 +4,19 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.xcompany.jhonline.R;
@@ -44,9 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 import cn.bingoogolapple.baseadapter.BGARecyclerViewAdapter;
 import cn.bingoogolapple.baseadapter.BGAViewHolderHelper;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPreviewActivity;
@@ -323,7 +317,7 @@ public class ReportFragment extends ListBaseFragment implements EasyPermissions.
             commentText.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showBottomCommentSheetDialog(moment.getId());
+                    showBottomCommentSheetDialog(moment);
                 }
             });
         }
@@ -482,7 +476,7 @@ public class ReportFragment extends ListBaseFragment implements EasyPermissions.
 
     BottomSheetDialog bottomCommentSheet;
 
-    private void showBottomCommentSheetDialog(String id) {
+    private void showBottomCommentSheetDialog(Moment moment) {
         if (bottomCommentSheet == null) {
             bottomCommentSheet = new BottomSheetDialog(this.getContext());//实例化BottomSheetDialog
             bottomCommentSheet.setCancelable(true);//设置点击外部是否可以取消
@@ -498,7 +492,7 @@ public class ReportFragment extends ListBaseFragment implements EasyPermissions.
             bottomReportMenu.findViewById(R.id.confirmText).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    comment(((EditText) bottomReportMenu.findViewById(R.id.commentContent)).getText().toString(), id);
+                    comment(((EditText) bottomReportMenu.findViewById(R.id.commentContent)).getText().toString(), moment);
                 }
             });
             bottomCommentSheet.setContentView(bottomReportMenu);
@@ -507,12 +501,33 @@ public class ReportFragment extends ListBaseFragment implements EasyPermissions.
 
     }
 
-    private void comment(String content, String id) {
+    private void comment(String content, Moment moment) {
         if (StringUtil.isEmpty(content)) {
             T.showToast(ReportFragment.this.getActivity(), "请输入评论内容");
             return;
         }
-        T.showToast(ReportFragment.this.getActivity(), content + "::::::::" + id);
+
+        OkGo.<JHResponse<String>>post(ReleaseConfig.baseUrl() + "Forum/makeList")
+                .tag(this)
+                .params("fid", moment.getId())
+                .params("business", content)
+                .params("uid", UserService.getInstance().getUid())
+                .params("port", "3")
+                .execute(new JHCallback<JHResponse<String>>() {
+                    @Override
+                    public void onSuccess(Response<JHResponse<String>> response) {
+                        T.showToast(ReportFragment.this.getActivity(), "评论成功");
+                        Comment comment = new Comment();
+                        comment.setBusiness(content);
+                        moment.getMake().add(comment);
+                        mMomentAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onError(Response<JHResponse<String>> response) {
+                        T.showToast(ReportFragment.this.getActivity(), response.getException().getMessage());
+                    }
+                });
         if (bottomCommentSheet != null && bottomCommentSheet.isShowing()) {
             bottomCommentSheet.dismiss();
         }

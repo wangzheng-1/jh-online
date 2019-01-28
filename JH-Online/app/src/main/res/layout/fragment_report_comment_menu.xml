@@ -57,8 +57,9 @@
             android:background="@android:color/transparent"
             android:minLines="7"
             android:gravity="start"
-            android:hint="请输入您的回复(500字以内)..."
+            android:hint="请输入您的回复(30字以内)..."
             android:textSize="14sp"
+            android:maxLength="30"
             android:textColor="@color/text_black"/>
     </LinearLayout>
 
