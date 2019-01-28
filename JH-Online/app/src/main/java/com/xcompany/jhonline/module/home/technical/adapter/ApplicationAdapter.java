@@ -6,10 +6,13 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.model.home.Application;
+import com.xcompany.jhonline.utils.GlideUtil;
 import com.xcompany.jhonline.utils.NullCheck;
 import com.xcompany.jhonline.widget.MultipleTextView;
 
@@ -75,14 +78,25 @@ public class ApplicationAdapter extends RecyclerView.Adapter {
         }
         holder.tvProject.setText(bean.getProject().toString());
         holder.itemView.setOnClickListener(v -> mListener.onItemClick(position, bean, holder));
-        if(TextUtils.equals(bean.getSign(),"0")){
+        GlideUtil.LoaderImage(context,bean.getImage(),holder.imageView,true);
+        if (TextUtils.equals(bean.getSign(), "0")) {
             holder.tvTelephone.setText(NullCheck.check(bean.getTelephone()));
-        }else {
+        } else {
             holder.tvTelephone.setText("查看电话");
         }
-        holder.tvTelephone.setOnClickListener(v -> {
+        if (TextUtils.equals(bean.getIssue(), "0")) {
+            holder.tvSave.setText("取消收藏");
+        } else {
+            holder.tvSave.setText("收藏");
+        }
+        holder.llTelephone.setOnClickListener(v -> {
             if (onPhoneClickListener != null)
                 onPhoneClickListener.onPhoneClick(position, bean, holder);
+        });
+        holder.llSave.setOnClickListener(v -> {
+            if (onSaveClickListener != null) {
+                onSaveClickListener.onSaveClick(position, bean, holder);
+            }
         });
     }
 
@@ -108,8 +122,14 @@ public class ApplicationAdapter extends RecyclerView.Adapter {
         TextView tvProject;
         @BindView(R.id.tv_telephone)
         TextView tvTelephone;
+        @BindView(R.id.ll_telephone)
+        LinearLayout llTelephone;
         @BindView(R.id.tv_save)
         TextView tvSave;
+        @BindView(R.id.ll_save)
+        LinearLayout llSave;
+        @BindView(R.id.iv_image)
+        ImageView imageView;
 
         ViewHolder(View view) {
             super(view);
@@ -126,8 +146,13 @@ public class ApplicationAdapter extends RecyclerView.Adapter {
         this.onPhoneClickListener = onPhoneClickListener;
     }
 
+    public void setOnSaveClickListener(OnSaveClickListener onSaveClickListener) {
+        this.onSaveClickListener = onSaveClickListener;
+    }
+
     private OnItemClickListener mListener;
     private OnPhoneClickListener onPhoneClickListener;
+    private OnSaveClickListener onSaveClickListener;
 
 
     public interface OnItemClickListener {
@@ -136,5 +161,9 @@ public class ApplicationAdapter extends RecyclerView.Adapter {
 
     public interface OnPhoneClickListener {
         void onPhoneClick(int position, Application bean, RecyclerView.ViewHolder holder);
+    }
+
+    public interface OnSaveClickListener {
+        void onSaveClick(int position, Application bean, RecyclerView.ViewHolder holder);
     }
 }

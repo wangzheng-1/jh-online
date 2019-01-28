@@ -192,6 +192,7 @@
             android:orientation="horizontal">
 
             <LinearLayout
+                android:id="@+id/ll_telephone"
                 android:layout_width="125dp"
                 android:layout_height="30dp"
                 android:background="@drawable/bg_menu2"
@@ -221,6 +222,7 @@
                 android:layout_weight="1" />
 
             <LinearLayout
+                android:id="@+id/ll_save"
                 android:layout_width="90dp"
                 android:layout_height="30dp"
                 android:background="@drawable/bg_menu3"

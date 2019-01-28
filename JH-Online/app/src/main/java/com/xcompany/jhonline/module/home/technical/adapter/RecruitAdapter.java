@@ -6,11 +6,11 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.model.home.Recruit;
-import com.xcompany.jhonline.module.home.labourWorker.adapter.JobHuntingAdapter;
 import com.xcompany.jhonline.utils.NullCheck;
 import com.xcompany.jhonline.widget.MultipleTextView;
 
@@ -66,14 +66,24 @@ public class RecruitAdapter extends RecyclerView.Adapter {
         holder.tvEntryTime.setContentText(bean.getEntryTime());
         holder.tvLinkman.setContentText(bean.getLinkman());
         holder.itemView.setOnClickListener(v -> mListener.onItemClick(position, bean, holder));
-        if(TextUtils.equals(bean.getSign(),"0")){
+        if (TextUtils.equals(bean.getSign(), "0")) {
             holder.tvTelephone.setText(NullCheck.check(bean.getTelephone()));
-        }else {
+        } else {
             holder.tvTelephone.setText("查看电话");
         }
-        holder.tvTelephone.setOnClickListener(v -> {
+        if (TextUtils.equals(bean.getIssue(), "0")) {
+            holder.tvSave.setText("取消收藏");
+        } else {
+            holder.tvSave.setText("收藏");
+        }
+        holder.llTelephone.setOnClickListener(v -> {
             if (onPhoneClickListener != null)
                 onPhoneClickListener.onPhoneClick(position, bean, holder);
+        });
+        holder.llSave.setOnClickListener(v -> {
+            if (onSaveClickListener != null) {
+                onSaveClickListener.onSaveClick(position, bean, holder);
+            }
         });
     }
 
@@ -101,6 +111,10 @@ public class RecruitAdapter extends RecyclerView.Adapter {
         TextView tvTelephone;
         @BindView(R.id.tv_save)
         TextView tvSave;
+        @BindView(R.id.ll_telephone)
+        LinearLayout llTelephone;
+        @BindView(R.id.ll_save)
+        LinearLayout llSave;
 
         ViewHolder(View view) {
             super(view);
@@ -112,18 +126,28 @@ public class RecruitAdapter extends RecyclerView.Adapter {
     public void setOnItemClickListener(OnItemClickListener mListener) {
         this.mListener = mListener;
     }
+
     public void setOnPhoneClickListener(OnPhoneClickListener onPhoneClickListener) {
         this.onPhoneClickListener = onPhoneClickListener;
     }
 
+    public void setOnSaveClickListener(OnSaveClickListener onSaveClickListener) {
+        this.onSaveClickListener = onSaveClickListener;
+    }
+
     private OnItemClickListener mListener;
     private OnPhoneClickListener onPhoneClickListener;
+    private OnSaveClickListener onSaveClickListener;
 
     public interface OnItemClickListener {
         void onItemClick(int position, Recruit bean, RecyclerView.ViewHolder holder);
     }
+
     public interface OnPhoneClickListener {
         void onPhoneClick(int position, Recruit bean, RecyclerView.ViewHolder holder);
     }
 
+    public interface OnSaveClickListener {
+        void onSaveClick(int position, Recruit bean, RecyclerView.ViewHolder holder);
+    }
 }

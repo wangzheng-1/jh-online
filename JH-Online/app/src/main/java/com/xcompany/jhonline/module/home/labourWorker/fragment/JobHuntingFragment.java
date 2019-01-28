@@ -79,7 +79,7 @@ public class JobHuntingFragment extends BaseFragment {
             } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                 builder.setTitle("提示");
-                builder.setMessage("查看电话需要消耗30积分");
+                builder.setMessage("查看电话需要消耗5积分");
                 builder.setNegativeButton("取消", null);
                 builder.setPositiveButton("确定", ((dialog, which) -> {
                     OkGo.<JHResponse<String>>post(ReleaseConfig.baseUrl() + "User/consume")
@@ -101,7 +101,7 @@ public class JobHuntingFragment extends BaseFragment {
 
                                 @Override
                                 public void onError(Response<JHResponse<String>> response) {
-                                    T.showToast(mContext, response.getException().getMessage());
+                                    T.showToast(mContext, "积分不足！");
                                 }
                             });
                 }));
