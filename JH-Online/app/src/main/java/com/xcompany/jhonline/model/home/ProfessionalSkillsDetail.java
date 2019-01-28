@@ -32,6 +32,24 @@ public class ProfessionalSkillsDetail implements Serializable {
     private String classname;
     private String area;
     private String city;
+    private String sign;
+    private String issue;
+
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
+    }
+
+    public String getIssue() {
+        return issue;
+    }
+
+    public void setIssue(String issue) {
+        this.issue = issue;
+    }
 
     public String getId() {
         return id;

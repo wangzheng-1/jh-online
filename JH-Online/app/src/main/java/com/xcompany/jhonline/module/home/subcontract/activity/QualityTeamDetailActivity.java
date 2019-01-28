@@ -1,9 +1,11 @@
 package com.xcompany.jhonline.module.home.subcontract.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -17,6 +19,7 @@ import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.model.home.QualityTeamDetail;
 import com.xcompany.jhonline.network.JHCallback;
 import com.xcompany.jhonline.network.JHResponse;
+import com.xcompany.jhonline.network.UserService;
 import com.xcompany.jhonline.utils.DetailCommonUtils;
 import com.xcompany.jhonline.utils.GlideUtil;
 import com.xcompany.jhonline.utils.NullCheck;
@@ -74,6 +77,8 @@ public class QualityTeamDetailActivity extends AppCompatActivity {
     LinearLayout llImage3;
     @BindView(R.id.tv_image_remark)
     TextView tvImageRemark;
+    @BindView(R.id.toolbar)
+    ProjectToolbar toolbar;
     private String id;
     private QualityTeamDetail qualityTeamDetail;
 
@@ -109,6 +114,11 @@ public class QualityTeamDetailActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        if(TextUtils.equals(qualityTeamDetail.getIssue(),"0")){
+            toolbar.setToolbar_right("取消收藏");
+        }else {
+            toolbar.setToolbar_right("收藏");
+        }
         tvInventory.setText(NullCheck.check("主要承建单项：", qualityTeamDetail.getInventory()));
         tvIdea.setText(NullCheck.check("经营理念：", qualityTeamDetail.getIdea()));
         tvEnounce.setText(NullCheck.check("诚信宣言：", qualityTeamDetail.getEnounce()));
@@ -121,7 +131,11 @@ public class QualityTeamDetailActivity extends AppCompatActivity {
         }
         tvContacts.setText(NullCheck.check("常驻地：", qualityTeamDetail.getContacts()));
         tvLinkman.setText(NullCheck.check("联系人：", qualityTeamDetail.getLinkman()));
-        tvTelephone.setText(NullCheck.check(qualityTeamDetail.getTelephone()));
+        if(TextUtils.equals(qualityTeamDetail.getSign(),"0")){
+            tvTelephone.setText(NullCheck.check(qualityTeamDetail.getTelephone()));
+        }else {
+            tvTelephone.setText("查看电话");
+        }
         tvExplain.setText(NullCheck.check(qualityTeamDetail.getExplain()));
         List<QualityTeamDetail.CaseBean> list = qualityTeamDetail.getCaseX();
         if (list.size() == 0) {
@@ -168,11 +182,43 @@ public class QualityTeamDetailActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_telephone:
-                String telephone = qualityTeamDetail.getTelephone();
-                if (!TextUtils.isEmpty(telephone)) {
-                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + telephone));
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
+                if(TextUtils.equals(qualityTeamDetail.getSign(),"0")){
+                    String telephone = qualityTeamDetail.getTelephone();
+                    if (!TextUtils.isEmpty(telephone)) {
+                        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + telephone));
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
+                }else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("提示");
+                    builder.setMessage("查看电话需要消耗30积分");
+                    builder.setNegativeButton("取消", null);
+                    builder.setPositiveButton("确定", ((dialog, which) -> {
+                        OkGo.<JHResponse<String>>post(ReleaseConfig.baseUrl() + "User/consume")
+                                .params("uid", UserService.getInstance().getUid())
+                                .params("fid", id)
+                                .params("type", "0")
+                                .execute(new JHCallback<JHResponse<String>>() {
+                                    @Override
+                                    public void onSuccess(Response<JHResponse<String>> response) {
+                                        qualityTeamDetail.setSign("0");
+                                        tvTelephone.setText(NullCheck.check(qualityTeamDetail.getTelephone()));
+                                        String telephone = qualityTeamDetail.getTelephone();
+                                        if (!TextUtils.isEmpty(telephone)) {
+                                            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + telephone));
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            startActivity(intent);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onError(Response<JHResponse<String>> response) {
+                                        T.showToast(QualityTeamDetailActivity.this, response.getException().getMessage());
+                                    }
+                                });
+                    }));
+                    builder.show();
                 }
                 break;
         }

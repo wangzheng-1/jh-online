@@ -38,6 +38,24 @@ public class RegistrationDetail implements Serializable {
     private String explain;
     private String contacts;
     private String entryTime;
+    private String sign;
+    private String issue;
+
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
+    }
+
+    public String getIssue() {
+        return issue;
+    }
+
+    public void setIssue(String issue) {
+        this.issue = issue;
+    }
 
     public String getId() {
         return id;

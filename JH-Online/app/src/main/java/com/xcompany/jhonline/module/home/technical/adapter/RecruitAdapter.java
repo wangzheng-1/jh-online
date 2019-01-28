@@ -2,6 +2,7 @@ package com.xcompany.jhonline.module.home.technical.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.model.home.Recruit;
+import com.xcompany.jhonline.module.home.labourWorker.adapter.JobHuntingAdapter;
 import com.xcompany.jhonline.utils.NullCheck;
 import com.xcompany.jhonline.widget.MultipleTextView;
 
@@ -63,8 +65,16 @@ public class RecruitAdapter extends RecyclerView.Adapter {
         holder.tvCity.setContentText(NullCheck.check(bean.getArea() + " " + NullCheck.check(bean.getCity())));
         holder.tvEntryTime.setContentText(bean.getEntryTime());
         holder.tvLinkman.setContentText(bean.getLinkman());
-        holder.tvTelephone.setText(NullCheck.check(bean.getTelephone()));
         holder.itemView.setOnClickListener(v -> mListener.onItemClick(position, bean, holder));
+        if(TextUtils.equals(bean.getSign(),"0")){
+            holder.tvTelephone.setText(NullCheck.check(bean.getTelephone()));
+        }else {
+            holder.tvTelephone.setText("查看电话");
+        }
+        holder.tvTelephone.setOnClickListener(v -> {
+            if (onPhoneClickListener != null)
+                onPhoneClickListener.onPhoneClick(position, bean, holder);
+        });
     }
 
     @Override
@@ -102,11 +112,18 @@ public class RecruitAdapter extends RecyclerView.Adapter {
     public void setOnItemClickListener(OnItemClickListener mListener) {
         this.mListener = mListener;
     }
+    public void setOnPhoneClickListener(OnPhoneClickListener onPhoneClickListener) {
+        this.onPhoneClickListener = onPhoneClickListener;
+    }
 
     private OnItemClickListener mListener;
+    private OnPhoneClickListener onPhoneClickListener;
 
     public interface OnItemClickListener {
         void onItemClick(int position, Recruit bean, RecyclerView.ViewHolder holder);
+    }
+    public interface OnPhoneClickListener {
+        void onPhoneClick(int position, Recruit bean, RecyclerView.ViewHolder holder);
     }
 
 }

@@ -2,6 +2,7 @@ package com.xcompany.jhonline.module.home.technical.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,8 +74,16 @@ public class ApplicationAdapter extends RecyclerView.Adapter {
             e.printStackTrace();
         }
         holder.tvProject.setText(bean.getProject().toString());
-        holder.tvTelephone.setText(NullCheck.check(bean.getTelephone()));
         holder.itemView.setOnClickListener(v -> mListener.onItemClick(position, bean, holder));
+        if(TextUtils.equals(bean.getSign(),"0")){
+            holder.tvTelephone.setText(NullCheck.check(bean.getTelephone()));
+        }else {
+            holder.tvTelephone.setText("查看电话");
+        }
+        holder.tvTelephone.setOnClickListener(v -> {
+            if (onPhoneClickListener != null)
+                onPhoneClickListener.onPhoneClick(position, bean, holder);
+        });
     }
 
     @Override
@@ -113,10 +122,19 @@ public class ApplicationAdapter extends RecyclerView.Adapter {
         this.mListener = mListener;
     }
 
+    public void setOnPhoneClickListener(OnPhoneClickListener onPhoneClickListener) {
+        this.onPhoneClickListener = onPhoneClickListener;
+    }
+
     private OnItemClickListener mListener;
+    private OnPhoneClickListener onPhoneClickListener;
+
 
     public interface OnItemClickListener {
         void onItemClick(int position, Application bean, RecyclerView.ViewHolder holder);
     }
 
+    public interface OnPhoneClickListener {
+        void onPhoneClick(int position, Application bean, RecyclerView.ViewHolder holder);
+    }
 }

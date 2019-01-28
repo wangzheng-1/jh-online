@@ -4,10 +4,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,11 +19,12 @@ import com.xcompany.jhonline.app.GlideApp;
 import com.xcompany.jhonline.model.home.SiteMatchingDetail;
 import com.xcompany.jhonline.network.JHCallback;
 import com.xcompany.jhonline.network.JHResponse;
-import com.xcompany.jhonline.utils.DensityUtils;
+import com.xcompany.jhonline.network.UserService;
 import com.xcompany.jhonline.utils.DetailCommonUtils;
 import com.xcompany.jhonline.utils.NullCheck;
 import com.xcompany.jhonline.utils.ReleaseConfig;
 import com.xcompany.jhonline.utils.T;
+import com.xcompany.jhonline.widget.ProjectToolbar;
 
 import java.util.List;
 
@@ -49,6 +50,14 @@ public class SiteMatchingDetailActivity extends AppCompatActivity {
     ImageView image2;
     @BindView(R.id.image3)
     ImageView image3;
+    @BindView(R.id.toolbar)
+    ProjectToolbar toolbar;
+    @BindView(R.id.top_image)
+    ImageView topImage;
+    @BindView(R.id.top_fix)
+    TextView topFix;
+    @BindView(R.id.ll_top)
+    LinearLayout llTop;
     private String id;
     private SiteMatchingDetail siteMatchingDetail;
 
@@ -82,9 +91,18 @@ public class SiteMatchingDetailActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        if (TextUtils.equals(siteMatchingDetail.getIssue(), "0")) {
+            toolbar.setToolbar_right("取消收藏");
+        } else {
+            toolbar.setToolbar_right("收藏");
+        }
+        if (TextUtils.equals(siteMatchingDetail.getSign(), "0")) {
+            tvTelephone.setText(NullCheck.check(siteMatchingDetail.getTelephone()));
+        } else {
+            tvTelephone.setText("查看电话");
+        }
         tvContacts.setText(NullCheck.check("服务地区：", siteMatchingDetail.getContacts()));
         tvLinkman.setText(NullCheck.check("联系人：", siteMatchingDetail.getLinkman()));
-        tvTelephone.setText(NullCheck.check(siteMatchingDetail.getTelephone()));
         tvExplain.setText(NullCheck.check(siteMatchingDetail.getExplain()));
         List<String> list = siteMatchingDetail.getImages();
         if (list.size() == 0) {
@@ -123,15 +141,48 @@ public class SiteMatchingDetailActivity extends AppCompatActivity {
                     .into(image2);
         }
     }
+
     @OnClick({R.id.tv_telephone})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_telephone:
-                String telephone = siteMatchingDetail.getTelephone();
-                if (!TextUtils.isEmpty(telephone)) {
-                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + telephone));
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
+                if (TextUtils.equals(siteMatchingDetail.getSign(), "0")) {
+                    String telephone = siteMatchingDetail.getTelephone();
+                    if (!TextUtils.isEmpty(telephone)) {
+                        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + telephone));
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("提示");
+                    builder.setMessage("查看电话需要消耗30积分");
+                    builder.setNegativeButton("取消", null);
+                    builder.setPositiveButton("确定", ((dialog, which) -> {
+                        OkGo.<JHResponse<String>>post(ReleaseConfig.baseUrl() + "User/consume")
+                                .params("uid", UserService.getInstance().getUid())
+                                .params("fid", id)
+                                .params("type", "12")
+                                .execute(new JHCallback<JHResponse<String>>() {
+                                    @Override
+                                    public void onSuccess(Response<JHResponse<String>> response) {
+                                        siteMatchingDetail.setSign("0");
+                                        tvTelephone.setText(NullCheck.check(siteMatchingDetail.getTelephone()));
+                                        String telephone = siteMatchingDetail.getTelephone();
+                                        if (!TextUtils.isEmpty(telephone)) {
+                                            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + telephone));
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            startActivity(intent);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onError(Response<JHResponse<String>> response) {
+                                        T.showToast(SiteMatchingDetailActivity.this, response.getException().getMessage());
+                                    }
+                                });
+                    }));
+                    builder.show();
                 }
                 break;
         }
