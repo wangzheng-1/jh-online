@@ -154,8 +154,6 @@ public class AddCardActivity extends AppCompatActivity {
                             dialog.dismiss();
                         }
                         T.showToast(AddCardActivity.this, response.getException().getMessage());
-                        Intent intent = new Intent(AddCardActivity.this, CardDetailActivity.class);
-                        startActivity(intent);
                     }
                 });
     }
