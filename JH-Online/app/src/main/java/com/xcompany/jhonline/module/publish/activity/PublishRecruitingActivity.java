@@ -240,9 +240,9 @@ public class PublishRecruitingActivity extends BaseActivity {
 
     private void submit(){
         Map<String,String> params = new HashMap<>();
-        params.put("cid",checkedCategory);  //名称
+        params.put("cid[]",checkedCategory);  //名称
         params.put("title",projectNameEdit.getText().toString());  //名称
-        params.put("number",personNumEdit.getText().toString());  //人数
+        params.put("number[]",personNumEdit.getText().toString());  //人数
         params.put("deadline",validateDateText.getText().toString());  //有效期
         params.put("port","3");  //端口
         params.put("explain",addExplanationEdit.getText().toString());  //其他说明

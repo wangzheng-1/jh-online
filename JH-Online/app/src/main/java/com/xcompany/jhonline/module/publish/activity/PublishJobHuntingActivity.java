@@ -264,7 +264,7 @@ public class PublishJobHuntingActivity extends BaseActivity {
         Map<String,String> params = new HashMap<>();
         params.put("cid",checkedCategory);  //所选工种
         params.put("name",titleNameEdit.getText().toString());  //名称
-        params.put("register",teamImageUrl);  //队伍图片
+        params.put("register[]",teamImageUrl);  //队伍图片
         params.put("number",personNumEdit.getText().toString());  //人数
         params.put("contacts_pid",province.getId());  //省份
         params.put("contacts_aid",city.getId());  // 城市

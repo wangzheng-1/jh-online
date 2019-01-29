@@ -474,7 +474,7 @@ public class ReportAddActivity extends BaseActivity implements EasyPermissions.P
      */
     private void uploadImage(){
 
-        mediaPathList.clear();
+        mediaPathUrl.clear();
         for(int i = 0; i < mediaPathList.size(); i++){
             Map<String,Object> params = new HashMap<>();
             params.put("type","card");
