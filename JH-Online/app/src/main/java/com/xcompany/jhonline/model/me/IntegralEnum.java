@@ -1,6 +1,6 @@
 package com.xcompany.jhonline.model.me;
 
-public enum IntegralEnum {
+public enum     IntegralEnum {
 
     SIGN(0,"签到赠送"),
     PUBLISH(1,"发布赠送"),

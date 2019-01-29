@@ -148,7 +148,12 @@ public class PublishIndustryBlackListActivity extends BaseActivity {
                     T.showToast(PublishIndustryBlackListActivity.this, "表单信息未填写完整，无法提交");
                     return;
                 }
-                uploadImage();
+                if(!StringUtil.isEmpty(storeImagePath)){
+                    uploadImage();
+                }
+                else {
+                    submit();
+                }
                 break;
         }
     }

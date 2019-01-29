@@ -195,7 +195,6 @@ public class PublishTypeActivity extends AppCompatActivity {
      */
     private void initBtn9() {
         typeButton9.setOnClickListener(v -> {
-            T.showToast(this, "跳转黑名单表单");
             Intent intent = new Intent(this, PublishIndustryBlackListActivity.class);
             startActivity(intent);
         });
