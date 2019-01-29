@@ -199,7 +199,7 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <RadioGroup
+                    <com.xcompany.jhonline.widget.MultiLineRadioGroup
                         android:id="@+id/radioGroup_gender"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -260,9 +260,10 @@
                                 android:paddingLeft="15dp"
                                 android:paddingRight="15dp"
                                 android:textColor="@color/text_deep_gray"
-                                android:textSize="13sp" />
+                                android:textSize="13sp"
+                                android:visibility="invisible"/>
                         </LinearLayout>
-                    </RadioGroup>
+                    </com.xcompany.jhonline.widget.MultiLineRadioGroup>
                 </LinearLayout>
 
                 <View
@@ -283,7 +284,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center_vertical"
-                        android:text="招聘单位"
+                        android:text="招聘岗位"
                         android:textColor="@color/text_black" />
                 </LinearLayout>
 

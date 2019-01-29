@@ -33,6 +33,7 @@ import com.xcompany.jhonline.utils.CityUtil;
 import com.xcompany.jhonline.utils.ReleaseConfig;
 import com.xcompany.jhonline.utils.StringUtil;
 import com.xcompany.jhonline.utils.T;
+import com.xcompany.jhonline.widget.MultiLineRadioGroup;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -76,7 +77,7 @@ public class PublishSkillRecruitingActivity extends BaseActivity {
     @BindView(R.id.privateNameEdit)
     EditText privateNameEdit;
     @BindView(R.id.radioGroup_gender)
-    RadioGroup radioGroupGender;
+    MultiLineRadioGroup radioGroupGender;
     @BindView(R.id.recruitDepartListView)
     XRecyclerView recruitDepartListView;
     @BindView(R.id.otherPostEdit)
@@ -165,17 +166,23 @@ public class PublishSkillRecruitingActivity extends BaseActivity {
             case R.id.companyRadio:
                 if(companyRadio.isChecked()){
                     companyNameEdit.setVisibility(View.VISIBLE);
+                    privateNameEdit.setVisibility(View.GONE);
                 }
                 else{
                     companyNameEdit.setVisibility(View.GONE);
+                    privateNameEdit.setVisibility(View.VISIBLE);
+
                 }
                 break;
             case R.id.privateRadio:
                 if(companyRadio.isChecked()){
                     companyNameEdit.setVisibility(View.VISIBLE);
+                    privateNameEdit.setVisibility(View.GONE);
                 }
                 else{
                     companyNameEdit.setVisibility(View.GONE);
+                    privateNameEdit.setVisibility(View.VISIBLE);
+
                 }
                 break;
             case R.id.selectAddressLayout:
@@ -247,15 +254,17 @@ public class PublishSkillRecruitingActivity extends BaseActivity {
         Map<String,String> params = new HashMap<>();
         params.put("cid",checkedPositions);  //名称
         params.put("title",titleNameEdit.getText().toString());  //名称
-        if(!StringUtil.isEmpty(companyNameEdit.getText().toString())){
-            params.put("name",companyNameEdit.getText().toString());  //人数
+        if(companyRadio.isChecked()){
+            params.put("name",companyNameEdit.getText().toString());  //公司
         }
-        if(!StringUtil.isEmpty(otherPostEdit.getText().toString())){
-            params.put("class",otherPostEdit.getText().toString());  //其他
+        else if(privateRadio.isChecked()){
+            params.put("name",privateNameEdit.getText().toString());  //私人
         }
+        params.put("class",otherPostEdit.getText().toString());  //其他
         params.put("contacts_pid",province.getId());  //省份
         params.put("contacts_aid",city.getId());  // 城市
         params.put("summary",projectServiceExplanationEdit.getText().toString());  //概述
+        params.put("number",projectAreaEdit.getText().toString());  //概述
         params.put("explain",addExplanationEdit.getText().toString());  //其他说明
         params.put("linkman",linkmanEdit.getText().toString());  // 联系人
         params.put("telephone",UserService.getInstance().getMobile());  //电话
@@ -288,6 +297,10 @@ public class PublishSkillRecruitingActivity extends BaseActivity {
     private boolean checkFromOK(){
         if(StringUtil.isEmpty(titleNameEdit.getText().toString())  //证件名称
                 || StringUtil.isEmpty(checkedPositions) //工种为空
+                || StringUtil.isEmpty(otherPostEdit.getText().toString())  //其他岗位
+                || (companyRadio.isChecked() && StringUtil.isEmpty(companyNameEdit.getText().toString()))
+                || (privateRadio.isChecked() && StringUtil.isEmpty(privateNameEdit.getText().toString()))
+                || StringUtil.isEmpty(projectAreaEdit.getText().toString())  //面积
                 || StringUtil.isEmpty(projectServiceExplanationEdit.getText().toString())  //项目概述
                 || StringUtil.isEmpty(addExplanationEdit.getText().toString())  //说明
                 || StringUtil.isEmpty(linkmanEdit.getText().toString()) // 联系人

@@ -50,6 +50,7 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -315,26 +316,30 @@ public class PublishSkillJobHuntingActivity extends BaseActivity {
     private ProgressDialog dialog = null;
 
     private void submit(){
-        Map<String,String> params = new HashMap<>();
+        Map<String,String> params = new IdentityHashMap<>();
         params.put("name",nameEdit.getText().toString());  //名称
         params.put("cid",checkedPositions);  //岗位
-        params.put("register",headImageUrl);  //头像
-        if(!StringUtil.isEmpty(otherPositionEdit.getText().toString())){
-            params.put("class",otherPositionEdit.getText().toString());  //其他岗位
-        }
+        params.put("register[]",headImageUrl);  //头像
+        params.put("duration",employDurationEdit.getText().toString());  //从业时长
+
+        params.put("class",otherPositionEdit.getText().toString());  //其他岗位
         params.put("contacts_pid",province.getId());  //省份
         params.put("contacts_aid",city.getId());  // 城市
 
         if(!StringUtil.isEmpty(otherPositionEdit.getText().toString())){
             params.put("price",paymentEdit.getText().toString());  //薪酬
         }
-        params.put("project",JSON.toJSONString(servicedProjectList));  //服务过的项目
+//        for(String projectName : servicedProjectList){
+//            params.put("project[]",projectName);  //服务过的项目
+//        }
+        params.put("project[]",StringUtil.join(servicedProjectList,","));  //服务过的项目
+
         params.put("explain",addExplanationEdit.getText().toString());  // 附加说明
         params.put("linkman",linkmanEdit.getText().toString());  // 联系人
         params.put("telephone",UserService.getInstance().getMobile());  //电话
         params.put("uid",UserService.getInstance().getUid());  //用户ID
 
-        OkGo.<JHResponse<String>>post(ReleaseConfig.baseUrl() + "Serve/serveAddLogic")
+        OkGo.<JHResponse<String>>post(ReleaseConfig.baseUrl() + "Recruit/jopAddLogic")
                 .tag(this)
                 .params("education",education)
                 .params(params)
@@ -363,6 +368,7 @@ public class PublishSkillJobHuntingActivity extends BaseActivity {
         if(StringUtil.isEmpty(nameEdit.getText().toString())  //姓名
                 || StringUtil.isEmpty(headImagePath) // 头像
                 || StringUtil.isEmpty(employDurationEdit.getText().toString()) // 从业时长
+                || StringUtil.isEmpty(otherPositionEdit.getText().toString()) // 其他岗位
                 || education < 0  //学历
                 || StringUtil.isEmpty(checkedPositions)  //岗位
                 || servicedProjectList == null || servicedProjectList.size() <= 0   //服务过的项目

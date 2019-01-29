@@ -1,6 +1,7 @@
 package com.xcompany.jhonline.module.publish.activity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,7 +9,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -45,6 +49,7 @@ import com.xcompany.jhonline.utils.T;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,7 +71,7 @@ public class PublishJobHuntingActivity extends BaseActivity {
      */
     private static final int RC_CHOOSE_PHOTO = 1;
 
-    CheckboxItemAdapter checkboxItemAdapter;
+    MyItemAdapter checkboxItemAdapter;
     @BindView(R.id.backHomeLayout)
     LinearLayout backHomeLayout;
     @BindView(R.id.reportTitleText)
@@ -139,7 +144,7 @@ public class PublishJobHuntingActivity extends BaseActivity {
     }
 
     private void initView() {
-        checkboxItemAdapter = new CheckboxItemAdapter(this.getApplicationContext(), checkItemList);
+        checkboxItemAdapter = new MyItemAdapter(this.getApplicationContext(), checkItemList);
         workCategoryListView.setAdapter(checkboxItemAdapter);
         workCategoryListView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 3));
         workCategoryListView.setLoadingMoreEnabled(false);
@@ -156,7 +161,7 @@ public class PublishJobHuntingActivity extends BaseActivity {
                     @Override
                     public void onSuccess(Response<JHResponse<List<Category>>> response) {
                         categoryList = response.body().getMsg();
-                        for(Category category : categoryList){
+                        for (Category category : categoryList) {
                             CheckboxItemBean model = new CheckboxItemBean();
                             model.setId(category.getId());
                             model.setName(category.getName());
@@ -176,8 +181,8 @@ public class PublishJobHuntingActivity extends BaseActivity {
                 onBackPressed();
                 break;
             case R.id.selectTypeLayout:
-                Intent intent = new Intent(PublishJobHuntingActivity.this,PublishTypeActivity.class);
-                startActivityForResult(intent,5);
+                Intent intent = new Intent(PublishJobHuntingActivity.this, PublishTypeActivity.class);
+                startActivityForResult(intent, 5);
                 break;
             case R.id.selectIntentAddressLayout:
                 showCityOptionsPickerView();
@@ -190,7 +195,7 @@ public class PublishJobHuntingActivity extends BaseActivity {
                 dialog.setCanceledOnTouchOutside(false);
                 dialog.setCancelable(false);
                 getCheckedCategory();
-                if(!checkFromOK()){
+                if (!checkFromOK()) {
                     if (dialog != null && dialog.isShowing()) {
                         dialog.dismiss();
                     }
@@ -204,12 +209,13 @@ public class PublishJobHuntingActivity extends BaseActivity {
 
     //省市区选择器
     OptionsPickerView cityOptionsPickerView;
-    private void showCityOptionsPickerView(){
 
-        if(cityOptionsPickerView == null){
+    private void showCityOptionsPickerView() {
+
+        if (cityOptionsPickerView == null) {
             cityOptionsPickerView = new OptionsPickerBuilder(PublishJobHuntingActivity.this, new OnOptionsSelectListener() {
                 @Override
-                public void onOptionsSelect(int options1, int option2, int options3 ,View v) {
+                public void onOptionsSelect(int options1, int option2, int options3, View v) {
                     province = provinceList.get(options1);
                     city = provinceAndCityList.get(options1).get(option2);
                     district = provinceAndCityAndAddList.get(options1).get(option2).get(options3);
@@ -217,13 +223,13 @@ public class PublishJobHuntingActivity extends BaseActivity {
 
                 }
             }).build();
-            if(provinceList == null ){
+            if (provinceList == null) {
                 provinceList = CityUtil.getProvinceList();
             }
-            if(provinceAndCityList == null){
+            if (provinceAndCityList == null) {
                 provinceAndCityList = CityUtil.getCityList();
             }
-            if(provinceAndCityAndAddList == null){
+            if (provinceAndCityAndAddList == null) {
                 provinceAndCityAndAddList = CityUtil.getDistrictList();
                 System.out.println("provinceAndCityAndAddList size is **************** " + provinceAndCityAndAddList == null ? -1 : provinceAndCityAndAddList.size());
             }
@@ -235,22 +241,22 @@ public class PublishJobHuntingActivity extends BaseActivity {
     }
 
 
-    private void selectStoreImage(){
+    private void selectStoreImage() {
         Intent intent = new Intent(PublishJobHuntingActivity.this, PhotoSelectActivity.class);
-        intent.putExtra(SELECT_MEDIA_TYPE,0);
-        intent.putExtra(IMAGE_NUM,1);
-        intent.putExtra(SELECT_MEDIA_TYPE,1);
-        startActivityForResult(intent,RC_CHOOSE_PHOTO);
+        intent.putExtra(SELECT_MEDIA_TYPE, 0);
+        intent.putExtra(IMAGE_NUM, 1);
+        intent.putExtra(SELECT_MEDIA_TYPE, 1);
+        startActivityForResult(intent, RC_CHOOSE_PHOTO);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK){
-            MediaBaseBeanSerial result = (MediaBaseBeanSerial)data.getSerializableExtra(EXTRA_SELECTED_PHOTOS);
+        if (resultCode == RESULT_OK) {
+            MediaBaseBeanSerial result = (MediaBaseBeanSerial) data.getSerializableExtra(EXTRA_SELECTED_PHOTOS);
             List<MediaBaseBean> mediaBaseBeanList = result.getMediaBaseBeanList();
             //选择的视频
-            if(mediaBaseBeanList != null && mediaBaseBeanList.size() > 0){
+            if (mediaBaseBeanList != null && mediaBaseBeanList.size() > 0) {
                 teamImagePath = mediaBaseBeanList.get(0).getUrl();
                 teamImageView.setImageURI(Uri.fromFile(new File(teamImagePath)));
             }
@@ -260,19 +266,19 @@ public class PublishJobHuntingActivity extends BaseActivity {
 
     private ProgressDialog dialog = null;
 
-    private void submit(){
-        Map<String,String> params = new HashMap<>();
-        params.put("cid",checkedCategory);  //所选工种
-        params.put("name",titleNameEdit.getText().toString());  //名称
-        params.put("register[]",teamImageUrl);  //队伍图片
-        params.put("number",personNumEdit.getText().toString());  //人数
-        params.put("contacts_pid",province.getId());  //省份
-        params.put("contacts_aid",city.getId());  // 城市
-        params.put("contacts_cid",district.getId());  //区域
-        params.put("explain",addExplanationEdit.getText().toString());  //其他说明
-        params.put("linkman",linkmanEdit.getText().toString());  // 联系人
-        params.put("telephone",UserService.getInstance().getMobile());  //电话
-        params.put("uid",UserService.getInstance().getUid());  //用户ID
+    private void submit() {
+        Map<String, String> params = new HashMap<>();
+        params.put("cid", checkedCategory);  //所选工种
+        params.put("title", titleNameEdit.getText().toString());  //名称
+        params.put("register", JSON.toJSONString(Arrays.asList(teamImageUrl).toArray()));  //队伍图片
+        params.put("number", personNumEdit.getText().toString());  //人数
+        params.put("contacts_pid", province.getId());  //省份
+        params.put("contacts_aid", city.getId());  // 城市
+        params.put("contacts_cid", district.getId());  //区域
+        params.put("explain", addExplanationEdit.getText().toString());  //其他说明
+        params.put("linkman", linkmanEdit.getText().toString());  // 联系人
+        params.put("telephone", UserService.getInstance().getMobile());  //电话
+        params.put("uid", UserService.getInstance().getUid());  //用户ID
 
         OkGo.<JHResponse<String>>post(ReleaseConfig.baseUrl() + "Worker/workAddLogic")
                 .tag(this)
@@ -287,6 +293,7 @@ public class PublishJobHuntingActivity extends BaseActivity {
                         PublishJobHuntingActivity.this.finish();
 
                     }
+
                     @Override
                     public void onError(Response<JHResponse<String>> response) {
 
@@ -297,9 +304,10 @@ public class PublishJobHuntingActivity extends BaseActivity {
                     }
                 });
     }
+
     //表单必填项校验
-    private boolean checkFromOK(){
-        if(StringUtil.isEmpty(titleNameEdit.getText().toString())  //证件名称
+    private boolean checkFromOK() {
+        if (StringUtil.isEmpty(titleNameEdit.getText().toString())  //证件名称
                 || StringUtil.isEmpty(checkedCategory) //  所选工种
                 || StringUtil.isEmpty(personNumEdit.getText().toString()) // 人数
                 || StringUtil.isEmpty(teamImagePath) // 队伍图片
@@ -307,7 +315,7 @@ public class PublishJobHuntingActivity extends BaseActivity {
                 || StringUtil.isEmpty(linkmanEdit.getText().toString()) // 联系人
                 || province == null
                 || city == null
-                ){
+                ) {
             return false;
         }
         return true;
@@ -316,24 +324,23 @@ public class PublishJobHuntingActivity extends BaseActivity {
     /**
      * 上传图片
      */
-    private void uploadImage(){
+    private void uploadImage() {
 
         File file = new File(teamImagePath);
-        Map<String,Object> params = new HashMap<>();
-        params.put("type","Supplier");
-        params.put("file",file);
+        Map<String, Object> params = new HashMap<>();
+        params.put("type", "Supplier");
+        params.put("file", file);
 
 
         DataRequestUtil.<JHResponse<String>>upLoadFile("Public/upload", params, new FileNetCallBack<JHResponse<String>>() {
             @Override
             public void done(JHResponse<String> result, Exception e) {
-                if(e == null){
+                if (e == null) {
                     teamImageUrl = result.getMsg();
                     Message message = new Message();
                     message.what = 1;
                     handler.sendMessage(message);
-                }
-                else {
+                } else {
                     if (dialog != null && dialog.isShowing()) {
                         dialog.dismiss();
                     }
@@ -343,28 +350,23 @@ public class PublishJobHuntingActivity extends BaseActivity {
         });
     }
 
-    private void getCheckedCategory(){
-        List<String> checkedItemList = new ArrayList<>();
-        for(Model model :checkItemList){
-            CheckboxItemBean checkboxItemBean = (CheckboxItemBean)model;
-            if(checkboxItemBean.isCheck()){
-                checkedItemList.add(checkboxItemBean.getId());
+    private void getCheckedCategory() {
+        checkedCategory = null;
+        for (Model model : checkItemList) {
+            CheckboxItemBean checkboxItemBean = (CheckboxItemBean) model;
+            if (checkboxItemBean.isCheck()) {
+                checkedCategory = checkboxItemBean.getId();
+                break;
             }
-        }
-        if(checkedItemList.size() > 0){
-            checkedCategory = JSON.toJSONString(checkedItemList);
-        }
-        else{
-            checkedCategory = null;
         }
     }
 
 
-    private Handler handler = new Handler(){
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             int msgWhat = msg.what;
-            switch (msgWhat){
+            switch (msgWhat) {
                 case 1:
                     submit();
                     break;
@@ -373,5 +375,75 @@ public class PublishJobHuntingActivity extends BaseActivity {
             }
         }
     };
+
+    class MyItemAdapter extends RecyclerView.Adapter {
+
+        Context context;
+
+        List<Model> models;
+
+        public MyItemAdapter(Context context, List<Model> models) {
+            this.context = context;
+            this.models = models;
+        }
+
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+
+            View view = LayoutInflater.from(context).inflate(R.layout.system_checkbox_item, viewGroup, false);
+            return new MyViewHolder(view);
+
+        }
+
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+
+            CheckboxItemBean checkboxItemBean = (CheckboxItemBean) models.get(position);
+            final MyViewHolder myViewHolder = (MyViewHolder) viewHolder;
+            myViewHolder.optionText.setText(checkboxItemBean.getName());
+            if (checkboxItemBean.isCheck()) {
+                myViewHolder.optionText.setBackgroundResource(R.drawable.background_rectangle_all_corner_blue);
+                myViewHolder.optionText.setTextColor(context.getResources().getColor(R.color.text_white));
+            } else {
+                myViewHolder.optionText.setBackgroundResource(R.drawable.background_rectangle_all_corner_gray);
+                myViewHolder.optionText.setTextColor(context.getResources().getColor(R.color.text_black));
+            }
+
+            myViewHolder.optionText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    CheckboxItemBean checkboxItemBean = (CheckboxItemBean) models.get(position);
+                    if (checkboxItemBean.isCheck()) {
+                        checkboxItemBean.setCheck(false);
+                        MyItemAdapter.this.notifyDataSetChanged();
+
+                    } else {
+                        for (Model model : models) {
+                            CheckboxItemBean checkboxModel = (CheckboxItemBean) model;
+                            checkboxModel.setCheck(false);
+                        }
+                        checkboxItemBean.setCheck(true);
+                        MyItemAdapter.this.notifyDataSetChanged();
+                    }
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return models.size();
+        }
+    }
+
+    class MyViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.optionText)
+        TextView optionText;
+
+        public MyViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+
+        }
+    }
 
 }
