@@ -69,6 +69,45 @@ public class ApplicationFragment extends BaseFragment {
 //            intent.putExtra("id", bean.getId());
 //            startActivity(intent);
         }));
+        mAdapter.setOnSaveClickListener(((position, bean, holder) -> {
+            if (TextUtils.equals("0", bean.getIssue())) {
+                //取消收藏
+                OkGo.<JHResponse<String>>post(ReleaseConfig.baseUrl() + "User/colldelete")
+                        .params("id", bean.getId())
+                        .execute(new JHCallback<JHResponse<String>>() {
+                            @Override
+                            public void onSuccess(Response<JHResponse<String>> response) {
+                                T.showToast(mContext, "取消收藏成功");
+                                mdatas.get(position).setIssue("1");
+                                mAdapter.setDatas(mdatas);
+                            }
+
+                            @Override
+                            public void onError(Response<JHResponse<String>> response) {
+                                T.showToast(mContext, response.getException().getMessage());
+                            }
+                        });
+            } else {
+                //收藏
+                OkGo.<JHResponse<String>>post(ReleaseConfig.baseUrl() + "User/collect")
+                        .params("uid", UserService.getInstance().getUid())
+                        .params("fid", bean.getId())
+                        .params("type", 11)
+                        .execute(new JHCallback<JHResponse<String>>() {
+                            @Override
+                            public void onSuccess(Response<JHResponse<String>> response) {
+                                T.showToast(mContext, "收藏成功");
+                                mdatas.get(position).setIssue("0");
+                                mAdapter.setDatas(mdatas);
+                            }
+
+                            @Override
+                            public void onError(Response<JHResponse<String>> response) {
+                                T.showToast(mContext, response.getException().getMessage());
+                            }
+                        });
+            }
+        }));
         mAdapter.setOnPhoneClickListener(((position, bean, holder) -> {
             if (TextUtils.equals(bean.getSign(), "0")) {
                 String telephone = bean.getTelephone();
@@ -80,7 +119,7 @@ public class ApplicationFragment extends BaseFragment {
             } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                 builder.setTitle("提示");
-                builder.setMessage("查看电话需要消耗30积分");
+                builder.setMessage("查看电话需要消耗5积分");
                 builder.setNegativeButton("取消", null);
                 builder.setPositiveButton("确定", ((dialog, which) -> {
                     OkGo.<JHResponse<String>>post(ReleaseConfig.baseUrl() + "User/consume")
@@ -102,7 +141,7 @@ public class ApplicationFragment extends BaseFragment {
 
                                 @Override
                                 public void onError(Response<JHResponse<String>> response) {
-                                    T.showToast(mContext, response.getException().getMessage());
+                                    T.showToast(mContext, "积分不足！");
                                 }
                             });
                 }));

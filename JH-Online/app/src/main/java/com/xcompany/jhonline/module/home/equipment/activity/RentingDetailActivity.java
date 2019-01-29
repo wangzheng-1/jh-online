@@ -173,7 +173,7 @@ public class RentingDetailActivity extends AppCompatActivity {
                 }else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setTitle("提示");
-                    builder.setMessage("查看电话需要消耗30积分");
+                    builder.setMessage("查看电话需要消耗5积分");
                     builder.setNegativeButton("取消", null);
                     builder.setPositiveButton("确定", ((dialog, which) -> {
                         OkGo.<JHResponse<String>>post(ReleaseConfig.baseUrl() + "User/consume")
@@ -195,7 +195,7 @@ public class RentingDetailActivity extends AppCompatActivity {
 
                                     @Override
                                     public void onError(Response<JHResponse<String>> response) {
-                                        T.showToast(RentingDetailActivity.this, response.getException().getMessage());
+                                        T.showToast(RentingDetailActivity.this, "积分不足！");
                                     }
                                 });
                     }));
