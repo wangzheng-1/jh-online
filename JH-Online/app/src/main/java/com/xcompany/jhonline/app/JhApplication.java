@@ -50,7 +50,7 @@ public class JhApplication extends Application {
     private void initOkGo() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor(message -> {
-            KLog.i(URLDecoder.decode(message));
+//            KLog.i(URLDecoder.decode(message));
         });
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         builder.addInterceptor(logging);

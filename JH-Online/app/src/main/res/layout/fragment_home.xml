@@ -59,8 +59,9 @@
                 android:src="@drawable/sy16" />
 
             <EditText
+                android:id="@+id/et_search"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:layout_weight="1"
                 android:background="@color/transparent"
@@ -74,15 +75,47 @@
 
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/list_view"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:divider="@color/transparent"
-        android:dividerHeight="0dp"
-        android:fadingEdge="none"
-        android:listSelector="@color/transparent"
-        android:overScrollMode="never"
-        android:scrollbars="none"
-        android:scrollingCache="false" />
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@color/transparent"
+            android:dividerHeight="0dp"
+            android:fadingEdge="none"
+            android:listSelector="@color/transparent"
+            android:overScrollMode="never"
+            android:scrollbars="none"
+            android:scrollingCache="false" />
+
+        <LinearLayout
+            android:id="@+id/ll_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#44000000"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorEFEFEF" />
+
+            <ListView
+                android:id="@+id/search_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:divider="@color/transparent"
+                android:dividerHeight="0dp"
+                android:fadingEdge="none"
+                android:listSelector="@color/transparent"
+                android:overScrollMode="never"
+                android:scrollbars="none"
+                android:scrollingCache="false" />
+        </LinearLayout>
+    </FrameLayout>
 </LinearLayout>

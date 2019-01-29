@@ -1,9 +1,21 @@
 package com.xcompany.jhonline.module.home.base;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.BaseAdapter;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -15,30 +27,41 @@ import com.xcompany.jhonline.R;
 import com.xcompany.jhonline.app.GlideImageLoader;
 import com.xcompany.jhonline.base.BaseFragment;
 import com.xcompany.jhonline.model.base.Address;
+import com.xcompany.jhonline.model.base.SearchResult;
 import com.xcompany.jhonline.model.home.BannerImages;
 import com.xcompany.jhonline.model.home.City;
 import com.xcompany.jhonline.model.home.Hiring;
 import com.xcompany.jhonline.module.home.blacklist.activity.BlackListActivity;
+import com.xcompany.jhonline.module.home.blacklist.activity.BlackListDetailActivity;
 import com.xcompany.jhonline.module.home.buildMaterial.activity.BuildMaterialList;
+import com.xcompany.jhonline.module.home.buildMaterial.activity.PurchaseDetailActivity;
+import com.xcompany.jhonline.module.home.buildMaterial.activity.QualitySupplierDetailActivity;
 import com.xcompany.jhonline.module.home.card.activity.AddCardActivity;
 import com.xcompany.jhonline.module.home.certificate.acitivity.CertificateList;
+import com.xcompany.jhonline.module.home.certificate.acitivity.QualificationHandleDetailActivity;
+import com.xcompany.jhonline.module.home.certificate.acitivity.RegistrationDetailActivity;
 import com.xcompany.jhonline.module.home.equipment.activity.EquipmentList;
+import com.xcompany.jhonline.module.home.equipment.activity.RentSeekingDetailActivity;
+import com.xcompany.jhonline.module.home.equipment.activity.RentingDetailActivity;
 import com.xcompany.jhonline.module.home.labourWorker.activity.HiringDetailActivity;
 import com.xcompany.jhonline.module.home.labourWorker.activity.LabourWorkerList;
+import com.xcompany.jhonline.module.home.professionalSkills.activity.ProfessionalSkillsDetailActivity;
 import com.xcompany.jhonline.module.home.professionalSkills.activity.ProfessionalSkillsList;
+import com.xcompany.jhonline.module.home.siteMatching.activity.SiteMatchingDetailActivity;
 import com.xcompany.jhonline.module.home.siteMatching.activity.SiteMatchingList;
+import com.xcompany.jhonline.module.home.subcontract.activity.QualityTeamDetailActivity;
 import com.xcompany.jhonline.module.home.subcontract.activity.SubcontractList;
+import com.xcompany.jhonline.module.home.subcontract.activity.TenderDetailActivity;
 import com.xcompany.jhonline.module.home.technical.activity.TechnicalList;
+import com.xcompany.jhonline.module.me.activity.MeCollectListActivity;
 import com.xcompany.jhonline.network.JHCallback;
 import com.xcompany.jhonline.network.JHResponse;
-import com.xcompany.jhonline.network.JsonCallback;
 import com.xcompany.jhonline.utils.ReleaseConfig;
 import com.xcompany.jhonline.utils.SharedPreferenceUtil;
 import com.xcompany.jhonline.utils.SnCalUtils;
 import com.xcompany.jhonline.utils.T;
 import com.youth.banner.Banner;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -55,14 +78,64 @@ import butterknife.OnClick;
 public class HomeFragment extends BaseFragment {
     @BindView(R.id.list_view)
     ListView listView;
+    @BindView(R.id.search_list)
+    ListView searchList;
     @BindView(R.id.tv_city)
     TextView tvCity;
+    @BindView(R.id.et_search)
+    EditText etSearch;
+    @BindView(R.id.ll_search)
+    LinearLayout llSearch;
     private View headView;
     private Banner banner;
     private HomeListAdapter mAdapter;
     private List<Hiring> mdatas = new ArrayList<>();
     private List<String> images = new ArrayList<>();
     private String cityId;
+    private SearchAdapter searchAdapter;
+    private List<SearchResult> searchResults = new ArrayList<>();
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (123 == msg.what) {
+                String trim = etSearch.getText().toString().trim();
+                if (TextUtils.isEmpty(trim)) {
+                    searchResults.clear();
+                    searchAdapter.notifyDataSetChanged();
+                } else {
+                    OkGo.<JHResponse<List<SearchResult>>>post(ReleaseConfig.baseUrl() + "index/search")
+                            .tag(this)
+                            .params("telename", etSearch.getText().toString().trim())
+                            .execute(new JHCallback<JHResponse<List<SearchResult>>>() {
+                                @Override
+                                public void onSuccess(Response<JHResponse<List<SearchResult>>> response) {
+                                    List<SearchResult> list = response.body().getMsg();
+                                    if (list != null) {
+                                        searchResults = list;
+                                        searchAdapter.notifyDataSetChanged();
+                                    }
+                                }
+
+                                @Override
+                                public void onError(Response<JHResponse<List<SearchResult>>> response) {
+                                    T.showToast(mContext, "暂无搜索结果！");
+                                    searchResults.clear();
+                                    searchAdapter.notifyDataSetChanged();
+                                }
+                            });
+                }
+            }
+
+        }
+    };
+
+    private Runnable mRunnable = new Runnable() {
+        @Override
+        public void run() {
+            mHandler.sendEmptyMessage(123);
+        }
+    };
 
     @Override
     protected int getLayoutId() {
@@ -72,7 +145,7 @@ public class HomeFragment extends BaseFragment {
     @Override
     protected void initEventAndData() {
         listView = mView.findViewById(R.id.list_view);
-        tvCity =  mView.findViewById(R.id.tv_city);
+        tvCity = mView.findViewById(R.id.tv_city);
         mAdapter = new HomeListAdapter(mContext, mdatas);
         listView.setAdapter(mAdapter);
         headView = View.inflate(mContext, R.layout.view_home_head, null);
@@ -90,6 +163,96 @@ public class HomeFragment extends BaseFragment {
             startActivity(intent);
         }));
         getCiry("惠州市");
+        searchAdapter = new SearchAdapter();
+        searchList.setOnItemClickListener((parent, view, position, id) -> {
+            SearchResult searchResult = searchResults.get(position);
+            String type = searchResult.getType();
+            Intent intent = new Intent();
+            if (type != null) {
+                if ("0".equals(type)) {
+                    intent.setClass(mContext, QualityTeamDetailActivity.class);
+                } else if ("1".equals(type)) {
+                    intent.setClass(mContext, TenderDetailActivity.class);
+                } else if ("2".equals(type)) {
+                    intent.setClass(mContext, RentingDetailActivity.class);
+
+                } else if ("3".equals(type)) {
+                    intent.setClass(mContext, RentSeekingDetailActivity.class);
+
+                } else if ("4".equals(type)) {
+                    intent.setClass(mContext, QualitySupplierDetailActivity.class);
+
+                } else if ("5".equals(type)) {
+                    intent.setClass(mContext, PurchaseDetailActivity.class);
+
+                } else if ("6".equals(type)) {
+                    intent.setClass(mContext, RegistrationDetailActivity.class);
+
+                } else if ("7".equals(type)) {
+                    intent.setClass(mContext, QualificationHandleDetailActivity.class);
+
+                } else if ("8".equals(type)) {
+                    intent.setClass(mContext, HiringDetailActivity.class);
+
+                } else if ("9".equals(type)) {
+                    T.showToast(mContext, "无详情页面");
+                    return;
+
+                } else if ("10".equals(type)) {
+                    T.showToast(mContext, "无详情页面");
+                    return;
+
+                } else if ("11".equals(type)) {
+                    T.showToast(mContext, "无详情页面");
+                    return;
+
+                } else if ("12".equals(type)) {
+                    intent.setClass(mContext, SiteMatchingDetailActivity.class);
+
+                } else if ("13".equals(type)) {
+                    intent.setClass(mContext, ProfessionalSkillsDetailActivity.class);
+                }else {
+                    T.showToast(mContext, "无详情页面");
+                    return;
+                }
+            }
+            llSearch.setVisibility(View.GONE); 
+            intent.putExtra("id", searchResult.getFid());
+            startActivity(intent);
+        });
+        searchList.setAdapter(searchAdapter);
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mHandler.removeCallbacks(mRunnable);
+                //500毫秒没有输入认为输入完毕
+                mHandler.postDelayed(mRunnable, 500);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        etSearch.setOnTouchListener(new View.OnTouchListener() {
+            //按住和松开的标识
+            int touch_flag = 0;
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                touch_flag++;
+                if (touch_flag == 2) {
+                    //自己业务
+                    llSearch.setVisibility(View.VISIBLE);
+                }
+                return false;
+            }
+        });
         OkGo.<String>post("http://pv.sohu.com/cityjson?ie=utf-8")
                 .tag(this)
                 .execute(new StringCallback() {
@@ -262,12 +425,23 @@ public class HomeFragment extends BaseFragment {
         getBannerImages();
     }
 
-    @OnClick({R.id.ll_city})
+    @OnClick({R.id.ll_city, R.id.et_search, R.id.ll_search})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_city:
                 Intent intent = new Intent(mContext, CityListActivity.class);
                 startActivityForResult(intent, 1001);
+                break;
+            case R.id.et_search:
+                llSearch.setVisibility(View.VISIBLE);
+                break;
+            case R.id.ll_search:
+                llSearch.setVisibility(View.GONE);
+                InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+                View currentFocus = ((Activity) mContext).getCurrentFocus();
+                if (currentFocus != null) {
+                    imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                }
                 break;
         }
     }
@@ -282,6 +456,34 @@ public class HomeFragment extends BaseFragment {
             tvCity.setText(city.getName());
             cityId = city.getId();
             getData();
+        }
+    }
+
+
+    private class SearchAdapter extends BaseAdapter {
+        @Override
+        public int getCount() {
+            return searchResults.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return searchResults.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                convertView = View.inflate(mContext, R.layout.item_search_result, null);
+            }
+            TextView tvText = convertView.findViewById(R.id.tv_text);
+            tvText.setText(searchResults.get(position).getName());
+            return convertView;
         }
     }
 }
