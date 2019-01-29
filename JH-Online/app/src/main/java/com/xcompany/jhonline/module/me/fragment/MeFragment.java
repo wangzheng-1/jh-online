@@ -292,4 +292,9 @@ public class MeFragment extends BaseFragment {
                 });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getData();
+    }
 }

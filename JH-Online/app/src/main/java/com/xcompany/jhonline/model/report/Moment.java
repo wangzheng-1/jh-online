@@ -57,9 +57,21 @@ public class Moment extends Model implements Serializable {
     private List<Comment> make;
 
     /**
-     *  关注
+     *  是否关注  1：已关注  2：未关注
      */
-    private Fellow givelist;
+    private Integer follow;
+
+    /**
+     *  是否关注  1：已关注  2：未关注
+     */
+    private Integer givelist;
+
+
+    /**
+     *  是否关注  1：已点赞  2：未点赞
+     */
+    private Integer thumbs;
+
 
     public String getId() {
         return id;
@@ -125,11 +137,27 @@ public class Moment extends Model implements Serializable {
         this.make = make;
     }
 
-    public Fellow getGivelist() {
+    public Integer getGivelist() {
         return givelist;
     }
 
-    public void setGivelist(Fellow givelist) {
+    public void setGivelist(Integer givelist) {
         this.givelist = givelist;
+    }
+
+    public Integer getThumbs() {
+        return thumbs;
+    }
+
+    public void setThumbs(Integer thumbs) {
+        this.thumbs = thumbs;
+    }
+
+    public Integer getFollow() {
+        return follow;
+    }
+
+    public void setFollow(Integer follow) {
+        this.follow = follow;
     }
 }

@@ -148,7 +148,12 @@ public class PublishIndustryBlackListActivity extends BaseActivity {
                     T.showToast(PublishIndustryBlackListActivity.this, "表单信息未填写完整，无法提交");
                     return;
                 }
-                uploadImage();
+                if(!StringUtil.isEmpty(storeImagePath)){
+                    uploadImage();
+                }
+                else {
+                    submit();
+                }
                 break;
         }
     }
@@ -214,7 +219,7 @@ public class PublishIndustryBlackListActivity extends BaseActivity {
         Map<String,String> params = new HashMap<>();
         params.put("name",alertMainEdit.getText().toString());  //名称
         if(!StringUtil.isEmpty(storeImageUrl)){
-            params.put("register", storeImageUrl);  //队伍图片
+            params.put("image", storeImageUrl);  //队伍图片
         }
         params.put("area",getArea());  //省份
         params.put("explain",explainEdit.getText().toString());  //其他说明
@@ -307,7 +312,6 @@ public class PublishIndustryBlackListActivity extends BaseActivity {
         areaList.add(province.getName());
         areaList.add(city.getName());
         areaList.add(district.getName());
-        String temp = JSON.toJSONString(areaList);
-        return temp.substring(2,temp.length()-2);
+        return StringUtil.join(areaList,",");
     }
 }

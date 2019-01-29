@@ -29,6 +29,7 @@ import com.xcompany.jhonline.utils.T;
 import com.xcompany.jhonline.widget.CleanEditText;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -128,11 +129,12 @@ public class AddCardActivity extends AppCompatActivity {
         params.put("telephone", etPhone.getText().toString());
         params.put("uid", UserService.getInstance().getUid());
         params.put("image", "222");
-        List<String> list = new ArrayList<>();
-        list.add(contacts_pid.getName());
-        list.add(contacts_aid.getName());
-        list.add(contacts_cid.getName());
-        params.put("area", JSON.toJSONString(list));
+
+        List<String> areaList = new ArrayList<>();
+        areaList.add(contacts_pid.getName());
+        areaList.add(contacts_aid.getName());
+        areaList.add(contacts_cid.getName());
+        params.put("area", StringUtil.join(areaList,","));
         OkGo.<JHResponse<String>>post(ReleaseConfig.baseUrl() + "Forum/cardAddLogic")
                 .tag(this)
                 .params(params)

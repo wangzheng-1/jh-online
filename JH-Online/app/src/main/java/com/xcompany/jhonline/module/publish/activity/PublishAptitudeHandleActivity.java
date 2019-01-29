@@ -38,6 +38,7 @@ import com.xcompany.jhonline.utils.T;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -210,10 +211,10 @@ public class PublishAptitudeHandleActivity extends BaseActivity {
     private ProgressDialog dialog = null;
 
     private void submit() {
-        Map<String, String> params = new HashMap<>();
+        Map<String, String> params = new IdentityHashMap<>();
         params.put("cid", "54");  //名称
         params.put("name", titleEdit.getText().toString());  //名称
-        params.put("register", storeImageUrl);  //产品图
+        params.put("register[]", storeImageUrl);  //产品图
         params.put("explain", addExplanationEdit.getText().toString());  //其他说明
         params.put("linkman", linkmanEdit.getText().toString());  // 联系人
         params.put("contacts_pid", province.getId());  //省份
@@ -222,7 +223,7 @@ public class PublishAptitudeHandleActivity extends BaseActivity {
         params.put("telephone", UserService.getInstance().getMobile());  //电话
         params.put("uid", UserService.getInstance().getUid());  //用户ID
 
-        OkGo.<JHResponse<String>>post(ReleaseConfig.baseUrl() + "Serve/serveAddLogic")
+        OkGo.<JHResponse<String>>post(ReleaseConfig.baseUrl() + "Licence/licendAddLogic")
                 .tag(this)
                 .params(params)
                 .execute(new JHCallback<JHResponse<String>>() {

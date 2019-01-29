@@ -202,7 +202,7 @@ public class PublishCertificateAnchoredActivity extends BaseActivity {
         params.put("uid",UserService.getInstance().getUid());  //用户ID
 
 
-        OkGo.<JHResponse<String>>post(ReleaseConfig.baseUrl() + "Licence/PurchaseAddLogic")
+        OkGo.<JHResponse<String>>post(ReleaseConfig.baseUrl() + "Licence/licenceAddLogic")
                 .tag(this)
                 .params(params)
                 .execute(new JHCallback<JHResponse<String>>() {

@@ -31,6 +31,7 @@ import com.xcompany.jhonline.module.report.adapter.CommentAdapter;
 import com.xcompany.jhonline.network.JHCallback;
 import com.xcompany.jhonline.network.JHResponse;
 import com.xcompany.jhonline.network.UserService;
+import com.xcompany.jhonline.utils.DpUtil;
 import com.xcompany.jhonline.utils.ReleaseConfig;
 import com.xcompany.jhonline.utils.StringUtil;
 import com.xcompany.jhonline.utils.T;
@@ -251,28 +252,33 @@ public class ReportFragment extends ListBaseFragment implements EasyPermissions.
                 reportNineImage.setVisibility(View.GONE);
             }
             thumbText.setText(moment.getGive());
-            //关注
-            Fellow fellow = moment.getGivelist();
-            //已经关注或点赞
-            if (fellow != null) {
+
+            Integer fellow = moment.getFollow();
+            //已经关注
+            if (fellow != null && fellow == 1) {
                 mineFellowText.setText("已关注");
                 mineFellowText.setCompoundDrawables(null, null, null, null);
                 mineFellowText.setPadding(0, 0, 0, 0);
-                thumbText.setBackground(getResources().getDrawable(R.drawable.background_frame_all_corner_blue));
-                thumbText.setTextColor(getResources().getColor(R.color.text_blue));
-
-                Drawable unThumpDrawable = getResources().getDrawable(R.mipmap.click_thumbed);
-                unThumpDrawable.setBounds(0, 0, unThumpDrawable.getMinimumWidth(), unThumpDrawable.getMinimumHeight());  // left, top, right, bottom
-                thumbText.setCompoundDrawables(unThumpDrawable, null, null, null);
 
 
             } else {
                 mineFellowText.setText("关注");
-
                 Drawable unFellowDrawable = getResources().getDrawable(R.mipmap.unfollow_btn);
                 unFellowDrawable.setBounds(0, 0, unFellowDrawable.getMinimumWidth(), unFellowDrawable.getMinimumHeight());  // left, top, right, bottom
                 mineFellowText.setCompoundDrawables(unFellowDrawable, null, null, null);
+                mineFellowText.setPadding(DpUtil.dip2px(ReportFragment.this.getContext(),10), 0, 0, 0);
+            }
 
+            Integer thumbs = moment.getThumbs();
+
+            //已点赞
+            if (thumbs != null && thumbs == 1) {
+                Drawable unThumpDrawable = getResources().getDrawable(R.mipmap.click_thumbed);
+                unThumpDrawable.setBounds(0, 0, unThumpDrawable.getMinimumWidth(), unThumpDrawable.getMinimumHeight());  // left, top, right, bottom
+                thumbText.setCompoundDrawables(unThumpDrawable, null, null, null);
+                thumbText.setTextColor(getResources().getColor(R.color.text_blue));
+
+            } else {
                 thumbText.setBackground(getResources().getDrawable(R.drawable.background_frame_all_corner_gray));
                 thumbText.setTextColor(getResources().getColor(R.color.text_light_gray));
                 Drawable thumpDrawable = getResources().getDrawable(R.mipmap.click_unthunmb);
@@ -281,15 +287,16 @@ public class ReportFragment extends ListBaseFragment implements EasyPermissions.
 
             }
 
+
             mineFellowText.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    if (fellow != null) {
+                    if (moment.getFollow() != null && moment.getFollow() == 1) {
                         //取消关注
-                        unFellow(moment.getGivelist().getId());
+                        unFellow(moment);
                     } else {
-                        fellow(moment.getId());
+                        fellow(moment);
                     }
                 }
             });
@@ -297,11 +304,11 @@ public class ReportFragment extends ListBaseFragment implements EasyPermissions.
             thumbText.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (fellow != null) {
-                        //取消关注
-//                        unFellow(moment.getGivelist().get(0).getId());
+                    if (moment.getThumbs() != null && moment.getThumbs() == 1) {
+                        //已经点赞
+                        T.showToast(ReportFragment.this.getActivity(),"你已经点赞过");
                     } else {
-                        thumpUp(moment.getId());
+                        thumpUp(moment);
                     }
                 }
             });
@@ -378,20 +385,20 @@ public class ReportFragment extends ListBaseFragment implements EasyPermissions.
     /**
      * 关注爆料
      *
-     * @param id 爆料ID
+     * @param moment 爆料ID
      */
-    private void fellow(String id) {
+    private void fellow(Moment moment) {
         OkGo.<JHResponse<String>>post(ReleaseConfig.baseUrl() + "Forum/forumFollow")
                 .tag(this)
-                .params("fid", id)
+                .params("fid", moment.getId())
                 .params("uid", UserService.getInstance().getUid())
                 .params("port", "3")
                 .execute(new JHCallback<JHResponse<String>>() {
                     @Override
                     public void onSuccess(Response<JHResponse<String>> response) {
                         T.showToast(ReportFragment.this.getActivity(), "关注成功");
-                        xRecyclerView.refresh();
-                    }
+                        moment.setFollow(1);
+                        mMomentAdapter.notifyDataSetChanged();                    }
 
                     @Override
                     public void onError(Response<JHResponse<String>> response) {
@@ -403,17 +410,19 @@ public class ReportFragment extends ListBaseFragment implements EasyPermissions.
     /**
      * 取消关注爆料
      *
-     * @param id 爆料ID
+     * @param moment 爆料ID
      */
-    private void unFellow(String id) {
+    private void unFellow(Moment moment) {
         OkGo.<JHResponse<String>>post(ReleaseConfig.baseUrl() + "Forum/forumCancel")
                 .tag(this)
-                .params("id", id)
+                .params("fid", moment.getId())
+                .params("uid", UserService.getInstance().getUid())
                 .execute(new JHCallback<JHResponse<String>>() {
                     @Override
                     public void onSuccess(Response<JHResponse<String>> response) {
                         T.showToast(ReportFragment.this.getActivity(), "取消关注成功");
-                        xRecyclerView.refresh();
+                        moment.setFollow(2);
+                        mMomentAdapter.notifyDataSetChanged();
                     }
 
                     @Override
@@ -426,19 +435,21 @@ public class ReportFragment extends ListBaseFragment implements EasyPermissions.
     /**
      * 点赞爆料
      *
-     * @param id 爆料ID
+     * @param moment 爆料ID
      */
-    private void thumpUp(String id) {
+    private void thumpUp(Moment moment) {
         OkGo.<JHResponse<String>>post(ReleaseConfig.baseUrl() + "Forum/forumGive")
                 .tag(this)
-                .params("fid", id)
+                .params("fid", moment.getId())
                 .params("uid", UserService.getInstance().getUid())
                 .params("port", "3")
                 .execute(new JHCallback<JHResponse<String>>() {
                     @Override
                     public void onSuccess(Response<JHResponse<String>> response) {
                         T.showToast(ReportFragment.this.getActivity(), "点赞成功");
-                        xRecyclerView.refresh();
+                        moment.setThumbs(1);
+                        moment.setGive("" + (Integer.valueOf(moment.getGive()) +1 ));
+                        mMomentAdapter.notifyDataSetChanged();
                     }
 
                     @Override
@@ -518,6 +529,7 @@ public class ReportFragment extends ListBaseFragment implements EasyPermissions.
                     public void onSuccess(Response<JHResponse<String>> response) {
                         T.showToast(ReportFragment.this.getActivity(), "评论成功");
                         Comment comment = new Comment();
+                        comment.setUid(UserService.getInstance().getUid());
                         comment.setBusiness(content);
                         moment.getMake().add(comment);
                         mMomentAdapter.notifyDataSetChanged();
@@ -531,6 +543,5 @@ public class ReportFragment extends ListBaseFragment implements EasyPermissions.
         if (bottomCommentSheet != null && bottomCommentSheet.isShowing()) {
             bottomCommentSheet.dismiss();
         }
-        xRecyclerView.refresh();
     }
 }

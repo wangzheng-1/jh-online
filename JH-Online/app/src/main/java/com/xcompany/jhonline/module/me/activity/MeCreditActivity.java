@@ -155,7 +155,13 @@ public class MeCreditActivity extends BaseActivity {
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
-            viewHolder.creditDetailTitle.setText(IntegralEnum.getIntegralEnum(meCreditDetailBean.getOptxt()).getName());
+            IntegralEnum integralEnum = IntegralEnum.getIntegralEnum(meCreditDetailBean.getOptxt());
+            if(integralEnum == null){
+                viewHolder.creditDetailTitle.setText("其他");
+            }
+            else {
+                viewHolder.creditDetailTitle.setText(integralEnum.getName());
+            }
             viewHolder.creditDetailNum.setText(meCreditDetailBean.getSign() + "");
             return convertView;
 

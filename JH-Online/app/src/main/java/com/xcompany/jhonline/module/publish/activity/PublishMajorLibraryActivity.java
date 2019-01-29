@@ -167,7 +167,7 @@ public class PublishMajorLibraryActivity extends BaseActivity {
         params.put("contacts_cid",district.getId());  //区域
         params.put("uid",UserService.getInstance().getUid());  //用户ID
 
-        OkGo.<JHResponse<String>>post(ReleaseConfig.baseUrl() + "Serve/serveAddLogic")
+        OkGo.<JHResponse<String>>post(ReleaseConfig.baseUrl() + "major/majorAddLogic")
                 .tag(this)
                 .params(params)
                 .execute(new JHCallback<JHResponse<String>>() {
