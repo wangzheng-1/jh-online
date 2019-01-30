@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -218,6 +219,7 @@ public class ReportFragment extends ListBaseFragment implements EasyPermissions.
             TextView thumbText = helper.getView(R.id.thumbText);
             LinearLayout commentText = helper.getView(R.id.commentText);
             ListView commentListView = helper.getView(R.id.commentListView);
+            commentListView.setDividerHeight(0);
 
             if (TextUtils.isEmpty(moment.getBusiness())) {
                 reportContentText.setVisibility(View.GONE);
@@ -315,6 +317,10 @@ public class ReportFragment extends ListBaseFragment implements EasyPermissions.
             //评论
             List<Comment> commentList = moment.getMake();
             if (commentList != null && commentList.size() > 0) {
+                commentListView.setVisibility(View.VISIBLE);
+                ViewGroup.LayoutParams layoutParams = commentListView.getLayoutParams();
+                layoutParams.height = DpUtil.dip2px(ReportFragment.this.getContext(),25*commentList.size() + 20);
+                commentListView.setLayoutParams(layoutParams);
                 CommentAdapter commentAdapter = new CommentAdapter(ReportFragment.this.getContext(), commentList);
                 commentListView.setAdapter(commentAdapter);
             } else {
@@ -518,7 +524,7 @@ public class ReportFragment extends ListBaseFragment implements EasyPermissions.
             return;
         }
 
-        OkGo.<JHResponse<String>>post(ReleaseConfig.baseUrl() + "Forum/makeList")
+        OkGo.<JHResponse<String>>post(ReleaseConfig.baseUrl() + "Forum/makeLogic")
                 .tag(this)
                 .params("fid", moment.getId())
                 .params("business", content)
