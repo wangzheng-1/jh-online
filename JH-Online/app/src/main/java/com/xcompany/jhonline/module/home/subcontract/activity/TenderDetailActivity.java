@@ -81,7 +81,7 @@ public class TenderDetailActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Response<JHResponse<TenderDetail>> response) {
-                        T.showToast(TenderDetailActivity.this, response.getException().getMessage());
+//                        T.showToast(TenderDetailActivity.this, response.getException().getMessage());
                     }
                 });
     }

@@ -61,7 +61,7 @@ public class BlackListDetailActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Response<JHResponse<BlackDetail>> response) {
-                        T.showToast(BlackListDetailActivity.this, response.getException().getMessage());
+//                        T.showToast(BlackListDetailActivity.this, response.getException().getMessage());
                     }
                 });
     }

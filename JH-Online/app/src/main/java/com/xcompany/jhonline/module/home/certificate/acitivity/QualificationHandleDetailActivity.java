@@ -79,7 +79,7 @@ public class QualificationHandleDetailActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Response<JHResponse<QualificationHandleDetail>> response) {
-                        T.showToast(QualificationHandleDetailActivity.this, response.getException().getMessage());
+//                        T.showToast(QualificationHandleDetailActivity.this, response.getException().getMessage());
                     }
                 });
     }

@@ -56,7 +56,7 @@ public class CardDetailActivity extends AppCompatActivity {
     public void getData() {
         OkGo.<JHResponse<CardDetail>>post(ReleaseConfig.baseUrl() + "Forum/cardList")
                 .tag(this)
-                .params("uid","28")
+                .params("uid",UserService.getInstance().getUid())
                 .execute(new JHCallback<JHResponse<CardDetail>>() {
                     @Override
                     public void onSuccess(Response<JHResponse<CardDetail>> response) {
@@ -66,7 +66,7 @@ public class CardDetailActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Response<JHResponse<CardDetail>> response) {
-                        T.showToast(CardDetailActivity.this, response.getException().getMessage());
+//                        T.showToast(CardDetailActivity.this, response.getException().getMessage());
                     }
                 });
     }

@@ -77,7 +77,7 @@ public class PurchaseDetailActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Response<JHResponse<PurchaseDetail>> response) {
-                        T.showToast(PurchaseDetailActivity.this, response.getException().getMessage());
+//                        T.showToast(PurchaseDetailActivity.this, response.getException().getMessage());
                     }
                 });
     }

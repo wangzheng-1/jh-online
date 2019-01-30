@@ -78,7 +78,7 @@ public class ProfessionalSkillsDetailActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Response<JHResponse<ProfessionalSkillsDetail>> response) {
-                        T.showToast(ProfessionalSkillsDetailActivity.this, response.getException().getMessage());
+//                        T.showToast(ProfessionalSkillsDetailActivity.this, response.getException().getMessage());
                     }
                 });
     }

@@ -108,7 +108,7 @@ public class QualityTeamDetailActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Response<JHResponse<QualityTeamDetail>> response) {
-                        T.showToast(QualityTeamDetailActivity.this, response.getException().getMessage());
+//                        T.showToast(QualityTeamDetailActivity.this, response.getException().getMessage());
                     }
                 });
     }

@@ -95,7 +95,7 @@ public class RentingDetailActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Response<JHResponse<RentingDetail>> response) {
-                        T.showToast(RentingDetailActivity.this, response.getException().getMessage());
+//                        T.showToast(RentingDetailActivity.this, response.getException().getMessage());
                     }
                 });
     }

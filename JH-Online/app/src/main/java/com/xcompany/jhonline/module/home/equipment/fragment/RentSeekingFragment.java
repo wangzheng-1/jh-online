@@ -87,7 +87,7 @@ public class RentSeekingFragment extends BaseFragment {
 
                     @Override
                     public void onError(Response<JHResponse<List<RentSeeking>>> response) {
-                        T.showToast(mContext, response.getException().getMessage());
+//                        T.showToast(mContext, response.getException().getMessage());
                     }
                 });
     }

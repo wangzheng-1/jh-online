@@ -157,7 +157,7 @@ public class QualityTeamFragment extends BaseFragment {
 
                     @Override
                     public void onError(Response<JHResponse<List<QuailtyTeam>>> response) {
-                        T.showToast(mContext, response.getException().getMessage());
+//                        T.showToast(mContext, response.getException().getMessage());
                     }
                 });
     }

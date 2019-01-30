@@ -84,7 +84,7 @@ public class QualificationHandleFragment extends BaseFragment {
 
                     @Override
                     public void onError(Response<JHResponse<List<QualificationHandle>>> response) {
-                        T.showToast(mContext, response.getException().getMessage());
+//                        T.showToast(mContext, response.getException().getMessage());
                     }
                 });
     }

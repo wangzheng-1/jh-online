@@ -93,7 +93,7 @@ public class HiringDetailActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Response<JHResponse<HiringDetail>> response) {
-                        T.showToast(HiringDetailActivity.this, response.getException().getMessage());
+//                        T.showToast(HiringDetailActivity.this, response.getException().getMessage());
                     }
                 });
     }

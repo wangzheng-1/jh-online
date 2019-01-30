@@ -81,7 +81,7 @@ public class ProvinceListActivity extends AppCompatActivity {
                     }
                     @Override
                     public void onError(Response<JHResponse<List<City>>> response) {
-                        T.showToast(ProvinceListActivity.this, response.getException().getMessage());
+//                        T.showToast(ProvinceListActivity.this, response.getException().getMessage());
                     }
                 });
     }

@@ -59,7 +59,7 @@ public class MeCollectListActivity extends XListViewActivity {
 
                     @Override
                     public void onError(Response<JHResponse<List<PublishTypeItemBean>>> response) {
-                        T.showToast(MeCollectListActivity.this, response.getException().getMessage());
+//                        T.showToast(MeCollectListActivity.this, response.getException().getMessage());
                         callback.setDataItems(null);
                     }
                 });

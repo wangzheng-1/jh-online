@@ -86,7 +86,7 @@ public class TenderFragment extends BaseFragment {
 
                     @Override
                     public void onError(Response<JHResponse<List<Tender>>> response) {
-                        T.showToast(mContext, response.getException().getMessage());
+//                        T.showToast(mContext, response.getException().getMessage());
                     }
                 });
     }

@@ -84,7 +84,7 @@ public class RegistrationDetailActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Response<JHResponse<RegistrationDetail>> response) {
-                        T.showToast(RegistrationDetailActivity.this, response.getException().getMessage());
+//                        T.showToast(RegistrationDetailActivity.this, response.getException().getMessage());
                     }
                 });
     }

@@ -8,7 +8,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:toolbar_right="分享"
+        app:toolbar_right=""
         app:toolbar_right_mode="black"
         app:toolbar_title="工地配套" />
 

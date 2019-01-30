@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -95,7 +96,7 @@ public class MeFollowListActivity extends XListViewActivity implements EasyPermi
 
                     @Override
                     public void onError(Response<JHResponse<List<Moment>>> response) {
-                        T.showToast(MeFollowListActivity.this, response.getException().getMessage());
+//                        T.showToast(MeFollowListActivity.this, response.getException().getMessage());
                         callback.setDataItems(null);
                     }
                 });
@@ -295,6 +296,10 @@ public class MeFollowListActivity extends XListViewActivity implements EasyPermi
             //评论
             List<Comment> commentList = moment.getMake();
             if (commentList != null && commentList.size() > 0) {
+                commentListView.setVisibility(View.VISIBLE);
+                ViewGroup.LayoutParams layoutParams = commentListView.getLayoutParams();
+                layoutParams.height = DpUtil.dip2px(MeFollowListActivity.this,25*commentList.size() + 20);
+                commentListView.setLayoutParams(layoutParams);
                 CommentAdapter commentAdapter = new CommentAdapter(MeFollowListActivity.this, commentList);
                 commentListView.setAdapter(commentAdapter);
             } else {
@@ -383,7 +388,7 @@ public class MeFollowListActivity extends XListViewActivity implements EasyPermi
 
                     @Override
                     public void onError(Response<JHResponse<String>> response) {
-                        T.showToast(MeFollowListActivity.this, response.getException().getMessage());
+//                        T.showToast(MeFollowListActivity.this, response.getException().getMessage());
                     }
                 });
     }

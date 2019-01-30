@@ -104,7 +104,7 @@ public class SiteMatchingFragment extends BaseFragment {
 
                     @Override
                     public void onError(Response<JHResponse<List<SiteMatching>>> response) {
-                        T.showToast(mContext, response.getException().getMessage());
+//                        T.showToast(mContext, response.getException().getMessage());
                     }
                 });
     }

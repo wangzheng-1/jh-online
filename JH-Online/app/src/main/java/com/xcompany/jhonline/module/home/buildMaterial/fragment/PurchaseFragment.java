@@ -83,7 +83,7 @@ public class PurchaseFragment extends BaseFragment {
 
                     @Override
                     public void onError(Response<JHResponse<List<Purchase>>> response) {
-                        T.showToast(mContext, response.getException().getMessage());
+//                        T.showToast(mContext, response.getException().getMessage());
                     }
                 });
     }
