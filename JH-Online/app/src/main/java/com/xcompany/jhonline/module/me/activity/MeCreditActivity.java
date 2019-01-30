@@ -92,7 +92,7 @@ public class MeCreditActivity extends BaseActivity {
 
                     @Override
                     public void onError(Response<JHResponse<List<MeCreditDetailBean>>> response) {
-                        T.showToast(MeCreditActivity.this, response.getException().getMessage());
+//                        T.showToast(MeCreditActivity.this, response.getException().getMessage());
 
                     }
                 });

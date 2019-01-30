@@ -85,7 +85,7 @@ public class SiteMatchingDetailActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Response<JHResponse<SiteMatchingDetail>> response) {
-                        T.showToast(SiteMatchingDetailActivity.this, response.getException().getMessage());
+//                        T.showToast(SiteMatchingDetailActivity.this, response.getException().getMessage());
                     }
                 });
     }

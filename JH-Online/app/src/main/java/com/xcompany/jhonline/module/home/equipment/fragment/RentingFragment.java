@@ -126,7 +126,7 @@ public class RentingFragment extends BaseFragment {
 
                     @Override
                     public void onError(Response<JHResponse<List<Renting>>> response) {
-                        T.showToast(mContext, response.getException().getMessage());
+//                        T.showToast(mContext, response.getException().getMessage());
                     }
                 });
     }

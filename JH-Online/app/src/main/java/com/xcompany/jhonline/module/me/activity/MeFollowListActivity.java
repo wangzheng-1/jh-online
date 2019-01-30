@@ -96,7 +96,7 @@ public class MeFollowListActivity extends XListViewActivity implements EasyPermi
 
                     @Override
                     public void onError(Response<JHResponse<List<Moment>>> response) {
-                        T.showToast(MeFollowListActivity.this, response.getException().getMessage());
+//                        T.showToast(MeFollowListActivity.this, response.getException().getMessage());
                         callback.setDataItems(null);
                     }
                 });
@@ -388,7 +388,7 @@ public class MeFollowListActivity extends XListViewActivity implements EasyPermi
 
                     @Override
                     public void onError(Response<JHResponse<String>> response) {
-                        T.showToast(MeFollowListActivity.this, response.getException().getMessage());
+//                        T.showToast(MeFollowListActivity.this, response.getException().getMessage());
                     }
                 });
     }

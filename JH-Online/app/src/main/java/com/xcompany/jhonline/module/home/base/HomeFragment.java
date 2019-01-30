@@ -328,7 +328,7 @@ public class HomeFragment extends BaseFragment {
 
                     @Override
                     public void onError(Response<JHResponse<City>> response) {
-                        T.showToast(mContext, response.getException().getMessage());
+//                        T.showToast(mContext, response.getException().getMessage());
                     }
                 });
     }
@@ -349,7 +349,7 @@ public class HomeFragment extends BaseFragment {
 
                     @Override
                     public void onError(Response<JHResponse<BannerImages>> response) {
-                        T.showToast(mContext, response.getException().getMessage());
+//                        T.showToast(mContext, response.getException().getMessage());
                     }
                 });
 
@@ -373,7 +373,7 @@ public class HomeFragment extends BaseFragment {
 
                     @Override
                     public void onError(Response<JHResponse<List<Hiring>>> response) {
-                        T.showToast(mContext, response.getException().getMessage());
+//                        T.showToast(mContext, response.getException().getMessage());
                     }
                 });
     }

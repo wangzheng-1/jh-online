@@ -104,7 +104,7 @@ public class ReportFragment extends ListBaseFragment implements EasyPermissions.
 
                     @Override
                     public void onError(Response<JHResponse<List<Moment>>> response) {
-                        T.showToast(ReportFragment.this.getActivity(), response.getException().getMessage());
+//                        T.showToast(ReportFragment.this.getActivity(), response.getException().getMessage());
                         callback.setDataItems(null);
                     }
                 });

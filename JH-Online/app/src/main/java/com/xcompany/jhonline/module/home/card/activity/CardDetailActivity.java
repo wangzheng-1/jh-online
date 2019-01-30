@@ -66,7 +66,7 @@ public class CardDetailActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Response<JHResponse<CardDetail>> response) {
-                        T.showToast(CardDetailActivity.this, response.getException().getMessage());
+//                        T.showToast(CardDetailActivity.this, response.getException().getMessage());
                     }
                 });
     }

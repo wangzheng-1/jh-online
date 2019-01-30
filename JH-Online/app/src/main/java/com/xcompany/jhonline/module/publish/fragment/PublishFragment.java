@@ -80,7 +80,7 @@ public class PublishFragment extends ListBaseFragment {
 
                     @Override
                     public void onError(Response<JHResponse<List<PublishTypeItemBean>>> response) {
-                        T.showToast(PublishFragment.this.getActivity(), response.getException().getMessage());
+//                        T.showToast(PublishFragment.this.getActivity(), response.getException().getMessage());
                         callback.setDataItems(null);
                     }
                 });

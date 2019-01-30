@@ -117,7 +117,7 @@ public class MeFragment extends BaseFragment {
 
                     @Override
                     public void onError(Response<JHResponse<MeAll>> response) {
-                        T.showToast(MeFragment.this.getActivity(), response.getException().getMessage());
+//                        T.showToast(MeFragment.this.getActivity(), response.getException().getMessage());
                     }
                 });
     }

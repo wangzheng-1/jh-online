@@ -109,7 +109,7 @@ public class QualitySupplierDetailActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Response<JHResponse<QualitySupplierDetail>> response) {
-                        T.showToast(QualitySupplierDetailActivity.this, response.getException().getMessage());
+//                        T.showToast(QualitySupplierDetailActivity.this, response.getException().getMessage());
                     }
                 });
     }
