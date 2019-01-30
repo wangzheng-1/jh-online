@@ -216,7 +216,7 @@ public class HomeFragment extends BaseFragment {
                     return;
                 }
             }
-            llSearch.setVisibility(View.GONE); 
+            llSearch.setVisibility(View.GONE);
             intent.putExtra("id", searchResult.getFid());
             startActivity(intent);
         });
