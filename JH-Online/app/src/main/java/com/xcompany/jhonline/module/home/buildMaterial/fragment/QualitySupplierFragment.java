@@ -102,6 +102,9 @@ public class QualitySupplierFragment extends BaseFragment {
                     @Override
                     public void onError(Response<JHResponse<List<QualitySupplier>>> response) {
 //                        T.showToast(mContext, response.getException().getMessage());
+                        if(mRecyclerView!=null){
+                            mRecyclerView.refreshComplete();
+                        }
                     }
                 });
     }

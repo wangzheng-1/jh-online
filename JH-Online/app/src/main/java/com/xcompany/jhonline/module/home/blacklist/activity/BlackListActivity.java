@@ -82,6 +82,9 @@ public class BlackListActivity extends AppCompatActivity {
                     @Override
                     public void onError(Response<JHResponse<List<Black>>> response) {
 //                        T.showToast(BlackListActivity.this, response.getException().getMessage());
+                        if(mRecyclerView!=null){
+                            mRecyclerView.refreshComplete();
+                        }
                     }
                 });
     }

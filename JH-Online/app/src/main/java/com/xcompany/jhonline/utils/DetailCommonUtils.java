@@ -34,7 +34,7 @@ public class DetailCommonUtils {
             llTop.setVisibility(View.VISIBLE);
             llTop.setBackgroundColor(Color.parseColor("#00BD24"));
             topImage.setImageResource(R.drawable.shtg);
-            topFix.setVisibility(View.VISIBLE);
+            topFix.setVisibility(View.GONE);
         }else if(TextUtils.equals(status,"2")){
             //审核中
             llTop.setVisibility(View.VISIBLE);

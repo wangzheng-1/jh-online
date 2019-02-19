@@ -166,6 +166,9 @@ public class ApplicationFragment extends BaseFragment {
                     @Override
                     public void onError(Response<JHResponse<List<Application>>> response) {
 //                        T.showToast(mContext, response.getException().getMessage());
+                        if(mRecyclerView!=null){
+                            mRecyclerView.refreshComplete();
+                        }
                     }
                 });
     }

@@ -208,6 +208,9 @@ public class RecruitFragment extends BaseFragment {
                     @Override
                     public void onError(Response<JHResponse<List<Recruit>>> response) {
 //                        T.showToast(mContext, response.getException().getMessage());
+                        if(mRecyclerView!=null){
+                            mRecyclerView.refreshComplete();
+                        }
                     }
                 });
     }
