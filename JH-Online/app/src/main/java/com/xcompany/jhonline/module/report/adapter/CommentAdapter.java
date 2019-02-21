@@ -51,7 +51,7 @@ public class CommentAdapter extends BaseAdapter {
         } else {
             myViewHolder = (MyViewHolder) convertView.getTag();
         }
-        myViewHolder.commentPersonName.setText(comment.getUid()+":");
+        myViewHolder.commentPersonName.setText("");
         myViewHolder.commentContent.setText(comment.getBusiness());
         return convertView;
     }
