@@ -23,7 +23,7 @@ public class LabourWorkerList extends BaseFragmentListActivity {
 
     @Override
     protected String[] getLabels() {
-        return new String[]{"正在招工", "正在找活"};
+        return new String[]{"最近信息", "工人交流"};
     }
 
     @Override

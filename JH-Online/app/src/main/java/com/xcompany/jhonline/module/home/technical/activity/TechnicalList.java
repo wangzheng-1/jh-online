@@ -23,7 +23,7 @@ public class TechnicalList extends BaseFragmentListActivity {
 
     @Override
     protected String[] getLabels() {
-        return new String[]{"正在招聘", "正在求职"};
+        return new String[]{"最新信息", "技管交流"};
     }
 
     @Override

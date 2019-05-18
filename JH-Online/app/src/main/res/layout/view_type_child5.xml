@@ -11,7 +11,7 @@
         android:layout_height="50dp"
         android:gravity="center_vertical"
         android:paddingLeft="15dp"
-        android:text="正在找活"
+        android:text="最近信息"
         android:textColor="@color/color666666"
         android:textSize="14sp"
         android:textStyle="bold" />
@@ -25,5 +25,5 @@
         android:id="@+id/entrance2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:type_button_title="正在招工" />
+        app:type_button_title="工人交流" />
 </LinearLayout>

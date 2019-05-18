@@ -186,7 +186,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center_vertical"
-                        android:text="找活工种"
+                        android:text="工种"
                         android:textColor="@color/text_black" />
                 </LinearLayout>
 

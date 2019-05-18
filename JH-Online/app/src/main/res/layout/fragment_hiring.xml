@@ -24,7 +24,7 @@
             app:menu_button_image_normal="@drawable/down"
             app:menu_button_image_press="@drawable/up"
             app:menu_button_resource="@layout/view_menu_button"
-            app:menu_button_title="劳务工种" />
+            app:menu_button_title="信息筛选" />
 
         <com.xcompany.jhonline.widget.MenuButton
             android:id="@+id/menu2"

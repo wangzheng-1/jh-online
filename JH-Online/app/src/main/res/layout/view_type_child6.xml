@@ -9,7 +9,7 @@
         android:id="@+id/entrance1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:type_button_title="正在求职" />
+        app:type_button_title="最近信息" />
 
     <View
         android:layout_width="wrap_content"
@@ -20,5 +20,5 @@
         android:id="@+id/entrance2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:type_button_title="正在招聘" />
+        app:type_button_title="技管交流" />
 </LinearLayout>
