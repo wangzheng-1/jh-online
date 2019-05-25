@@ -55,14 +55,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:type_button_logo="@mipmap/labor_recruit"
-                app:type_button_title="劳务招聘信息" />
+                app:type_button_title="工人之家信息" />
 
             <com.xcompany.jhonline.widget.TypeButton
                 android:id="@+id/type_button6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:type_button_logo="@mipmap/skill_recruit"
-                app:type_button_title="技管招聘信息" />
+                app:type_button_title="技管人才信息" />
 
             <com.xcompany.jhonline.widget.TypeButton
                 android:id="@+id/type_button7"

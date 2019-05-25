@@ -91,7 +91,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginLeft="3dp"
-                            android:text="劳务招聘信息"
+                            android:text="工人之家信息"
                             android:textColor="@color/text_deep_gray"
                             android:textSize="13sp" />
 
@@ -186,7 +186,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center_vertical"
-                        android:text="工种"
+                        android:text="信息"
                         android:textColor="@color/text_black" />
                 </LinearLayout>
 

@@ -91,7 +91,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginLeft="3dp"
-                            android:text="技管招聘信息"
+                            android:text="技管人才信息"
                             android:textColor="@color/text_deep_gray"
                             android:textSize="13sp" />
 
@@ -406,7 +406,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center_vertical"
-                        android:text="可提供职位"
+                        android:text="信息"
                         android:textColor="@color/text_black" />
                 </LinearLayout>
 

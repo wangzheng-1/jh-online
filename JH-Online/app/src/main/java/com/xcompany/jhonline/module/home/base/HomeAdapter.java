@@ -56,7 +56,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
         Hiring bean = mDatas.get(position);
         ViewHolder holder = (ViewHolder) viewHolder;
         holder.name.setText(NullCheck.check(bean.getName()));
-        holder.cid.setText("劳务工种：" + NullCheck.check(bean.getCid()));
+        holder.cid.setText("工种信息：" + NullCheck.check(bean.getCid()));
         holder.contacts.setText("项目地址：" + NullCheck.check(bean.getContacts()));
         holder.entryTime.setText("发布时间：" + NullCheck.check(bean.getEntryTime()));
     }

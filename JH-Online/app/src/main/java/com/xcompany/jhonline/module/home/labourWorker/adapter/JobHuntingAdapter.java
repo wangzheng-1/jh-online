@@ -61,7 +61,7 @@ public class JobHuntingAdapter extends RecyclerView.Adapter {
         ViewHolder holder = (ViewHolder) viewHolder;
         holder.itemView.setOnClickListener(v -> mListener.onItemClick(position, bean, holder));
         holder.tvName.setText(NullCheck.check(bean.getName()));
-        holder.tvCid.setText(NullCheck.check("劳务工种：", bean.getCid()));
+        holder.tvCid.setText(NullCheck.check("工种信息：", bean.getCid()));
         holder.tvEntryTime.setText(NullCheck.check("发布时间：", bean.getEntryTime()));
         holder.tvNumber.setText(NullCheck.check("队伍人数：", bean.getNumber()));
         holder.tvContacts.setText(NullCheck.check("地址：", bean.getContacts()));

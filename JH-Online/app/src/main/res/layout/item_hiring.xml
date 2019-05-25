@@ -50,7 +50,7 @@
                 android:layout_marginLeft="10dp"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="劳务工种：泥瓦工"
+                android:text="工种信息：泥瓦工"
                 android:textColor="@color/coloraaaaaa"
                 android:textSize="14sp" />
         </LinearLayout>

@@ -56,7 +56,7 @@ public class HiringAdapter extends RecyclerView.Adapter {
         Hiring bean = mDatas.get(position);
         ViewHolder holder = (ViewHolder) viewHolder;
         holder.name.setText(NullCheck.check(bean.getName()));
-        holder.cid.setText(NullCheck.check("劳务工种：", bean.getCid()));
+        holder.cid.setText(NullCheck.check("工种信息：", bean.getCid()));
         holder.contacts.setText(NullCheck.check("项目地址：", bean.getContacts()));
         holder.entryTime.setText(NullCheck.check("发布时间：", bean.getEntryTime()));
         holder.itemView.setOnClickListener(v -> mListener.onItemClick(position, bean, holder));
